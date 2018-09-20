@@ -1,0 +1,102 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
+    {% if app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/base.html.twig' %}
+        {% block body %}
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{path('dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            List administrator
+                        </li>
+                    </ol>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>
+                            Table administrators
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <a href="{{path ('registerAdministrator') }}">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#">
+                                        Add Administrator <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                    </button>
+                                </a>
+                                <br><br>
+                                <table class="table table-hover table-bordered text-center" id="dtBasicExample">
+                                    <div class="container">
+                                        <div class="col-md-11">
+                                            {% for msg in app.session.flashbag().get('estatus') %}
+                                                <div class="alert alert-warning" aria-label="Close">
+                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                    <strong>Danger!</strong> {{ msg }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>                         
+                                            <th>Email</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>                 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for administrador in administradores %}
+                                            <tr>
+                                                <td>{{ administrador.name }}</td>
+                                                <td>{{ administrador.email }}</td>
+                                                <td>
+                                                    <a href="{{path('editAdministrator',{id:administrador.id})}}">
+                                                        <button class="btn btn-warning btn-sm" type="submit">
+                                                            Edit <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{path('deleteAdministrator',{id:administrador.id})}}">
+                                                        <button class="btn btn-danger btn-sm" type="submit">
+                                                            Delete <i class="fa fa-times" aria-hidden="true"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        {% block javascripts %}
+            <script>
+                $(document).ready(function () {
+                    $('#dtBasicExample').DataTable();
+                    $('.dataTables_length').addClass('bs-select');
+                });
+            </script>
+             <script>
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                }, 4000);
+            </script>
+        {% endblock %}
+    {% else %}
+        <script type="text/javascript">
+            location.href ="{{path('login')}}";
+        </script>
+    {% endif %}
+{% else %}
+    <script type="text/javascript">
+        location.href ="{{path('login')}}";
+    </script>
+{% endif %}

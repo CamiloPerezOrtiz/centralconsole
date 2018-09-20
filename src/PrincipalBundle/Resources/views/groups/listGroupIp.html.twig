@@ -1,0 +1,124 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
+    {% if app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/base.html.twig' %}
+        {% block body %}
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{path('dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{path('listGroup')}}">Groups list</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Ip list group:
+                            {% if grupoIp == true %} 
+                                {{ grupoIp[0]['cliente'] }} 
+                            {% endif %}  
+                        </li>
+                    </ol>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>
+                            Table ips
+                        </div>
+                        <div class="card-body">
+                            {% for cliente2 in clientes %}
+                                <a href="{{path('registerUser',{id:cliente2.cliente})}}">
+                                    <button type="button" class="btn btn-success">
+                                        Add user <i class="fa fa-fw fa-list"></i>
+                                    </button>
+                                </a>
+                            {% endfor %}
+                            <div class="table-responsive">
+                                <br>
+                                <table class="table table-hover table-bordered text-center" id="dtBasicExample">
+                                    <thead>
+                                        <tr>
+                                            <th>Ip</th>                         
+                                            <th>Delete</th>                 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for listaGrupoIp in grupoIp %}
+                                            <tr>
+                                                <td>{{ listaGrupoIp.ip }}</td>
+                                                <td>
+                                                    <a href="{{path('deleteIp',{id:listaGrupoIp.id})}}">
+                                                        <button class="btn btn-danger btn-sm" type="submit">
+                                                            Delete <i class="fa fa-times" aria-hidden="true"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                <br>
+                                <div class="card-header bg-dark text-white">Save the configuration</div>
+                                <br>
+                                <div class="panel-body text-center">
+                                    When you do click on save button you are saving the IP List and if you do click on apply button, the process about new configuration changes will be starting. <br>
+                                    <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
+                                    <div class="responsive" align="center">
+                                        <a href="{{path('saveListIp',{id:grupoIp[0]['cliente']})}}">
+                                            <button type="button" onclick="myFunction()" class="btn btn-primary btn-lg">
+                                                <b>
+                                                    <i class="fa fa-check-square-o"></i>   
+                                                    Save IP List
+                                                </b>
+                                            </button>
+                                        </a>
+                                        <br><br>
+                                    </div>
+                                    <div class="responsive" align="center">
+                                        <a href="#">
+                                            <button type="" class="btn btn-success btn-lg">
+                                                <b>
+                                                    <i class="fa fa-check-square-o"></i>   
+                                                    Apply to IP List
+                                                </b>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        {% block javascripts %}
+            <script src="{{ asset ('js/jsPagina/validarRegistroUsuario.js') }}"></script>
+            <script>
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                }, 4000);
+            </script>
+            <script>
+                function myFunction() {
+                    alert("The ip has been saved");
+                }
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $('#dtBasicExample').DataTable();
+                    $('.dataTables_length').addClass('bs-select');
+                });
+            </script>
+        {% endblock %}
+    {% else %}
+        <script type="text/javascript">
+            location.href ="{{path('login')}}";
+        </script>
+    {% endif %}
+{% else %}
+    <script type="text/javascript">
+        location.href ="{{path('login')}}";
+    </script>
+{% endif %}

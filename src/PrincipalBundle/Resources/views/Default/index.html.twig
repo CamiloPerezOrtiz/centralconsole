@@ -1,0 +1,62 @@
+{# Se evalua si hay un usuario, si existe se redirige al dashboard  #}
+{% if app.user != null %}
+    <script type="text/javascript">
+        location.href ="{{path('dashboard')}}";
+    </script>
+{% else %}
+	{# Se carga la plantilla de login #}
+	{% include '@Principal/templates/login.html.twig' %}
+	{% block body %}
+		<div class="container">
+			<br>
+			<div class="container">
+				<img src="{{ asset ('img/logoWarriors.png') }}" class="img-fluid mx-auto d-block"> 
+			</div>
+			{% if error %}
+				<div class="col-md-4 mx-auto ">
+	      			<div class="alert alert-danger" aria-label="Close">
+	                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	                    <strong>{{ error.messageKey|trans(error.messageData, 'security') }}</strong>
+	                </div>
+	            </div>
+			{% endif %}
+	    	<div class="card card-login mx-auto mt-5 text-center">
+	      		<div class="card-header"><h3>Login</h3></div>
+	      		<div class="card-body">
+		        	<form action="{{path('login_check')}}" method="post" onsubmit="return validarLogin();">
+		          		<div class="form-group">
+		            		<label for="exampleInputEmail1">Email address</label>
+		            		<input type="email" id="username" required="required" name="_username" placeholder="Enter your email" class="form-control"/>
+		          		</div>
+		          		<div class="form-group">
+		            		<label for="exampleInputPassword1">Password</label>
+		            		<input type="password" id="password" required="required" placeholder="Enter your password" name="_password" class="form-control"/>
+		          		</div>
+		          		<div class="form-group">
+							<input type="submit" value="Enter" class="btn btn-primary btn-block"/>
+							<input type="hidden" name="_target_path" value="/login"/>
+						</div>
+		        	</form>
+	      		</div>
+	    	</div>
+	  	</div>
+	  	<br><br><br>
+	  	<footer>
+	        <div class="container">
+	            <div class="text-center">
+	                <smal class="text-white">Warriors Lab's. All Rights Reserved.</small>
+	            </div>
+	        </div>
+	    </footer>
+	{% endblock %}
+	{% block javascripts %}
+	    <script src="{{ asset ('js/jsPagina/validarLogin.js') }}"></script>
+	    <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 4000);
+        </script>
+	{% endblock %}
+{% endif %}

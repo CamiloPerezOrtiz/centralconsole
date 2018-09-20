@@ -1,0 +1,9 @@
+perez0|192.168.0.1|GrupoA|
+Perez1|192.168.0.2|GrupoB|
+perez2|192.168.0.3|GrupoC|
+perez3|192.168.0.4|GrupoD|
+perez4|192.168.0.5|GrupoA|
+Perez5|192.168.0.6|GrupoA|
+perez6|192.168.0.7|GrupoD|
+perez7|192.168.0.8|GrupoA|
+Perez8|192.168.0.9|GrupoA|

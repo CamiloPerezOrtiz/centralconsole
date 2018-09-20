@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>{% block title %}Warriors Lab's{% endblock %}</title>
+        {% block stylesheets %}
+            {# Se manda a llamar la hoja de estilos de bootstrap #}
+            <link href="{{ asset ('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+            {# Se manda a llamar la hoja de esilos de los iconos del sistema #}
+            <link href="{{ asset ('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+            {# Se manda a llamar la hoja de esilos de las tablas de boottrap #}
+            <link href="{{ asset ('vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
+            {# Se manda a llamar la hoja de esilos que se va utilizar en el sistema #}
+            <link href="{{ asset ('css/sb-admin.css') }}" rel="stylesheet">
+        {% endblock %}
+        {# Se manda a llamar el ico para sobrescribir el que biene por defecto #}
+        <link rel="icon" type="image/x-icon" href="{{ asset('log.ico') }}" />
+    </head>
+    {% block body %}
+        <body class="fixed-nav sticky-footer bg-dark" id="page-top">
+            {% block navbar  %}
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+                    <a class="navbar-brand" href="#">
+                        <img src="{{ asset('img/log.png')}}" class="img-responsive" width="150" height="50" alt="">
+                    </a>
+                    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                                <a class="nav-link" href="{{path('dashboard')}}">
+                                    <i class="fa fa-fw fa-dashboard"></i>
+                                    <span class="nav-link-text">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administrators and user">
+                                <a class="nav-link" href="{{path('listAdministrator')}}">
+                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                    <span class="nav-link-text">Super user</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Groups">
+                                <a class="nav-link" href="{{path('txtIp')}}">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                    <span class="nav-link-text">Groups</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Preview">
+                                <a class="nav-link" href="tables.html">
+                                    <i class="fa fa-fw fa-table"></i>
+                                    <span class="nav-link-text">Preview</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav sidenav-toggler">
+                            <li class="nav-item">
+                                <a class="nav-link text-center" id="sidenavToggler">
+                                    <i class="fa fa-fw fa-angle-left"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="modal" data-target="#">
+                                    {% if app.user != null %}
+                                        Super user {{ app.user.name }}
+                                    {% else %}
+                                        <script type="text/javascript">
+                                            location.href ="{{path('login')}}";
+                                        </script>
+                                    {% endif %} 
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                                    <i class="fa fa-fw fa-sign-out"></i>Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-primary" href="{{path('logout')}}">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endblock %}
+            <footer class="sticky-footer">
+                <div class="container">
+                    <div class="text-center">
+                        <small>Warriors Lab's. All Rights Reserved.</small>
+                    </div>
+                </div>
+            </footer>
+            {% block javascripts %}
+                {# Se manda a llamar a la libreria de JQuery #}
+                <script src="{{ asset ('vendor/jquery-easing/jquery.easing.min.js') }}"></script>
+                {# Se mandan a llamar los archivos javascript de bootstrap #}
+                <script src="{{ asset ('vendor/jquery/jquery.min.js') }}"></script>
+                <script src="{{ asset ('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+                {# Plugins de Javascript #}
+                <script src="{{ asset ('vendor/chart.js/Chart.min.js') }}"></script>
+                <script src="{{ asset ('vendor/datatables/jquery.dataTables.js') }}"></script>
+                <script src="{{ asset ('vendor/datatables/dataTables.bootstrap4.js') }}"></script>
+                {# Se manda a llamar el archivo de javascript del sistema #}
+                <script src="{{ asset ('js/sb-admin.min.js') }}"></script>
+                {# Otros plugins #}
+                <script src="{{ asset ('js/sb-admin-datatables.min.js') }}"></script>
+                <script src="{{ asset ('js/sb-admin-charts.min.js') }}"></script>
+                {# Se manda a llamar la libreria para las notificaciones o alertas  #}
+                <script src="{{ asset ('js/sweetalert.min.js') }}"></script>
+                <script src="{{ asset ('js/jsPagina/app.js') }}"></script>
+            {% endblock %}
+        </body>
+    {% endblock %}
+</html>

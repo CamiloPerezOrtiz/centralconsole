@@ -1,0 +1,106 @@
+principal_homepage:
+    path:     /
+    defaults: { _controller: PrincipalBundle:Default:index }
+
+#######################################################
+#  Direcciones para el inicio de session              #
+#######################################################
+
+#Muestra el formulario para que el usuario realize el login correspondiente controlador: UsuarioController funcion login#
+login:
+    path:     /login
+    defaults: { _controller: PrincipalBundle:Administrator:login }
+
+#Symfony realiza la validacion correspondiente al login#
+login_check:
+    path:     /login_check
+
+#Hace el logout correspondiete para terminar la sesion del usuario#
+logout:
+    path:     /logout
+
+###################################################
+#  Area para los archivos txt                     #
+###################################################
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+listGroup:
+    path:     /listGroup
+    defaults: { _controller: PrincipalBundle:Group:listGroup }
+
+#Lee el archivo informacionGrupos.txt para insertar en la base de datos controlador: GrupoController funcion: txtIp #  
+txtIp:
+    path:     /txtIp
+    defaults: { _controller: PrincipalBundle:Group:txtIp }
+
+#Lista las ip del grupo el cual fue seleccionado controlador: GrupoController funcion: listaGrupoIpAction # 
+listGroupIp:
+    path:     /listGroupIp/{id}
+    defaults: { _controller: PrincipalBundle:Group:listGroupIp }
+
+#Guardar las ip del grupo el cual fue seleccionado controlador: GrupoController funcion: guardarListaIp #
+saveListIp:
+    path:     /saveListIp/{id}
+    defaults: { _controller: PrincipalBundle:Group:saveListIp }
+
+#Elimina la ip del grupo el cual fue seleccionado controlador GrupoController funcion eliminarIp#
+deleteIp:
+    path:     /deleteIp/{id}
+    defaults: { _controller: PrincipalBundle:Group:deleteIp }
+
+######################################################
+#  Area de Dashboard                                 #
+######################################################
+
+#Muestra el dashboard del administrador controlador: AdministratorController funcion dashboard#
+dashboard:
+    path:     /dashboard
+    defaults: {_controller: PrincipalBundle:Administrator:dashboard }
+
+######################################################
+#  Area del administrador                            #
+######################################################
+
+#Registro de un nuevo administrador controlador: AdministratorController funcion registerAdministrator#
+registerAdministrator:
+    path:     /registerAdministrator 
+    defaults: { _controller: PrincipalBundle:Administrator:registerAdministrator }
+
+#Muestra la lista de Administrators controlador: AdministratorController funcion listAdministrator#
+listAdministrator:
+    path:     /listAdministrator
+    defaults: {_controller: PrincipalBundle:Administrator:listAdministrator}
+
+#Elimina el administrador seleccionado controlador AdministratorController funcion editAdministrator#
+editAdministrator:
+    path:     /editAdministrator/{id}
+    defaults: { _controller: PrincipalBundle:Administrator:editAdministrator }
+
+#Edita el Administrator el cual fue seleccionado cotrolador AdministratorController funcion deleteAdministrator#
+deleteAdministrator:
+    path:     /deleteAdministrator/{id}
+    defaults: { _controller: PrincipalBundle:Administrator:deleteAdministrator }
+
+###################################################
+#  Area del usuario                               #
+###################################################
+
+#Registro de un nuevo usuario controlador: UserController funcion registerUser#
+registerUser:
+    path:     /registerUser/{id}
+    defaults: { _controller: PrincipalBundle:Users:registerUser }
+
+#Muestra la lista de los usuarios controlador UsuarioController funcion listUser#
+listUser:
+    path:     /listUser
+    defaults: { _controller: PrincipalBundle:Usuario:listUser }
+
+#Elimina el administrador seleccionado controlador AdministratorController funcion editUser#
+editUser:
+    path:     /editUser/{id}
+    defaults: { _controller: PrincipalBundle:Users:editUser }
+
+#Edita el Administrator el cual fue seleccionado cotrolador AdministratorController funcion deleteUser#
+deleteUser:
+    path:     /deleteUser/{id}
+    defaults: { _controller: PrincipalBundle:Users:deleteUser }
