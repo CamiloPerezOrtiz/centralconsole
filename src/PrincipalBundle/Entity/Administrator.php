@@ -51,6 +51,14 @@ class Administrator implements UserInterface
      */
     private $role;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nameGroup", type="string", length=25)
+     */
+    private $nameGroup;
+
+
     /* Implememtacion */
     public function getUsername()
     {
@@ -182,6 +190,30 @@ class Administrator implements UserInterface
     public function getRole()
     {
         return $this->role;
+    }
+
+    /**
+     * Set nameGroup
+     *
+     * @param string $nameGroup
+     *
+     * @return Users
+     */
+    public function setNameGroup($nameGroup)
+    {
+        $this->nameGroup = $nameGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get nameGroup
+     *
+     * @return string
+     */
+    public function getNameGroup()
+    {
+        return $this->nameGroup;
     }
 }
 

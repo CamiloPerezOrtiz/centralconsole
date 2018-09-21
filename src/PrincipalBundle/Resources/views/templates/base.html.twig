@@ -66,14 +66,7 @@
                         </ul>
                         <ul class="navbar-nav ml-auto">
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="modal" data-target="#">
-                                    {% if app.user != null %}
-                                        Super user {{ app.user.name }}
-                                    {% else %}
-                                        <script type="text/javascript">
-                                            location.href ="{{path('login')}}";
-                                        </script>
-                                    {% endif %} 
+                                <a class="nav-link" data-toggle="modal" data-target="#"> 
                                 </a>
                             </li>
                             <li class="nav-item">

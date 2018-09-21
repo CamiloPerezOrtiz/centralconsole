@@ -1,7 +1,4 @@
-{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
-{% if app.user != null %}
-    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
-    {% if app.user.role == "ROLE_SUPERUSER" %}
+
         {% include '@Principal/templates/base.html.twig' %}
         {% block body %}
         	<div class="content-wrapper">
@@ -87,13 +84,3 @@
                 }, 4000);
             </script>
         {% endblock %}
-    {% else %}
-        <script type="text/javascript">
-            location.href ="{{path('login')}}";
-        </script>
-    {% endif %}
-{% else %}
-    <script type="text/javascript">
-        location.href ="{{path('login')}}";
-    </script>
-{% endif %}

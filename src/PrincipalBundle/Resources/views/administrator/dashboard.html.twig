@@ -1,7 +1,7 @@
 {# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
 {% if app.user != null %}
     {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
-    {% if app.user.role == "ROLE_SUPERUSER" %}
+    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
         {% include '@Principal/templates/base.html.twig' %}
     {% endif %}
     {% block body %}

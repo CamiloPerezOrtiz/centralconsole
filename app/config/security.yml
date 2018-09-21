@@ -5,18 +5,12 @@ security:
         PrincipalBundle\Entity\Administrator: # Se hace mecnion sobre que entidad se va a trabajar 
             algorithm: bcrypt # Se estable el metodo de encrytamiento de la contraseña 
             cost: 4 # El numero de cost el cual se encryṕtara la contraseña 
-        PrincipalBundle\Entity\Users: # Se hace mecnion sobre que entidad se va a trabajar 
-            algorithm: bcrypt # Se estable el metodo de encrytamiento de la contraseña 
-            cost: 4 # El numero de cost el cual se encryṕtara la contraseña 
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
         centralconsole: # Se coloca el nombre de base detoas con la cual se va a trabajar 
             entity:
                 class: PrincipalBundle:Administrator # El nombre de la entidad sobre la cual se va a trabajar 
-                property: email # el campo sobre el cual se va trabajar 
-            entity:
-                class: PrincipalBundle:Users # El nombre de la entidad sobre la cual se va a trabajar 
                 property: email # el campo sobre el cual se va trabajar 
 
     firewalls:

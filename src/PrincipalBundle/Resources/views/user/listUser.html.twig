@@ -2,7 +2,7 @@
 {% if app.user != null %}
     {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-        {% include '@Principal/plantillas/base.html.twig' %}
+        {% include '@Principal/templates/base.html.twig' %}
         {% block body %}
         	<div class="content-wrapper">
             	<div class="container-fluid">
