@@ -45,7 +45,7 @@ class UsersController extends Controller
 			//si el correo no exite se manda a insertar el usuario con el rol de administrador de lo contrario regresa al formulario
 			if(count($resultado)==0 && count($resultado2)==0)
 			{
-				$User->setGroup($id);
+				$User->setNameGroup($id);
 				$factory = $this->get("security.encoder_factory");
 				$encoder = $factory->getEncoder($User);
 				$p = $encoder->encodePassword($form->get("password")->getData(),$User->getSalt());
@@ -78,7 +78,7 @@ class UsersController extends Controller
 	{
 		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
 		$em = $this->getDoctrine()->getEntityManager();
-		$administrador=$em->getRepository("PrincipalBundle:Administrator")->findAll();
+		$usuario=$em->getRepository("PrincipalBundle:Users")->findAll();
 	    return $this->render('@Principal/user/listUser.html.twig', array("usuarios"=>$usuario));
 	}
 }

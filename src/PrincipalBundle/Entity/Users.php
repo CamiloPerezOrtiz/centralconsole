@@ -54,9 +54,10 @@ class Users implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="group", type="string", length=25)
+     * @ORM\Column(name="nameGroup", type="string", length=25)
      */
-    private $group;
+    private $nameGroup;
+
 
     /* Implememtacion */
     public function getUsername()
@@ -83,7 +84,6 @@ class Users implements UserInterface
     {
         return $this->name;
     }
-
 
     /**
      * Get id
@@ -192,27 +192,27 @@ class Users implements UserInterface
     }
 
     /**
-     * Set group
+     * Set nameGroup
      *
-     * @param string $group
+     * @param string $nameGroup
      *
      * @return Users
      */
-    public function setGroup($group)
+    public function setNameGroup($nameGroup)
     {
-        $this->group = $group;
+        $this->nameGroup = $nameGroup;
 
         return $this;
     }
 
     /**
-     * Get group
+     * Get nameGroup
      *
      * @return string
      */
-    public function getGroup()
+    public function getNameGroup()
     {
-        return $this->group;
+        return $this->nameGroup;
     }
 }
 

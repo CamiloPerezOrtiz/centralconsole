@@ -93,7 +93,7 @@ registerUser:
 #Muestra la lista de los usuarios controlador UsuarioController funcion listUser#
 listUser:
     path:     /listUser
-    defaults: { _controller: PrincipalBundle:Usuario:listUser }
+    defaults: { _controller: PrincipalBundle:Users:listUser }
 
 #Elimina el administrador seleccionado controlador AdministratorController funcion editUser#
 editUser:

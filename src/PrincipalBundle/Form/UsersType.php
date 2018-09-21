@@ -22,15 +22,13 @@ class UsersType extends AbstractType
             ->add('name', TextType::class,array("label"=>"Name: ","required"=>"required","attr"=>array("class"=>"form-control")))
             ->add('email', EmailType::class,array("label"=>"Email: ","required"=>"required","attr"=>array("class"=>"form-control")))
             ->add('password', PasswordType::class,array("label"=>"Password: ","required"=>"required","attr"=>array("class"=>"form-control")))
-            ->add('group',ChoiceType::class, array("label"=>"Choose a role: ","required"=>"required","attr"=>array("class"=>"form-control"),
+            ->add('role', ChoiceType::class, array("label"=>"Choose a role: ","required"=>"required","attr"=>array("class"=>"form-control"),
             'choices' => array(
-                'User administrator' => 'ROLE_ADMINISTRATOR',
-                'User' => 'ROLE_USER',)))
+                'User administrator' => 'ROLE_ADMIN',
+                'User' => 'ROLE_USER')))
             ->add('Save', SubmitType::class,array("attr"=>array("class"=>"btn btn-primary btn-block")))
         ;
-    }
-    
-    /**
+    }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

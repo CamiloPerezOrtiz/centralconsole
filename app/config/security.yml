@@ -15,6 +15,9 @@ security:
             entity:
                 class: PrincipalBundle:Administrator # El nombre de la entidad sobre la cual se va a trabajar 
                 property: email # el campo sobre el cual se va trabajar 
+            entity:
+                class: PrincipalBundle:Users # El nombre de la entidad sobre la cual se va a trabajar 
+                property: email # el campo sobre el cual se va trabajar 
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
