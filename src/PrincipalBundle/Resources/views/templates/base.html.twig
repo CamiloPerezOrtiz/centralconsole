@@ -41,19 +41,32 @@
                             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Administrators and user">
                                 <a class="nav-link" href="{{path('listAdministrator')}}">
                                     <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                    <span class="nav-link-text">Super user</span>
+                                    <span class="nav-link-text">
+                                        {# Se evalua que si el rol es Administrador o super administrador #}
+                                        {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                            Super user
+                                        {% endif %}
+                                        {% if app.user.role == 'ROLE_ADMIN' %}
+                                            Administrator
+                                        {% endif %}
+                                        {% if app.user.role == 'ROLE_USER' %}
+                                            User
+                                        {% endif %}
+                                    </span>
                                 </a>
                             </li>
                             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Groups">
                                 <a class="nav-link" href="{{path('txtIp')}}">
                                     <i class="fa fa-users" aria-hidden="true"></i>
-                                    <span class="nav-link-text">Groups</span>
-                                </a>
-                            </li>
-                            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Preview">
-                                <a class="nav-link" href="tables.html">
-                                    <i class="fa fa-fw fa-table"></i>
-                                    <span class="nav-link-text">Preview</span>
+                                    <span class="nav-link-text">
+                                        {# Se evalua que si el rol es Administrador o super administrador #}
+                                        {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                            All groups
+                                        {% endif %}
+                                        {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_USER' %}
+                                            Group
+                                        {% endif %}
+                                    </span>
                                 </a>
                             </li>
                         </ul>
@@ -65,8 +78,25 @@
                             </li>
                         </ul>
                         <ul class="navbar-nav ml-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="modal" data-target="#"> 
+                            <li class="nav-item text-white">
+                                <a class="nav-link text-white" data-toggle="modal" data-target="#">
+                                    {# Se evalua que si el rol es Administrador o super administrador #}
+                                    {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                        Super user:
+                                    {% endif %}
+                                    {% if app.user.role == 'ROLE_ADMIN' %}
+                                        Administrator:
+                                    {% endif %}
+                                    {% if app.user.role == 'ROLE_USER' %}
+                                        User:
+                                    {% endif %} 
+                                    {% if app.user != null %}
+                                        {{ app.user.name }}
+                                    {% else %}
+                                        <script type="text/javascript">
+                                            location.href ="{{path('login')}}";
+                                        </script>
+                                    {% endif %} 
                                 </a>
                             </li>
                             <li class="nav-item">

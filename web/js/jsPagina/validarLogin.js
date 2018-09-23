@@ -9,7 +9,7 @@ function validarLogin()
 		alert("All fields are required.");
 		return false;
 	}
-	else if(username.length>25)
+	else if(username.length>35)
 	{
 		alert("The name can not be longer than 15 characters.");
 		return false;

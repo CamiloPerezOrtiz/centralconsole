@@ -1,7 +1,7 @@
 {# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
 {% if app.user != null %}
     {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
-    {% if app.user.role == "ROLE_SUPERUSER" %}
+    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
         {% include '@Principal/templates/base.html.twig' %}
         {% block body %}
             <div class="content-wrapper">
@@ -11,14 +11,39 @@
                             <a href="{{path('dashboard')}}">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{path('listAdministrator')}}">List administrators</a>
+                            <a href="{{path('listAdministrator')}}">
+                                {# Se evalua que si el rol es Administrador o super administrador #}
+                                {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                    List super user - administrator - user
+                                {% endif %}
+                                {% if app.user.role == 'ROLE_ADMIN' %}
+                                    List Administrator - user
+                                {% endif %}
+                                {% if app.user.role == 'ROLE_USER' %}
+                                    List User
+                                {% endif %}
+                            </a>
                         </li>
-                        <li class="breadcrumb-item active">Register administrator</li>
+                        <li class="breadcrumb-item active">
+                            {# Se evalua que si el rol es Administrador o super administrador #}
+                            {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                Update super user - administrator - user
+                            {% endif %}
+                            {% if app.user.role == 'ROLE_ADMIN' %}
+                                Update Administrator - user
+                            {% endif %}
+                        </li>
                     </ol>
                     <div class="card mb-3">
                         <div class="card-header">
                             <i class="fa fa-table"></i>
-                            Register a new administrator
+                            {# Se evalua que si el rol es Administrador o super administrador #}
+                            {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                Update super user - administrator - user
+                            {% endif %}
+                            {% if app.user.role == 'ROLE_ADMIN' %}
+                                Update Administrator - user
+                            {% endif %}
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -26,15 +51,15 @@
                                     <div class="container">
                                         <div class="col-md-11">
                                             {% for msg in app.session.flashbag().get('estatus') %}
-                                                <div class="alert alert-danger" aria-label="Close">
+                                                <div class="alert alert-info" aria-label="Close">
                                                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                    <strong>Danger!</strong> {{ msg }}
+                                                    <strong>Info!</strong> {{ msg }}
                                                 </div>
                                             {% endfor %}
                                         </div>
                                     </div>
                                     <div class="card card-register mx-auto mt-4">
-                                        <div class="card-header">Register an Account</div>
+                                        <div class="card-header bg-dark text-white">Update an Account</div>
                                         <div  class="card-body">
                                             {{ form_start(form, {'attr': {'onsubmit':'return validarRegistroAdministrador();'} } ) }}
                                                 <div class="form-group">

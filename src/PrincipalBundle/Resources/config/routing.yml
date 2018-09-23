@@ -81,26 +81,15 @@ deleteAdministrator:
     path:     /deleteAdministrator/{id}
     defaults: { _controller: PrincipalBundle:Administrator:deleteAdministrator }
 
-###################################################
-#  Area del usuario                               #
-###################################################
+#Registro de un nuevo administrador controlador: AdministratorController funcion registerAdministrator#
+registerUserAdministrator:
+    path:     /registerUserAdministrator/{id} 
+    defaults: { _controller: PrincipalBundle:Administrator:registerUserAdministrator }
 
-#Registro de un nuevo usuario controlador: UserController funcion registerUser#
+#Registro de un nuevo administrador controlador: AdministratorController funcion registerAdministrator#
 registerUser:
-    path:     /registerUser/{id}
-    defaults: { _controller: PrincipalBundle:Users:registerUser }
+    path:     /registerUser/{id} 
+    defaults: { _controller: PrincipalBundle:Administrator:registerUser }
 
-#Muestra la lista de los usuarios controlador UsuarioController funcion listUser#
-listUser:
-    path:     /listUser
-    defaults: { _controller: PrincipalBundle:Users:listUser }
 
-#Elimina el administrador seleccionado controlador AdministratorController funcion editUser#
-editUser:
-    path:     /editUser/{id}
-    defaults: { _controller: PrincipalBundle:Users:editUser }
 
-#Edita el Administrator el cual fue seleccionado cotrolador AdministratorController funcion deleteUser#
-deleteUser:
-    path:     /deleteUser/{id}
-    defaults: { _controller: PrincipalBundle:Users:deleteUser }
