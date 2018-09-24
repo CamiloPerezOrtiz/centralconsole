@@ -1,0 +1,76 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
+    {% if app.user.role == "ROLE_USER" %}
+        <script type="text/javascript">
+            location.href ="{{path('listTarget')}}";
+        </script>
+    {% endif %}
+    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+        {% include '@Principal/templates/base.html.twig' %}
+        {% block body %}
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{path('dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">Groups list</li>
+                    </ol>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>
+                            Groups
+                        </div>
+                        <div class="card-body">
+                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                <a href="{{path ('listTarget') }}">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#">
+                                        View list target <i class="fa fa-fw fa-list"></i>
+                                    </button>
+                                </a>
+                                <br><br>
+                            {% endif %}
+                            {% if app.user.role == "ROLE_SUPERUSER" %}
+                                <h1 class="text-primary"><small>Choose a group to register a new target</small></h1>
+                                <br>
+                            {% endif %}
+                            {% if app.user.role == "ROLE_ADMIN" %}
+                                <h1 class="text-primary"><small>Register a new target in this group</small></h1>
+                                <br>
+                            {% endif %}
+                            <div class="row">
+                                {% for listaGrupo in grupo %}
+                                    <div class="col-xl-3 col-sm-6 mb-3">
+                                        <div class="card text-white bg-info o-hidden h-100">
+                                            <div class="card-body">
+                                                <div class="card-body-icon">
+                                                    <i class="fa fa-fw fa-list"></i>
+                                                </div>
+                                                <div class="mr-5">{{ listaGrupo.cliente }}</div>
+                                            </div>
+                                            <a class="card-footer text-white clearfix small z-1" href="{{path('registerTarget',{id:listaGrupo.cliente})}}">
+                                                <span class="float-left">Register a new target in this group</span>
+                                                <span class="float-right">
+                                                    <i class="fa fa-angle-right"></i>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% else %}
+        <script type="text/javascript">
+            location.href ="{{path('login')}}";
+        </script>
+    {% endif %}
+{% else %}
+    <script type="text/javascript">
+        location.href ="{{path('login')}}";
+    </script>
+{% endif %}

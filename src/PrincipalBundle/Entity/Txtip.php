@@ -42,6 +42,11 @@ class Txtip
      */
     private $cliente;
 
+    function __toString()
+    {
+        return $this->cliente;
+    }
+
 
     /**
      * Get id

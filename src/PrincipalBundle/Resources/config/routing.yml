@@ -91,5 +91,42 @@ registerUser:
     path:     /registerUser/{id} 
     defaults: { _controller: PrincipalBundle:Administrator:registerUser }
 
+######################################################
+#  Area target categories                            #
+######################################################
 
+#Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
+listTarget:
+    path:     /listTarget
+    defaults: { _controller: PrincipalBundle:Target:listTarget }
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+listGroupTarget:
+    path:     /listGroupTarget
+    defaults: { _controller: PrincipalBundle:Target:listGroupTarget }
+
+#Elimina el target categories seleccionado controlador: TargetcategoriesController funcion eliminarTargetcategories#
+deleteTarget:
+    path:     /deleteTarget/{id}
+    defaults: { _controller: PrincipalBundle:Target:deleteTarget }
+
+#Edita el usuario el cual fue seleccionado controlador: TargetcategoriesController funcion editarTargetcategories#
+editTarget:
+    path:     /editTarget/{id}
+    defaults: { _controller: PrincipalBundle:Target:editTarget }
+
+#Registro de un nuevo target categories controlador:TargetcategoriesController funcion registroTargetcategoriesr#
+registerTarget:
+    path:     /registerTarget/{id}
+    defaults: { _controller: PrincipalBundle:Target:registerTarget }
+
+#Crear XML target categories controlador:TargetcategoriesController funcion crearXMLTargetcategories #
+crearXMLTargetcategories:
+    path:     /crearXMLTargetcategories 
+    defaults: { _controller: PrincipalBundle:Targetcategories:crearXMLTargetcategories }
+
+#Crear XML target categories controlador:TargetcategoriesController funcion crearXMLTargetcategories #
+aplicarXMLTargetcategories:
+    path:     /aplicarXMLTargetcategories 
+    defaults: { _controller: PrincipalBundle:Targetcategories:aplicarXMLTargetcategories }
 
