@@ -234,7 +234,8 @@ class AdministratorController extends Controller
 	        {
 	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM administrator where role = 'ROLE_ADMIN' or role = 'ROLE_USER' AND namegroup ='$grupo'";
+				$query = "SELECT * FROM administrator where role = 'ROLE_ADMIN' AND namegroup ='$grupo' UNION SELECT * FROM administrator where role = 'ROLE_USER' and namegroup ='$grupo'";
+				//$query = "SELECT * FROM administrator where namegroup = '$grupo' and role = 'ROLE_ADMIN' OR role = 'ROLE_USER'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);

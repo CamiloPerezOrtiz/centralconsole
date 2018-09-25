@@ -4,16 +4,17 @@ namespace PrincipalBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-// Se importa la entidad Targetcategories de la carpeta Entidad
-use PrincipalBundle\Entity\Target;
-// Se importa el formulario TargetType de la carpeta Form
-use PrincipalBundle\Form\TargetType;
 // Se importa el componente request de Symfony esto permite hacer peticiones
 use Symfony\Component\HttpFoundation\Request;
+// Se importa la entidad Aclgroups de la carpeta Entidad
+use PrincipalBundle\Entity\Acl;
+// Se importa el formulario AclgroupsType de la carpeta Form
+use PrincipalBundle\Form\AclType;
 // se importa el componete de session de Symfony esto permite declarar sessiones
 use Symfony\Component\HttpFoundation\Session\Session;
 
-class TargetController extends Controller
+
+class AclController extends Controller
 {
 	// Se declara la variable session 
 	private $session;
@@ -24,7 +25,7 @@ class TargetController extends Controller
 		$this->session = new Session();
 	}
 
-	public function listGroupTargetAction()
+	public function listGroupAclAction()
 	{
 		$authenticationUtils = $this->get("security.authentication_utils");
 		$error = $authenticationUtils->getLastAuthenticationError();
@@ -45,7 +46,7 @@ class TargetController extends Controller
 				$paramsSelect =array();
 				$stmtSelect->execute($paramsSelect);
 				$listaGrupo=$stmtSelect->fetchAll();
-				return $this->render("@Principal/target/listGroup.html.twig", array("grupo"=>$listaGrupo));
+				return $this->render("@Principal/acl/listGroup.html.twig", array("grupo"=>$listaGrupo));
 	        }
 	        if($role == "ROLE_ADMIN")
 	        {
@@ -56,7 +57,7 @@ class TargetController extends Controller
 				$paramsSelect =array();
 				$stmtSelect->execute($paramsSelect);
 				$listaGrupo=$stmtSelect->fetchAll();
-				return $this->render("@Principal/target/listGroup.html.twig", array("grupo"=>$listaGrupo));
+				return $this->render("@Principal/acl/listGroup.html.twig", array("grupo"=>$listaGrupo));
 	        }
 	        if($role == "ROLE_USER")
 	        {
@@ -67,16 +68,68 @@ class TargetController extends Controller
 				$paramsSelect =array();
 				$stmtSelect->execute($paramsSelect);
 				$listaGrupo=$stmtSelect->fetchAll();
-				return $this->render("@Principal/target/listGroup.html.twig", array("grupo"=>$listaGrupo));
+				return $this->render("@Principal/acl/listGroup.html.twig", array("grupo"=>$listaGrupo));
 	        }
 	    }
 		return $this->redirectToRoute("dashboard");
 	}
 
-	// Funcion para listar las Target categories del sistema 
-	public function listTargetAction()
+	// Funcion para el registro de un nuevo acl group 
+	public function registerAclAction(Request $request, $id)
     {
-		$authenticationUtils = $this->get("security.authentication_utils");
+    	// Se declara una nuevo acl group
+        $video = new Acl();
+        // Se manda a llamar el formulario
+        $form=$this->createForm(AclType::class,$video);
+        // Se obtiene la informacion del formulario 
+		$form->handleRequest($request);
+		// Se valida si el boton de enviar fue presionado y si es valido 
+		if($form->isSubmitted() && $form->isValid())
+		{
+			// Se manada llamr al asistende de base de datos
+			$em = $this->getDoctrine()->getEntityManager();
+			// Se realiza una consulta previa para saber si el nombre que se esta intentando registrar ya exite
+			$query = $em->createQuery("SELECT u FROM PrincipalBundle:Acl u WHERE u.name = :name")->setParameter("name",$form->get("name")->getData());
+			// Se guarda en una variable el resultado de la consulta
+			$resultado = $query->getResult();
+			// Si el nombre no existe en la base de datos se procede a guardar la demas informacion del formulario
+			if(count($resultado) == 0)
+			{
+				// Se guarda la informacion en la base de datos 
+				$video->setNameGroup($id);
+				$em->persist($video);
+				$flush=$em->flush();
+				// Se validad si se inserto los datos correctamente
+				if($flush == null)
+				{
+					// Se notifica al actor que su registro fue correcto
+					$estatus="Acl group successfully registered";
+					$this->session->getFlashBag()->add("estatus",$estatus);
+					// Se redirecciona al listado
+					return $this->redirectToRoute("listAcl");
+				}
+				// De lo contrario se notifica al actor
+				else
+				{
+					$estatus="Problems with the server try later.";
+					$this->session->getFlashBag()->add("estatus",$estatus);
+				}
+			}
+			// De lo contrario regresa al formulario para corregir el error
+			else
+			{
+				$estatus="The name of the acl group you are trying to register already exists try again.";
+				$this->session->getFlashBag()->add("estatus",$estatus);
+			}
+		}
+		// Se renderiza el formulario para que el actor lo llene los campos solicitados
+		return $this->render("@Principal/acl/registerAcl.html.twig",array("form"=>$form->createView()));
+    }
+
+    // Funcion para listar las acl groups del sistema 
+    public function listAclAction()
+    {
+    	$authenticationUtils = $this->get("security.authentication_utils");
 		$error = $authenticationUtils->getLastAuthenticationError();
 		$lastUsername = $authenticationUtils->getLastUsername();
 		$u = $this->getUser();
@@ -90,101 +143,49 @@ class TargetController extends Controller
 	        if($role == "ROLE_SUPERUSER")
 	        {
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM target";
+				$query = "SELECT * FROM acl";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
-				$target=$stmt->fetchAll();
-				return $this->render("@Principal/target/listTarget.html.twig", array("targets"=>$target));
+				$acl=$stmt->fetchAll();
+				return $this->render("@Principal/acl/listAcl.html.twig", array("acls"=>$acl));
 	        }
 	        if($role == "ROLE_ADMIN")
 	        {
 	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM target where namegroup ='$grupo'";
+				$query = "SELECT * FROM acl where namegroup ='$grupo'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
-				$target=$stmt->fetchAll();
-				return $this->render("@Principal/target/listTarget.html.twig", array("targets"=>$target));
+				$acl=$stmt->fetchAll();
+				return $this->render("@Principal/acl/listAcl.html.twig", array("acls"=>$acl));
 	        }
 	        if($role == "ROLE_USER")
 	        {
 	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM target where namegroup ='$grupo'";
+				$query = "SELECT * FROM acl where namegroup ='$grupo'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
-				$target=$stmt->fetchAll();
-				return $this->render("@Principal/target/listTarget.html.twig", array("targets"=>$target));
+				$acl=$stmt->fetchAll();
+				return $this->render("@Principal/acl/listAcl.html.twig", array("acls"=>$acl));
 	        }
 	    }
 		// Regresa un arreglo con la informacion obtendia de la base de datos
 	    return $this->redirectToRoute("dashboard");
     }
 
-	// Funcion para el registro de un nuevo target categorie
-    public function registerTargetAction(Request $request, $id)
-    {
-    	// Se declara una nueva categoria
-        $video = new Target(); 
-        // Se manda a llamar el formulario
-        $form=$this->createForm(TargetType::class,$video);
-        // Se obtiene la informacion del formulario 
-		$form->handleRequest($request);
-		// Se valida si el boton de enviar fue presionado y si es valido 
-		if($form->isSubmitted() && $form->isValid())
-		{
-			// Se manada llamr al asistende de base de datos
-			$em = $this->getDoctrine()->getEntityManager();
-			// Se realiza una consulta previa para saber si el nombre que se esta intentando registrar ya exite
-			$query = $em->createQuery("SELECT u FROM PrincipalBundle:Target u WHERE u.name = :name")->setParameter("name",$form->get("name")->getData());
-			// Se guarda en una variable el resultado de la consulta
-			$resultado = $query->getResult();
-			// Si el nombre no existe en la base de datos se procede a guardar la demas informacion del formulario
-			if(count($resultado) == 0)
-			{
-				// Se guarda la informacion en la base de datos 
-				$video->setNameGroup($id);
-				$em->persist($video);
-				$flush=$em->flush();
-				// Se validad si se inserto los datos correctamente 
-				if($flush == null)
-				{
-					// Se notifica al actor que su registro fue correcto
-					$estatus="Target Categorie successfully registered";
-					$this->session->getFlashBag()->add("estatus",$estatus);
-					// Se redirecciona al listado
-					return $this->redirectToRoute("listTarget");
-				}
-				// De lo contrario se notifica al actor
-				else
-				{
-					$estatus="Problems with the server try later.";
-					$this->session->getFlashBag()->add("estatus",$estatus);
-				}
-			}
-			// De lo contrario regresa al formulario para corregir el error
-			else
-			{
-				$estatus="The name of the target categories you are trying to register already exists try again.";
-				$this->session->getFlashBag()->add("estatus",$estatus);
-			}
-		}
-		// Se renderiza el formulario para que el actor lo llene los campos solicitados
-		return $this->render("@Principal/target/registerTarget.html.twig",array("form"=>$form->createView()));
-    }
-
-    // Funcion para editar a un target categories  
-	public function editTargetAction(Request $request,$id)
+    // Funcion para editar a un acl groups
+    public function editAclAction(Request $request,$id)
 	{
 		// Variables declaradas para mandar a llamar al asistente de base de datos doctrine
 		$em = $this->getDoctrine()->getEntityManager();
-		// Se obtiene el repositorio de Targetcategories solo del dato del id el cual fue solicitado en el formulario 
-		$formato = $em->getRepository("PrincipalBundle:Target")->find($id);
+		// Se obtiene el repositorio de Aclgroups solo del dato del id el cual fue solicitado en el formulario 
+		$formato = $em->getRepository("PrincipalBundle:Acl")->find($id);
 		// Se manda a llamar el formulario
-		$form = $this->createForm(TargetType::class,$formato);
+		$form = $this->createForm(AclType::class,$formato);
 		// Se obtiene la informacion del formulario 
 		$form->handleRequest($request);
 		if($form->isSubmitted() && $form->isValid())
@@ -192,24 +193,30 @@ class TargetController extends Controller
 			// Se manda a llamar al asistente de base de datos doctrine 
 			$em = $this->getDoctrine()->getEntityManager();
 			//Se obtiene los datos los cuales se van a editar
+			$formato->setDisabled($form->get("disabled")->getData());
 			$formato->setName($form->get("name")->getData());
-			$formato->setDomainList($form->get("domainList")->getData());
-			$formato->setUrlList($form->get("urlList")->getData());
-			$formato->setRegularExpression($form->get("regularExpression")->getData());
+			$formato->setClient($form->get("client")->getData());
+			$formato->setTime($form->get("time")->getData());
+			$formato->setTargetRule($form->get("targetRule")->getData());
+			$formato->setAllowIp($form->get("allowIp")->getData());
 			$formato->setRedirectMode($form->get("redirectMode")->getData());
 			$formato->setRedirect($form->get("redirect")->getData());
+			$formato->setSafeSearch($form->get("safeSearch")->getData());
+			$formato->setRewrite($form->get("rewrite")->getData());
+			$formato->setRewriteTime($form->get("rewriteTime")->getData());
 			$formato->setDescription($form->get("description")->getData());
-			$formato->setLog($form->get("log")->getData());// Se guarda la informacion en la base de datos 
+			$formato->setLog($form->get("log")->getData());
+			// Se guarda la informacion en la base de datos 
 			$em->persist($formato);
 			$flush=$em->flush();
 			// Se validad si se inserto los datos correctamente  
 			if($flush == null)
 			{
 				// Se notifica al actor que su actualizacion fue correcto
-				$estatus="Target categorie successfully updated";
+				$estatus="Alc group successfully updated";
 				$this->session->getFlashBag()->add("estatus",$estatus);
 				// Se redirecciona al listado
-				return $this->redirectToRoute("listTarget");
+				return $this->redirectToRoute("listAcl");
 			}
 			// De lo contrario se notifica al actor
 			else
@@ -219,16 +226,16 @@ class TargetController extends Controller
 			}
 		}
 		// Se renderiza el formulario para que el actor lo llene los campos solicitados
-		return $this->render("@Principal/target/editTarget.html.twig",array("form"=>$form->createView()));
+		return $this->render("@Principal/acl/editAcl.html.twig",array("form"=>$form->createView()));
 	}
 
 	// Funcion para eliminar un target categori 
-	public function deleteTargetAction($id)
+	public function deleteAclAction($id)
 	{
 		// Variables declaradas para mandar a llamar al asistente de base de datos doctrine
 		$em = $this->getDoctrine()->getEntityManager();
-		// Se obtiene el repositorio de Targetcategories solo del dato del id el cual fue solicitado en el formulario
-		$formato = $em->getRepository("PrincipalBundle:Target")->find($id);
+		// Se obtiene el repositorio de Aclgroup solo del dato del id el cual fue solicitado en el formulario
+		$formato = $em->getRepository("PrincipalBundle:Acl")->find($id);
 		// Se elinana los datos solicitados en la base de datos 
 		$em->remove($formato);
 		$flush=$em->flush();
@@ -246,11 +253,11 @@ class TargetController extends Controller
 			$this->session->getFlashBag()->add("estatus",$estatus);
 		}
 		// Se redirecciona al listado
-		return $this->redirectToRoute("listTarget");
+		return $this->redirectToRoute("listAcl");
 	}
 
 	// Funcion para crear XML de target categories
-	public function createXMLTargetAction()
+	public function createXMLAclAction()
 	{
 		$authenticationUtils = $this->get("security.authentication_utils");
 		$error = $authenticationUtils->getLastAuthenticationError();
@@ -266,9 +273,11 @@ class TargetController extends Controller
 	        if($role == "ROLE_SUPERUSER")
 	        {
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT t.id, t.name, t.domainlist, t.urllist, t.regularexpression, t.redirectmode, t.redirect, t.description, l.description AS log
-							FROM target AS t, log AS l
-								WHERE t.log_id = l.id";
+				$query = "SELECT ac.disabled, ac.name, ac.client, ac.time, ac.targetrule,
+								ac.allowip, ac.redirectmode, ac.redirect, ac.safesearch,
+								ac.rewrite, ac.rewritetime, ac.description, l.description AS log
+							FROM acl AS ac, log AS l 
+							WHERE ac.acl_id = l.id";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
@@ -277,23 +286,28 @@ class TargetController extends Controller
 				// Se crea un nuevo documento XML con la version 
 			    $contenido = "<?xml version='1.0'?>\n";
 			    // Se crear el nombre de la etiqueta
-				$contenido .= "<squidguarddest>\n";
+				$contenido .= "<squidguardacl>\n";
 				// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 				foreach ($formato as $formatos) 
 				{
 					$contenido .= "\t\t\t<config>\n";
+				    $contenido .= "\t\t\t\t<disabled>" . $formatos['disabled'] . "</disabled>\n";
 				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
-				    $contenido .= "\t\t\t\t<domains>" . $formatos['domainlist'] . "</domains>\n";
-				    $contenido .= "\t\t\t\t<urls>" . $formatos['urllist'] . "</urls>\n";
-				    $contenido .= "\t\t\t\t<expressions>" . $formatos['regularexpression'] . "</expressions>\n";
+				    $contenido .= "\t\t\t\t<source>" . $formatos['client'] . "</source>\n";
+				    $contenido .= "\t\t\t\t<time>" . $formatos['time'] . "</time>\n";
+				    $contenido .= "\t\t\t\t<dest>" . $formatos['targetrule'] . "</dest>\n";
+				    $contenido .= "\t\t\t\t<notallowingip>" . $formatos['allowip'] . "</notallowingip>\n";
 				    $contenido .= "\t\t\t\t<redirect_mode>" . $formatos['redirectmode'] . "</redirect_mode>\n";
 				    $contenido .= "\t\t\t\t<redirect>" . $formatos['redirect'] . "</redirect>\n";
+				    $contenido .= "\t\t\t\t<safesearch>" . $formatos['safesearch'] . "</safesearch>\n";
+				    $contenido .= "\t\t\t\t<rewrite>" . $formatos['rewrite'] . "</rewrite>\n";
+				    $contenido .= "\t\t\t\t<overrewrite>" . $formatos['rewritetime'] . "</overrewrite>\n";
 				    $contenido .= "\t\t\t\t<description>" . $formatos['description'] . "</description>\n";
 				    $contenido .= "\t\t\t\t<enablelog>" . $formatos['log'] . "</enablelog>\n";
 				    $contenido .= "\t\t\t</config>\n";
 				}
 				// Se termina el nombre de la etiqueta 
-				$contenido .= "</squidguarddest>";
+				$contenido .= "</squidguardacl>";
 				// Se crea o actualiza el archivo 
 				$archivo = fopen('conf.xml', 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
@@ -305,24 +319,25 @@ class TargetController extends Controller
 			    	// Se notifica al actor si hubo algun problema
 			    	$estatus="Problems with the server try later.";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listTarget");
+			    	return $this->redirectToRoute("listAcl");
 			    }
 			    // Se notifica al actor que la configuracion se guardo
 			    else
 			    {
 			    	$estatus="The configuration has been saved";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listTarget");
+			    	return $this->redirectToRoute("listAcl");
 			    }
 	        }
 	        if($role == "ROLE_ADMIN")
 	        {
 	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT t.id, t.name, t.domainlist, t.urllist, t.regularexpression, t.redirectmode, t.redirect, t.description, l.description AS log
-							FROM target AS t, log AS l
-								WHERE t.log_id = l.id
-									AND t.namegroup = '$grupo'";
+				$query = "SELECT ac.disabled, ac.name, ac.client, ac.time, ac.targetrule, ac.allowip, ac.redirectmode, ac.redirect, ac.safesearch,
+								ac.rewrite, ac.rewritetime, ac.description, l.description AS log
+							FROM acl AS ac, log AS l 
+							WHERE ac.acl_id = l.id
+									AND ac.namegroup = '$grupo'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
@@ -331,23 +346,28 @@ class TargetController extends Controller
 				// Se crea un nuevo documento XML con la version 
 			    $contenido = "<?xml version='1.0'?>\n";
 			    // Se crear el nombre de la etiqueta
-				$contenido .= "<squidguarddest>\n";
+				$contenido .= "<squidguardacl>\n";
 				// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 				foreach ($formato as $formatos) 
 				{
 					$contenido .= "\t\t\t<config>\n";
+				    $contenido .= "\t\t\t\t<disabled>" . $formatos['disabled'] . "</disabled>\n";
 				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
-				    $contenido .= "\t\t\t\t<domains>" . $formatos['domainlist'] . "</domains>\n";
-				    $contenido .= "\t\t\t\t<urls>" . $formatos['urllist'] . "</urls>\n";
-				    $contenido .= "\t\t\t\t<expressions>" . $formatos['regularexpression'] . "</expressions>\n";
+				    $contenido .= "\t\t\t\t<source>" . $formatos['client'] . "</source>\n";
+				    $contenido .= "\t\t\t\t<time>" . $formatos['time'] . "</time>\n";
+				    $contenido .= "\t\t\t\t<dest>" . $formatos['targetrule'] . "</dest>\n";
+				    $contenido .= "\t\t\t\t<notallowingip>" . $formatos['allowip'] . "</notallowingip>\n";
 				    $contenido .= "\t\t\t\t<redirect_mode>" . $formatos['redirectmode'] . "</redirect_mode>\n";
 				    $contenido .= "\t\t\t\t<redirect>" . $formatos['redirect'] . "</redirect>\n";
+				    $contenido .= "\t\t\t\t<safesearch>" . $formatos['safesearch'] . "</safesearch>\n";
+				    $contenido .= "\t\t\t\t<rewrite>" . $formatos['rewrite'] . "</rewrite>\n";
+				    $contenido .= "\t\t\t\t<overrewrite>" . $formatos['rewritetime'] . "</overrewrite>\n";
 				    $contenido .= "\t\t\t\t<description>" . $formatos['description'] . "</description>\n";
 				    $contenido .= "\t\t\t\t<enablelog>" . $formatos['log'] . "</enablelog>\n";
 				    $contenido .= "\t\t\t</config>\n";
 				}
 				// Se termina el nombre de la etiqueta 
-				$contenido .= "</squidguarddest>";
+				$contenido .= "</squidguardacl>";
 				// Se crea o actualiza el archivo 
 				$archivo = fopen('conf.xml', 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
@@ -359,36 +379,36 @@ class TargetController extends Controller
 			    	// Se notifica al actor si hubo algun problema
 			    	$estatus="Problems with the server try later.";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listTarget");
+			    	return $this->redirectToRoute("listAcl");
 			    }
 			    // Se notifica al actor que la configuracion se guardo
 			    else
 			    {
 			    	$estatus="The configuration has been saved";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listTarget");
+			    	return $this->redirectToRoute("listAcl");
 			    }
 	        }
 	    }
 	}
 
 	// funcion para correr el script aplicar cambios en target categories
-	public function aplicateXMLTargetAction()
+	public function aplicateXMLAclAction()
 	{
 		// Se evalua si el scrip fue ejecutado correactmante con la funcion exec se puede ejecuat archivos de py
-		if(exec('python targetcategories.py'))
+		if(exec('python aclgroups.py'))
 	    {
 	    	// Se notifica al actor si hubo algun problema
 	    	$estatus="Problems with the server try later.";
 	    	$this->session->getFlashBag()->add("estatus",$estatus);
-	    	return $this->redirectToRoute("listaTargetcategories");
+	    	return $this->redirectToRoute("listAcl");
 	    }
 	    // Se notifica al actor que la configuracion se guardo
 	    else
 	    {
 	    	$estatus="The configuration has been saved.";
 	    	$this->session->getFlashBag()->add("estatus",$estatus);
-	    	return $this->redirectToRoute("listTarget");
+	    	return $this->redirectToRoute("listAcl");
 	    }
 	}
 }

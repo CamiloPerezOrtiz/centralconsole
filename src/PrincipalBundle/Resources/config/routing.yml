@@ -121,12 +121,92 @@ registerTarget:
     defaults: { _controller: PrincipalBundle:Target:registerTarget }
 
 #Crear XML target categories controlador:TargetcategoriesController funcion crearXMLTargetcategories #
-crearXMLTargetcategories:
-    path:     /crearXMLTargetcategories 
-    defaults: { _controller: PrincipalBundle:Targetcategories:crearXMLTargetcategories }
+createXMLTarget:
+    path:     /createXMLTarget
+    defaults: { _controller: PrincipalBundle:Target:createXMLTarget}
 
 #Crear XML target categories controlador:TargetcategoriesController funcion crearXMLTargetcategories #
-aplicarXMLTargetcategories:
-    path:     /aplicarXMLTargetcategories 
-    defaults: { _controller: PrincipalBundle:Targetcategories:aplicarXMLTargetcategories }
+aplicateXMLTarget:
+    path:     /aplicateXMLTarget 
+    defaults: { _controller: PrincipalBundle:Target:aplicateXMLTarget }
 
+###################################################
+#  Area Acl groups                                #
+###################################################
+
+#Registro de un nuevo acl groups controlador:AclgroupsController funcion registroAclgroups#
+registerAcl:
+    path:     /registerAcl/{id}
+    defaults: { _controller: PrincipalBundle:Acl:registerAcl }
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+listGroupAcl:
+    path:     /listGroupAcl
+    defaults: { _controller: PrincipalBundle:Acl:listGroupAcl }
+
+#Listado de las acl groups controlador: AclgroupsController funcion: listaAclgroupsAction #  
+listAcl:
+    path:     /listAcl
+    defaults: { _controller: PrincipalBundle:Acl:listAcl }
+
+deleteAcl:
+    path:     /deleteAcl/{id}
+    defaults: { _controller: PrincipalBundle:Acl:deleteAcl }
+
+#Edita el acl el cual fue seleccionado controlador: AclgroupsController funcion editarAclgroups#
+editAcl:
+    path:     /editAcl/{id}
+    defaults: { _controller: PrincipalBundle:Acl:editAcl }
+
+#Crear XML acl groups controlador:AclgroupsController funcion crearXMLAclgroups #
+createXMLAcl:
+    path:     /createXMLAcl 
+    defaults: { _controller: PrincipalBundle:Acl:createXMLAcl }
+
+#Crear XML acl groups controlador:AclgroupsController funcion crearXMLAclgroups #
+aplicateXMLAcl:
+    path:     /aplicateXMLAcl 
+    defaults: { _controller: PrincipalBundle:Acl:aplicateXMLAcl }
+
+###############################################
+#  Area Aliases                               #
+############################################### 
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+listGroupAliases:
+    path:     /listGroupAliases
+    defaults: { _controller: PrincipalBundle:Aliases:listGroupAliases }
+
+#Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
+listAliases:
+    path:     /listAliases
+    defaults: { _controller: PrincipalBundle:Aliases:listAliases }
+
+listAliasesInformation:
+    path:     /listAliasesInformation/{id}
+    defaults: { _controller: PrincipalBundle:Aliases:listAliasesInformation }
+
+#Elimina el target categories seleccionado controlador: AliasesController funcion eliminarAliases#
+deleteAliases:
+    path:     /deleteAliases/{id}
+    defaults: { _controller: PrincipalBundle:Aliases:deleteAliases }
+
+#Edita el usuario el cual fue seleccionado controlador: AliasesController funcion editarAliases#
+editAliases:
+    path:     /editAliases/{id}
+    defaults: { _controller: PrincipalBundle:Aliases:editAliases }
+
+#Registro de un nuevo target categories controlador:AliasesController funcion registroAliasesr#
+registerAliases:
+    path:     /registerAliases/{id} 
+    defaults: { _controller: PrincipalBundle:Aliases:registerAliases }
+
+#Crear XML acl groups controlador:AliasesController funcion crearXMLAliases #
+createXMLAliases:
+    path:     /createXMLAliases 
+    defaults: { _controller: PrincipalBundle:Aliases:createXMLAliases }
+
+#Crear XML acl groups controlador:AliasesController funcion crearXMLAliases #
+aplicateXMLAliases:
+    path:     /aplicateXMLAliases 
+    defaults: { _controller: PrincipalBundle:Aliases:aplicateXMLAliases }

@@ -33,6 +33,11 @@ class Log
      */
     private $targetLog;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Acl", mappedBy="log", cascade={"persist"})
+     */
+    private $aclLog;
+
 
     /**
      * Get id
@@ -107,5 +112,39 @@ class Log
     public function getTargetLog()
     {
         return $this->targetLog;
+    }
+
+    /**
+     * Add aclLog
+     *
+     * @param \PrincipalBundle\Entity\Acl $aclLog
+     *
+     * @return Log
+     */
+    public function addAclLog(\PrincipalBundle\Entity\Acl $aclLog)
+    {
+        $this->aclLog[] = $aclLog;
+
+        return $this;
+    }
+
+    /**
+     * Remove aclLog
+     *
+     * @param \PrincipalBundle\Entity\Acl $aclLog
+     */
+    public function removeAclLog(\PrincipalBundle\Entity\Acl $aclLog)
+    {
+        $this->aclLog->removeElement($aclLog);
+    }
+
+    /**
+     * Get aclLog
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAclLog()
+    {
+        return $this->aclLog;
     }
 }

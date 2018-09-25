@@ -1,0 +1,102 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se hace una evaluacion para saber que plantillas cargar, dependiendo del caso del actor que ingrese al sistema #}
+    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/plantillas/base.html.twig' %}
+    {% endif %}
+    {% if app.user.role == "ROLE_USER" %}
+        {% include '@Principal/plantillas/baseUsuario.html.twig' %}
+    {% endif %}
+    {% block body %}        	
+        <div class="content-wrapper">
+        	<div class="container-fluid">
+          		<ol class="breadcrumb">
+            		<li class="breadcrumb-item">
+              			<a href="{{path('dashboardAdministrador')}}">Dashboard</a>
+            		</li>
+                    <li class="breadcrumb-item">
+                        <a href="{{path('listaAliases')}}">List aliases</a>
+                    </li>
+            		<li class="breadcrumb-item active">
+                        Aliases
+                    </li>
+          		</ol>
+          		<div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fa fa-table"></i>
+                        Table aliases
+                    </div>
+                    <div class="card-body">
+                        <a href="{{path ('registroAliases') }}">
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#">
+                                Add aliases <i class="fa fa-fw fa-list"></i>
+                            </button>
+                        </a>
+                        <br><br>
+                        <div class="table-responsive">
+                            <div class="container">
+                                <div class="col-md-11">
+                                    {# Se crea una clase de alerta para que mantega informado el estatus #}
+                                    {% for msg in app.session.flashbag().get('estatus') %}
+                                        <div class="alert alert-success" aria-label="Close">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Success!</strong> {{ msg }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <table class="table table-hover table-bordered text-center" id="dtBasicExample">
+                                <thead class="bg-dark text-white">
+                                    <tr>  
+                                        <th>Name</th>       
+                                        <th>Ip/Port</th>
+                                        <th>Desccription</th>       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for lista in listas %}
+                                        <tr>
+                                            <td>
+                                                {{ lista.name }}
+                                            </td>
+                                            <td>
+                                                {{ lista.ipport }}
+                                            </td>
+                                            <td>
+                                                {{ lista.descriptionipport }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+          	</div>
+        </div>
+    {% endblock %}
+    {% block javascripts %}
+        <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 4000);
+        </script>
+        <script>
+            $(document).ready(function() {
+                $('#rwd-table').DataTable();
+            } );
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#dtBasicExample').DataTable();
+                $('.dataTables_length').addClass('bs-select');
+            });
+        </script>
+    {% endblock %}
+{% else %}
+    <script type="text/javascript">
+        location.href ="{{path('login')}}";
+    </script>
+{% endif %}

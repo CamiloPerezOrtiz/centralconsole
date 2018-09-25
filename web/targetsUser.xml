@@ -1,0 +1,10 @@
+			<config>
+				<name>pentestering</name>
+				<domains>pentester.com</domains>
+				<urls>pentester.com/</urls>
+				<expressions>|pentester|</expressions>
+				<redirect_mode>rmod_int_bim</redirect_mode>
+				<redirect>google.com/</redirect>
+				<description><![CDATA[errorlogin]]></description>
+				<enablelog></enablelog>
+			</config>

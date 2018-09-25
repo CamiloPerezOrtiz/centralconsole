@@ -23,9 +23,9 @@ class TargetType extends AbstractType
 
         $builder
             ->add('name',TextType::class,array("label"=>"Name: ","required"=>"required","attr"=>array("class"=>"form-control")))
-            ->add('domainList',TextareaType::class,array("label"=>"Domain list: ","required"=>"required","attr"=>array("class"=>"form-control")))
-            ->add('urlList',TextareaType::class,array("label"=>"URL list: ","required"=>"required","attr"=>array("class"=>"form-control")))
-            ->add('regularExpression',TextareaType::class,array("label"=>"Regular expression: ","required"=>"required","attr"=>array("class"=>"form-control")))
+            ->add('domainList',TextareaType::class,array("label"=>"Domain list: ","required"=>"required","attr"=>array("class"=>"form-control", 'rows' => '7')))
+            ->add('urlList',TextareaType::class,array("label"=>"URL list: ","required"=>"required","attr"=>array("class"=>"form-control", 'rows' => '7')))
+            ->add('regularExpression',TextareaType::class,array("label"=>"Regular expression: ","required"=>"required","attr"=>array("class"=>"form-control", 'rows' => '7')))
             ->add('redirect',TextType::class,array("label"=>"Redirect: ","required"=>"required","attr"=>array("class"=>"form-control")))
             ->add('description',TextType::class,array("label"=>"Description: ","required"=>"required","attr"=>array("class"=>"form-control")))
 

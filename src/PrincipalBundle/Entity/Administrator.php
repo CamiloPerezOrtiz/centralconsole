@@ -197,7 +197,7 @@ class Administrator implements UserInterface
      *
      * @param string $nameGroup
      *
-     * @return Users
+     * @return Administrator
      */
     public function setNameGroup($nameGroup)
     {

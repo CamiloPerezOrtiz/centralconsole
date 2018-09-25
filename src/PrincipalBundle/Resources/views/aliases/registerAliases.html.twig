@@ -1,0 +1,219 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
+    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/base.html.twig' %}
+        {% block body %}
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{path('dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{path('listAliases')}}">List aliases</a>
+                        </li>
+                        <li class="breadcrumb-item active">Aliases</li>
+                    </ol>
+                    <div class="card mb-1">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>
+                            Register a new aliases
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="container">
+                                    <div class="container">
+                                        <div class="col-md-11">
+                                            {% for msg in app.session.flashbag().get('estatus') %}
+                                                <div class="alert alert-danger" aria-label="Close">
+                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                    <strong>Danger!</strong> {{ msg }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="card mx-auto mt-1">
+                                        <div class="card-header bg-dark text-white">General Options</div>
+                                        <div  class="card-body">
+                                            {{ form_start(form) }}
+
+                                                <div class="form-group">   
+                                                    {{ form_label(form.name) }}
+                                                    <footer class="blockquote-footer">
+                                                        The name of the alias may only consist of the characters "a-z, A-Z, 0-9 and _".
+                                                    </footer>
+                                                    {{ form_widget(form.name) }}
+                                                    <span class="text-danger">{{ form_errors(form.name) }}</span>
+                                                </div>
+                                                
+                                                <div class="form-group">   
+                                                    {{ form_label(form.description) }}
+                                                    <footer class="blockquote-footer">
+                                                        A description may be entered here for administrative reference (not parsed).
+                                                    </footer>
+                                                    {{ form_widget(form.description) }}
+                                                    <span class="text-danger">{{ form_errors(form.description) }}</span>
+                                                </div>
+                                                {{ form_row(form.status, {'attr': {'onChange':'mostrar(this.value);'} } ) }}
+                                                <br>
+                                                <div class="card-header bg-dark text-white">Host(s)</div>
+                                                <div  class="card-body">
+                                                    <div id="host" style="display: none;">
+                                                        <label for="exampleInputEmail1">Information</label> 
+                                                        <footer class="blockquote-footer">
+                                                            Enter as many hosts as desired. Hosts must be specified by their IP address or fully qualified domain name (FQDN). 
+                                                        </footer>
+                                                        <footer class="blockquote-footer">
+                                                            FQDN hostnames are periodically re-resolved and updated. If multiple IPs are returned by a DNS query, all are used.
+                                                        </footer>
+                                                    </div>
+                                                    <div id="network" style="display: none;">
+                                                        <label for="exampleInputEmail1">Information</label> 
+                                                        <footer class="blockquote-footer">
+                                                            Networks are specified in CIDR format. Select the CIDR mask that pertains to each entry. /32 specifies a single IPv4 host, /128 
+                                                            specifies a single IPv6 host, /24 specifies 255.255.255.0, /64 specifies a normal IPv6 network, etc.  
+                                                        </footer>
+                                                        <footer class="blockquote-footer">
+                                                            Hostnames (FQDNs) may also be specified, using a /32 mask for IPv4 or /128 for IPv6.
+                                                        </footer>
+                                                    </div>
+                                                    <div id="port" style="display: none;">
+                                                        <label for="exampleInputEmail1">Information</label> 
+                                                        <footer class="blockquote-footer">
+                                                            Enter ports as desired. 
+                                                        </footer>
+                                                    </div>
+                                                    <div id="url" style="display: none;">
+                                                        <label for="exampleInputEmail1">Information</label> 
+                                                        <footer class="blockquote-footer">
+                                                            Enter as many URLs as desired. Use only with small sets of IP addresses (less than 3000). 
+                                                        </footer>
+                                                    </div>
+                                                    <div id="url_ports" style="display: none;">
+                                                        <label for="exampleInputEmail1">Information</label> 
+                                                        <footer class="blockquote-footer">
+                                                            Enter as many URLs as desired. Use only with small sets of Ports (less than 3000). 
+                                                        </footer>
+                                                    </div>
+                                                    <div id="urltable" style="display: none;">
+                                                        <label for="exampleInputEmail1">Information</label> 
+                                                        <footer class="blockquote-footer">
+                                                            Enter a single URL containing a large number of IPs and/or Subnets. The value after the "/" is the update frequency in days. 
+                                                        </footer>
+                                                    </div>
+                                                    <div id="urltable_ports" style="display: none;">
+                                                        <label for="exampleInputEmail1">Information</label> 
+                                                        <footer class="blockquote-footer">
+                                                            Enter a single URL containing a list of Port numbers and/or Port ranges. After saving, the URL will be downloaded.
+                                                            The value after the "/" is the update frequency in days. 
+                                                        </footer>
+                                                    </div>
+                                                    <div class="card-body" id="exp_list" data-prototype="{{ form_widget(form.exp.vars.prototype)|e('html_attr') }}">
+                                                        {% for row in form.exp %}
+                                                            <div class="panel panel-warning">
+                                                                <div class="panel-body">
+                                                                    {{ form_row(row) }}
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {{ form_end(form) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        {% endblock %}
+        {% block javascript %}
+            <script>
+                function mostrar(id) {
+                    if (id == "host") {
+                        $("#host").show();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                    }
+                    if (id == "network") {
+                        $("#host").hide();
+                        $("#network").show();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                    }
+                    if (id == "port") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").show();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                    }
+                    if (id == "url") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").show();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                    }
+                    if (id == "url_ports") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").show();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                    }
+                    if (id == "urltable") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").show();
+                        $("#urltable_ports").hide();
+                    }
+                    if (id == "urltable_ports") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").show();
+                    }
+                }
+                $( function() {
+                    $("#principalbundle_aliasesname_status").change( function() {
+                        if ($(this).val() === "1") {
+                            $("#id_input").prop("disabled", true);
+                        } else {
+                            $("#id_input").prop("disabled", false);
+                        }
+                    });
+                });
+            </script>
+        {% endblock %}
+    {% else %}
+        <script type="text/javascript">
+            location.href ="{{path('login')}}";
+        </script>
+    {% endif %}
+{% else %}
+    <script type="text/javascript">
+        location.href ="{{path('login')}}";
+    </script>
+{% endif %}
