@@ -175,21 +175,70 @@ class AliasesController extends Controller
 	    $em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
 
-		//Query para borrar la tabla txtip de la base de datos
-		$querySelect = "select an.name, ad.ipport
-	from aliases_name as an, aliases_description as ad
-	where an.id = ad.aliasname_id
-	and an.name in(select name from aliases_name)";
-		$stmtSelect = $db->prepare($querySelect);
-		$paramsSelect =array();
-		$stmtSelect->execute($paramsSelect);
-		$listaGrupo=$stmtSelect->fetchAll();
-		foreach ($listaGrupo as $key) 
-		{
-			echo $key['ipport'] . " ";
-			echo "<br>";
+		$query = "SELECT distinct name FROM aliases_name";
+		$stmt = $db->prepare($query);
+		$params =array();
+		$stmt->execute($params);
+		$res=$stmt->fetchAll();
+		$i=0;
+		$contenido = "<?xml version='1.0'?>\n";
+	    // Se crear el nombre de la etiqueta
+		$contenido .= "<squidguardacl>\n";
+		foreach ($res as $key) 
+		{ 
+			
+			echo $key['name'];
+			$contenido .= "\t\t\t<config>\n";
+				    $contenido .= "\t\t\t\t<disabled>" . $key['name'] . "</disabled>\n";
+			foreach ($key as $key2) 
+			{
+				$querySelect = "SELECT ad.ipport
+							FROM aliases_name AS an, aliases_description AS ad
+							WHERE an.id = ad.aliasname_id
+							AND an.name  = '$key2' ORDER BY ad.ipport";
+				$stmtSelect = $db->prepare($querySelect);
+				$paramsSelect =array();
+				$stmtSelect->execute($paramsSelect);
+				$listaGrupo=$stmtSelect->fetchAll();
+				//echo $key2['ipport'];
+				//print_r($listaGrupo);
+				//echo $listaGrupo['ipport'];
+				//implode($listaGrupo);
+				foreach ($listaGrupo as $key3) 
+				{
+					echo $key3['ipport'] . " ";
+					//$r = print_r($key3,true);
+					//$contenido .= "\t\t\t<config>\n";
+				    $contenido .= "\t\t\t\t<disabled>" . implode($key3) . "</disabled>\n";
+				    //$contenido .= "\t\t\t\t<name>" . $key3['ipport'] . "</name>\n";
+				    //$contenido .= "\t\t\t</config>\n";
+				}
+				//echo "<br>";
+				//$contenido .= "\t\t\t<config>\n";
+			    //$contenido .= "\t\t\t\t<disabled>" . $key['name'] . "</disabled>\n";
+			    //$contenido .= "\t\t\t\t<name>" . print_r($listaGrupo, TRUE) . "</name>\n";
+			    //$contenido .= "\t\t\t</config>\n";
+			}
 		}
+
+		
+		// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
+		/*foreach ($formato as $formatos) 
+		{
+			$contenido .= "\t\t\t<config>\n";
+		    $contenido .= "\t\t\t\t<disabled>" . $formatos['disabled'] . "</disabled>\n";
+		    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
+		    $contenido .= "\t\t\t</config>\n";
+		}*/
+		// Se termina el nombre de la etiqueta 
+		$contenido .= "</squidguardacl>";
+		// Se crea o actualiza el archivo 
+		$archivo = fopen('conf.xml', 'w');
+		// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+		fwrite($archivo, $contenido);
+		// Se cierra el archivo 
+		fclose($archivo); 
+
 		die();
-		//return $this->render("@Principal/aliases/listAliases.html.twig", array("acls2"=>$acl2));
 	}
 }

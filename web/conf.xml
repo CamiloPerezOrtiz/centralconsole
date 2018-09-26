@@ -1,0 +1,12 @@
+<?xml version='1.0'?>
+<squidguardacl>
+			<config>
+				<disabled>Recursoso humanos</disabled>
+				<disabled>192.168.0.1</disabled>
+				<disabled>192.168.0.2</disabled>
+			<config>
+				<disabled>Soporte</disabled>
+				<disabled>192.168.0.1</disabled>
+				<disabled>192.168.0.2</disabled>
+				<disabled>192.168.03</disabled>
+</squidguardacl>
