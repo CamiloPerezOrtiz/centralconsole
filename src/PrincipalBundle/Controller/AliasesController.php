@@ -77,168 +77,68 @@ class AliasesController extends Controller
 
 	public function registerAliasesAction(Request $request, $id)
 	{
-        $user = new AliasesName();
-
-        $form = $this->createForm(AliasesNameType::class, $user);
-        
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid())
-        {
-        	$em = $this->getDoctrine()->getManager();
-        	$query = $em->createQuery("SELECT u FROM PrincipalBundle:AliasesName u WHERE u.name = :name")->setParameter("name",$form->get("name")->getData());
-			// Se guarda en una variable el resultado de la consulta
-			$resultado = $query->getResult();
-			if(count($resultado) == 0)
-			{
-				$user->setNameGroup($id);
-            	$em->persist($user);
-            	$flush=$em->flush();
-            	// Se validad si se inserto los datos correctamente
-				if($flush == null)
-				{
-					// Se notifica al actor que su registro fue correcto
-					$estatus="Aliases successfully registered";
-					$this->session->getFlashBag()->add("estatus",$estatus);
-					// Se redirecciona al listado
-					return $this->redirectToRoute("listAliases");
-				}
-				// De lo contrario se notifica al actor
-				else
-				{
-					$estatus="Problems with the server try later.";
-					$this->session->getFlashBag()->add("estatus",$estatus);
-				}
-			}
-			// De lo contrario regresa al formulario para corregir el error
-			else
-			{
-				$estatus="The name of the aliases group you are trying to register already exists try again.";
-				$this->session->getFlashBag()->add("estatus",$estatus);
-			}
-        }
+        if(isset($_POST['enviar']))
+		{
+			$em = $this->getDoctrine()->getEntityManager();
+			$db = $em->getConnection();
+			$name = $_POST['name'];
+			$description = $_POST['description'];
+			$status = $_POST['status'];
+			$value1 = $_POST['input'];
+			$value2 = $_POST['input2'];
+			$res1 = implode(" ",$value1);
+			$res2 = implode(" ||",$value2);
+			$query = "INSERT INTO aliases(name, description, status, ip, descriptionhost, namegroup) 
+						VALUES ('$name','$description','$status','$res1','$res2', '$id')";
+			$stmt = $db->prepare($query);
+			$stmt->execute(array());
+			return $this->redirectToRoute("listAliases");
+		}
         // Se renderiza el formulario para que el actor lo llene los campos solicitados
-        return $this->render('@Principal/aliases/registerAliases.html.twig', 
-        [
-            'form' => $form->createView()    
-        ]);
+        return $this->render("@Principal/aliases/registerAliases.html.twig");
 	}
 
-	public function editAliasesAction(Request $request, $id)
+	public function editAliasesAction($id)
 	{
-		$em = $this->getDoctrine()->getManager();
-        /**
-         * @var $user AliasesName
-         */
-        $user = $em->getRepository('PrincipalBundle:AliasesName')->findOneBy(['id' => $id]);
-        $orignalExp = new ArrayCollection();
-        foreach ($user->getExp() as $exp) {
-            $orignalExp->add($exp);
-        }
-        $form = $this->createForm(AliasesNameType::class, $user);
-        
-        $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid())
-        {
-            foreach ($orignalExp as $exp) 
-            {
-                if ($user->getExp()->contains($exp) === false) 
-                {
-                    $em->remove($exp);
-                }
-            }
-            $em->persist($user);
-            $flush=$em->flush();
-            if($flush == null)
-			{
-				// Se notifica al actor que su registro fue correcto
-				$estatus="Aliases successfully registered";
-				$this->session->getFlashBag()->add("estatus",$estatus);
-				// Se redirecciona al listado
-				return $this->redirectToRoute("listAliases");
-			}
-			// De lo contrario se notifica al actor
-			else
-			{
-				$estatus="Problems with the server try later.";
-				$this->session->getFlashBag()->add("estatus",$estatus);
-			}
-        }
-        // replace this example code with whatever you need
-        return $this->render('@Principal/aliases/editAliases.html.twig', [
-            'form' => $form->createView()    
-        ]);
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		$querySelect = "SELECT * FROM aliases WHERE id = '$id'";
+		$stmtSelect = $db->prepare($querySelect);
+		$paramsSelect =array();
+		$stmtSelect->execute($paramsSelect);
+		$listaGrupo=$stmtSelect->fetchAll();
+		foreach ($listaGrupo as $value) 
+		{
+			$array1= explode(' ',$value['ip']);
+			$array2 = explode(" ||",$value['descriptionhost']);
+		}
+		if(isset($_POST['enviar']))
+		{
+			$name = $_POST['name'];
+			$description = $_POST['description'];
+			$status = $_POST['status'];
+			$value1 = $_POST['input'];
+			$value2 = $_POST['input2'];
+			$res1 = implode(" ",$value1);
+			$res2 = implode(" ||",$value2);
+
+			$query = "UPDATE aliases SET name = '$name', description = '$description', status = '$status', ip = '$res1', descriptionhost = '$res2' WHERE id = '$id'";
+			$stmt = $db->prepare($query);
+			$stmt->execute(array());
+			return $this->redirectToRoute("listAliases");
+		}
+		return $this->render("@Principal/aliases/editAliases.html.twig", array("value"=>$array1,"value2"=>$array2,"value3"=>$listaGrupo));
 	}
 
 	public function listAliasesAction()
 	{
 	    $em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
-
-		$query = "SELECT distinct name FROM aliases_name";
+		$query = "SELECT * FROM aliases";
 		$stmt = $db->prepare($query);
 		$params =array();
 		$stmt->execute($params);
 		$res=$stmt->fetchAll();
-		$i=0;
-		$contenido = "<?xml version='1.0'?>\n";
-	    // Se crear el nombre de la etiqueta
-		$contenido .= "<squidguardacl>\n";
-		foreach ($res as $key) 
-		{ 
-			
-			echo $key['name'];
-			$contenido .= "\t\t\t<config>\n";
-				    $contenido .= "\t\t\t\t<disabled>" . $key['name'] . "</disabled>\n";
-			foreach ($key as $key2) 
-			{
-				$querySelect = "SELECT ad.ipport
-							FROM aliases_name AS an, aliases_description AS ad
-							WHERE an.id = ad.aliasname_id
-							AND an.name  = '$key2' ORDER BY ad.ipport";
-				$stmtSelect = $db->prepare($querySelect);
-				$paramsSelect =array();
-				$stmtSelect->execute($paramsSelect);
-				$listaGrupo=$stmtSelect->fetchAll();
-				//echo $key2['ipport'];
-				//print_r($listaGrupo);
-				//echo $listaGrupo['ipport'];
-				//implode($listaGrupo);
-				foreach ($listaGrupo as $key3) 
-				{
-					echo $key3['ipport'] . " ";
-					//$r = print_r($key3,true);
-					//$contenido .= "\t\t\t<config>\n";
-				    $contenido .= "\t\t\t\t<disabled>" . implode($key3) . "</disabled>\n";
-				    //$contenido .= "\t\t\t\t<name>" . $key3['ipport'] . "</name>\n";
-				    //$contenido .= "\t\t\t</config>\n";
-				}
-				//echo "<br>";
-				//$contenido .= "\t\t\t<config>\n";
-			    //$contenido .= "\t\t\t\t<disabled>" . $key['name'] . "</disabled>\n";
-			    //$contenido .= "\t\t\t\t<name>" . print_r($listaGrupo, TRUE) . "</name>\n";
-			    //$contenido .= "\t\t\t</config>\n";
-			}
-		}
-
-		
-		// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
-		/*foreach ($formato as $formatos) 
-		{
-			$contenido .= "\t\t\t<config>\n";
-		    $contenido .= "\t\t\t\t<disabled>" . $formatos['disabled'] . "</disabled>\n";
-		    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
-		    $contenido .= "\t\t\t</config>\n";
-		}*/
-		// Se termina el nombre de la etiqueta 
-		$contenido .= "</squidguardacl>";
-		// Se crea o actualiza el archivo 
-		$archivo = fopen('conf.xml', 'w');
-		// Se abre el archivo y se ingresa la informacion almacenada en la variable 
-		fwrite($archivo, $contenido);
-		// Se cierra el archivo 
-		fclose($archivo); 
-
-		die();
+		return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
 	}
 }

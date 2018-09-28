@@ -60,14 +60,7 @@ class TargetController extends Controller
 	        }
 	        if($role == "ROLE_USER")
 	        {
-	        	$grupo=$u->getNameGroup();
-	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$querySelect = "SELECT DISTINCT cliente FROM txtip WHERE cliente = '$grupo' ORDER BY cliente ASC";
-				$stmtSelect = $db->prepare($querySelect);
-				$paramsSelect =array();
-				$stmtSelect->execute($paramsSelect);
-				$listaGrupo=$stmtSelect->fetchAll();
-				return $this->render("@Principal/target/listGroup.html.twig", array("grupo"=>$listaGrupo));
+	        	return $this->redirectToRoute("listTarget");
 	        }
 	    }
 		return $this->redirectToRoute("dashboard");

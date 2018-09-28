@@ -2,13 +2,17 @@
 
 namespace PrincipalBundle\Form;
 
+use PrincipalBundle\Entity\AliasesName;
+use PrincipalBundle\Entity\AliasesDescription;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\CallbackTransformer;
+use AppBundle\Form\DataTransformer\IssueToNumberTransformer;
 
 class AliasesNameType extends AbstractType
 {
@@ -52,7 +56,17 @@ class AliasesNameType extends AbstractType
                     ]
                 ])
         ;
-    }/**
+
+        $builder->get('exp')
+            ->addModelTransformer(new CallbackTransformer(
+                function ($tagsAsString) {
+                    // transform the string back to an array
+                    return explode(' ', $tagsAsString);
+                }
+            ))
+        ;
+    }
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

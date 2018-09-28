@@ -44,7 +44,6 @@
                             <table class="table table-hover table-bordered text-center" id="dtBasicExample">
                                 <thead class="bg-dark text-white">
                                     <tr>
-                                        <th>Id</th>
                                         <th>Disabled</th>                         
                                         <th>Name</th>
                                         <th>Description</th>
@@ -58,7 +57,6 @@
                                 <tbody>
                                     {% for acl in acls %}
                                         <tr>
-                                            <td>{{ acl.id }}</td>
                                             <td>{{ acl.disabled }}</td>
                                             <td>{{ acl.name }}</td>
                                             <td>{{ acl.description }}</td>
@@ -84,20 +82,20 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                             <br>
-                            <div class="card-header bg-dark text-white">Save the configuration</div>
-                            {# Se hace una evaluacion para saber si se muestra los botones para generar el XML si el actor que ingreso al sistema tiene el rol #}
                             {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
                                 <br>
+                                <div class="card-header bg-dark text-white">Save the configuration</div>
+                                {# Se hace una evaluacion para saber si se muestra los botones para generar el XML si el actor que ingreso al sistema tiene el rol #}
+                                <br>
                                 <div class="panel-body text-center">
-                                    When you do click on save button you are saving the target categories list and if you do click on apply button, the process about new configuration changes will be starting. <br>
+                                    When you do click on save button you are saving the acl list and if you do click on apply button, the process about new configuration changes will be starting. <br>
                                     <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
                                     <div class="form-group">
                                         <a href="{{path('createXMLAcl')}}">
                                             <button type="button" onclick="myFunction()" class="btn btn-primary btn-lg">
                                                 <b>
                                                     <i class="fa fa-check-square-o"></i>   
-                                                    Save acl groups list
+                                                    Save acl acl list
                                                 </b>
                                             </button>
                                         </a>
@@ -106,7 +104,7 @@
                                             <button type="" class="btn btn-success btn-lg">
                                                 <b>
                                                     <i class="fa fa-check-square-o"></i>   
-                                                    Apply to acl groups list
+                                                    Apply to acl acl list
                                                 </b>
                                             </button>
                                         </a>

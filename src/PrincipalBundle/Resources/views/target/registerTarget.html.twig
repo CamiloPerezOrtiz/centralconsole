@@ -43,7 +43,7 @@
                                                     <footer class="blockquote-footer">The name must be unique.</footer>
                                                     <footer class="blockquote-footer">The name must consist between 4 and 15 symbols [a-z A-Z 0-9].</footer>
                                                     <footer class="blockquote-footer">The first one must be a letter.</footer>
-                                                    {{ form_widget(form.name) }}
+                                                    {{ form_widget(form.name, { 'id': 'name' }) }}
                                                     <span class="text-danger">{{ form_errors(form.name) }}</span>
                                                 </div>
                                                 <div class="form-group">
@@ -51,7 +51,7 @@
                                                     <footer class="blockquote-footer">Enter destination domains or IP-addresses here.</footer>
                                                     <footer class="blockquote-footer">To separate them use space.</footer>
                                                     <footer class="blockquote-footer">Example: mail.com yahoo.com 192.168.0.1</footer>
-                                                    {{ form_widget(form.domainList) }}
+                                                    {{ form_widget(form.domainList, { 'id': 'domainList' }) }}
                                                     <span class="text-danger">{{ form_errors(form.domainList) }}</span>
                                                 </div>
                                                 <div class="form-group">
@@ -59,7 +59,7 @@
                                                     <footer class="blockquote-footer">Enter destination URLs here.</footer>
                                                     <footer class="blockquote-footer">To separate them use space.</footer>
                                                     <footer class="blockquote-footer">Example: host.com/xxx 192.168.0.1/alisa</footer>
-                                                    {{ form_widget(form.urlList) }}
+                                                    {{ form_widget(form.urlList, { 'id': 'urlList' }) }}
                                                     <span class="text-danger">{{ form_errors(form.urlList) }}</span>
                                                 </div>
                                                 <div class="form-group">
@@ -67,7 +67,7 @@
                                                     <footer class="blockquote-footer">Enter word fragments of the destination URL.</footer>
                                                     <footer class="blockquote-footer">To separate them use |.</footer>
                                                     <footer class="blockquote-footer">Example: |mail|casino|game|</footer>
-                                                    {{ form_widget(form.regularExpression) }}
+                                                    {{ form_widget(form.regularExpression , { 'id': 'regularExpression' }) }}
                                                     <span class="text-danger">{{ form_errors(form.regularExpression) }}</span>
                                                 </div>
                                                 <div class="form-group">
@@ -80,7 +80,7 @@
                                                 <div class="form-group">
                                                     {{ form_label(form.redirect) }}
                                                     <footer class="blockquote-footer">Enter the external redirection URL.</footer>
-                                                    {{ form_widget(form.redirect) }}
+                                                    {{ form_widget(form.redirect, { 'id': 'redirect' }) }}
                                                     <span class="text-danger">{{ form_errors(form.redirect) }}</span>
                                                 </div>
                                                 <div class="form-group">
@@ -88,7 +88,7 @@
                                                         <div class="col-md-7">
                                                             {{ form_label(form.description) }}
                                                             <footer class="blockquote-footer">You may enter any description here for your reference..</footer>
-                                                            {{ form_widget(form.description) }}
+                                                            {{ form_widget(form.description, { 'id': 'description' }) }}
                                                             <span class="text-danger">{{ form_errors(form.description) }}</span>
                                                         </div>
                                                         <div class="col-md-5">

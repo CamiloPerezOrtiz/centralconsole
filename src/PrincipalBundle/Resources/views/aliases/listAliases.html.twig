@@ -42,37 +42,37 @@
                                     {% endfor %}
                                 </div>
                             </div>
-                            <table class="table table-hover table-bordered text-center" id="dtBasicExample">
+                            <table class="table table-hover table-bordered" id="dtBasicExample">
                                 <thead class="bg-dark text-white">
                                     <tr>  
                                         <th>Name</th>       
-                                        <th>Description</th>
+                                        <th>Values</th> 
                                         <th>Group</th>
                                         <th>Edit</th>
-                                        <th>Delete</th>       
+                                        <th>Delete</th>    
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for acl2 in acls2 %}
+                                    {% for res in ress %}
                                         <tr>
                                             <td>
-                                                {{ acl2.name }}
+                                                {{ res.name }}
                                             </td>
                                             <td>
-                                                {{ acl2.description }}
+                                                {{ res.ip }}
                                             </td>
                                             <td>
-                                                {{ acl2.namegroup }}
+                                                {{ res.namegroup }}
                                             </td>
-                                            <td>
-                                                <a href="{{path('editAliases',{id:acl2.id})}}">
+                                             <td>
+                                                <a href="{{path('editAliases',{id:res.id})}}">
                                                     <button class="btn btn-warning btn-sm" type="submit">
                                                         Edit <i class="fa fa-pencil" aria-hidden="true"></i>
                                                     </button>
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="{{path('deleteAliases',{id:acl2.id})}}">
+                                                <a href="{{path('deleteAliases',{id:res.id})}}">
                                                     <button class="btn btn-danger btn-sm" type="submit">
                                                         Delete <i class="fa fa-times" aria-hidden="true"></i>
                                                     </button>

@@ -48,7 +48,7 @@
                                                     <footer class="blockquote-footer">Enter a unique name of this rule here.</footer>
                                                     <footer class="blockquote-footer">The name must consist between 4 and 15 symbols [a-Z_0-9].</footer>
                                                     <footer class="blockquote-footer">The first one must be a letter.e.</footer>
-                                                    {{ form_widget(form.name) }}
+                                                    {{ form_widget(form.name, { 'id': 'name' }) }}
                                                     <span class="text-danger">{{ form_errors(form.name) }}</span>
                                                 </div>
                                                 <div class="form-group">
@@ -120,7 +120,7 @@
                                                 <div class="form-group">   
                                                     {{ form_label(form.redirect) }}
                                                     <footer class="blockquote-footer">Enter the external redirection URL, error message or size (bytes) here.
-                                                    {{ form_widget(form.redirect) }}
+                                                    {{ form_widget(form.redirect, { 'id': 'redirect' }) }}
                                                     <span class="text-danger">{{ form_errors(form.redirect) }}</span>
                                                 </div>
                                                 <div class="form-group">   
@@ -153,7 +153,7 @@
                                                         <div class="col-md-7">   
                                                             {{ form_label(form.description) }}
                                                             <footer class="blockquote-footer">You may enter any description here for your reference.</footer>
-                                                            {{ form_widget(form.description) }}
+                                                            {{ form_widget(form.description, { 'id': 'description' }) }}
                                                             <span class="text-danger">{{ form_errors(form.description) }}</span>
                                                         </div>
                                                         <div class="col-md-5">  
