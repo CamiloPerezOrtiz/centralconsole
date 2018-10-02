@@ -107,17 +107,11 @@ class GroupController extends Controller
 		$stmt->execute($params);
 		$listaGrupoIp=$stmt->fetchAll();
 
-		$queryCliente = "SELECT distinct cliente from txtip where cliente ='$id'";
-		$stmtCliente = $db->prepare($queryCliente);
-		$paramsCliente =array();
-		$stmtCliente->execute($paramsCliente);
-		$cliente=$stmtCliente->fetchAll();
-
 		//Variable para abrir el archivo nombreGrupo e insertar el nombre del grupo el cual fue seleccionado
 		$file=fopen("nombreGrupo.txt","w") or die("Problemas");
 		fputs($file,$id);
 		fclose($file);
-		return $this->render("@Principal/groups/listGroupIp.html.twig", array("grupoIp"=>$listaGrupoIp, "clientes"=>$cliente));
+		return $this->render("@Principal/groups/listGroupIp.html.twig", array("grupoIp"=>$listaGrupoIp));
 	}
 	
 	public function saveListIpAction($id)

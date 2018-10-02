@@ -24,19 +24,23 @@
                         </div>
                         <div class="card-body">
                             {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                <a href="{{path ('listAliases') }}">
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#">
-                                        View list aliases <i class="fa fa-fw fa-list"></i>
+                                <a href="{{path ('listAcl') }}">
+                                    <button type="button" class="btn btn-success btn-lg">
+                                        View list acl <i class="fa fa-fw fa-list"></i>
                                     </button>
                                 </a>
                                 <br><br>
                             {% endif %}
                             {% if app.user.role == "ROLE_SUPERUSER" %}
-                                <h1 class="text-primary"><small>Choose a group to register a new aliases</small></h1>
+                                <div class="alert alert-primary">
+                                    <strong> Choose a group to register a new aliases.</strong>
+                                </div>
                                 <br>
                             {% endif %}
                             {% if app.user.role == "ROLE_ADMIN" %}
-                                <h1 class="text-primary"><small>Register a new aliases in this group</small></h1>
+                                <div class="alert alert-primary">
+                                    <strong> Register a new aliases in this group.</strong>
+                                </div>
                                 <br>
                             {% endif %}
                             <div class="row">
