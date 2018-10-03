@@ -130,15 +130,224 @@ class AliasesController extends Controller
 		return $this->render("@Principal/aliases/editAliases.html.twig", array("value"=>$array1,"value2"=>$array2,"value3"=>$listaGrupo));
 	}
 
-	public function listAliasesAction()
+	public function listAliasesAction($id)
 	{
-	    $em = $this->getDoctrine()->getEntityManager();
+		$authenticationUtils = $this->get("security.authentication_utils");
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		$u = $this->getUser();
+		if($u != null)
+		{
+			//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+			$em = $this->getDoctrine()->getEntityManager();
+	        $db = $em->getConnection();
+
+	        $role=$u->getRole();
+	        if($role == "ROLE_SUPERUSER")
+	        {
+	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$query = "SELECT * FROM aliases WHERE namegroup = '$id'";
+				$stmt = $db->prepare($query);
+				$params =array();
+				$stmt->execute($params);
+				$res=$stmt->fetchAll();
+				return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
+	        }
+	        if($role == "ROLE_ADMIN")
+	        {
+	        	$grupo=$u->getNameGroup();
+	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$query = "SELECT * FROM aliases WHERE namegroup ='$grupo'";
+				$stmt = $db->prepare($query);
+				$params =array();
+				$stmt->execute($params);
+				$res=$stmt->fetchAll();
+				return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
+	        }
+	        if($role == "ROLE_USER")
+	        {
+	        	$grupo=$u->getNameGroup();
+	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$query = "SELECT * FROM aliases WHERE namegroup ='$grupo'";
+				$stmt = $db->prepare($query);
+				$params =array();
+				$stmt->execute($params);
+				$res=$stmt->fetchAll();
+				return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
+	        }
+	    }
+		// Regresa un arreglo con la informacion obtendia de la base de datos
+	    return $this->redirectToRoute("dashboard");
+	}
+
+	public function deleteAliasesAction($id)
+	{
+		// Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+		$em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
-		$query = "SELECT * FROM aliases";
+		$query = "DELETE FROM aliases WHERE id = '$id'";
 		$stmt = $db->prepare($query);
-		$params =array();
-		$stmt->execute($params);
-		$res=$stmt->fetchAll();
-		return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
+		$stmt->execute(array());
+		// Se validad si la accion de borrar se cumplio
+		if($stmt == null)
+		{
+			// Se notifica al actor que la eliminacion fue correcta 
+			$estatus="Problems with the server try later.";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+		}
+		// De lo contrario se notifica al actor
+		else
+		{
+			$estatus="Registry successfully deleted";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+		}
+		// Se redirecciona al listado
+		return $this->redirectToRoute("listAliases");
+	}
+
+	// Funcion para crear XML de target categories
+	public function createXMLAliasesAction($id)
+	{
+		$authenticationUtils = $this->get("security.authentication_utils");
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		$u = $this->getUser();
+		if($u != null)
+		{
+			//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+			$em = $this->getDoctrine()->getEntityManager();
+	        $db = $em->getConnection();
+
+	        $role=$u->getRole();
+	        if($role == "ROLE_SUPERUSER")
+	        {
+	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$query = "SELECT * FROM aliases WHERE namegroup = '$id'";
+				$stmt = $db->prepare($query);
+				$params =array();
+				$stmt->execute($params);
+				// Se alamacena la consulta en una variable 
+				$formato=$stmt->fetchAll();
+				// Se crea un nuevo documento XML con la version 
+			    $contenido = "<?xml version='1.0'?>\n";
+			    // Se crear el nombre de la etiqueta
+				$contenido .= "<aliases>\n";
+				// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
+				foreach ($formato as $formatos) 
+				{
+					$contenido .= "\t\t\t<alias>\n";
+				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
+				    $contenido .= "\t\t\t\t<type>" . $formatos['status'] . "</type>\n";
+				    $contenido .= "\t\t\t\t<address>" . $formatos['ip'] . "</address>\n";
+				    $contenido .= "\t\t\t\t<descr>" . $formatos['description'] . "</descr>\n";
+				    $contenido .= "\t\t\t\t<destdetail>" . $formatos['descriptionhost'] . "</detail>\n";
+				    $contenido .= "\t\t\t</alias>\n";
+				}
+				// Se termina el nombre de la etiqueta 
+				$contenido .= "</aliases>";
+				// Se crea o actualiza el archivo 
+				$archivo = fopen('conf.xml', 'w');
+				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+				fwrite($archivo, $contenido);
+				// Se cierra el archivo 
+				fclose($archivo); 
+				if(!$archivo)
+			    {
+			    	// Se notifica al actor si hubo algun problema
+			    	$estatus="Problems with the server try later.";
+			    	$this->session->getFlashBag()->add("estatus",$estatus);
+			    	//die();
+			    	return $this->redirectToRoute();
+			    }
+			    // Se notifica al actor que la configuracion se guardo
+			    else
+			    {
+			    	$estatus="The configuration has been saved";
+			    	$this->session->getFlashBag()->add("estatus",$estatus);
+			    	//die();
+			    	return $this->redirectToRoute();
+			    }
+	        }
+	        if($role == "ROLE_ADMIN")
+	        {
+	        	$grupo=$u->getNameGroup();
+	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$query = "SELECT ac.disabled, ac.name, ac.client, ac.time, ac.targetrule, ac.allowip, ac.redirectmode, ac.redirect, ac.safesearch,
+								ac.rewrite, ac.rewritetime, ac.description, l.description AS log
+							FROM acl AS ac, log AS l 
+							WHERE ac.acl_id = l.id
+									AND ac.namegroup = '$grupo'";
+				$stmt = $db->prepare($query);
+				$params =array();
+				$stmt->execute($params);
+				// Se alamacena la consulta en una variable 
+				$formato=$stmt->fetchAll();
+				// Se crea un nuevo documento XML con la version 
+			    $contenido = "<?xml version='1.0'?>\n";
+			    // Se crear el nombre de la etiqueta
+				$contenido .= "<squidguardacl>\n";
+				// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
+				foreach ($formato as $formatos) 
+				{
+					$contenido .= "\t\t\t<config>\n";
+				    $contenido .= "\t\t\t\t<disabled>" . $formatos['disabled'] . "</disabled>\n";
+				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
+				    $contenido .= "\t\t\t\t<source>" . $formatos['client'] . "</source>\n";
+				    $contenido .= "\t\t\t\t<time>" . $formatos['time'] . "</time>\n";
+				    $contenido .= "\t\t\t\t<dest>" . $formatos['targetrule'] . "</dest>\n";
+				    $contenido .= "\t\t\t\t<notallowingip>" . $formatos['allowip'] . "</notallowingip>\n";
+				    $contenido .= "\t\t\t\t<redirect_mode>" . $formatos['redirectmode'] . "</redirect_mode>\n";
+				    $contenido .= "\t\t\t\t<redirect>" . $formatos['redirect'] . "</redirect>\n";
+				    $contenido .= "\t\t\t\t<safesearch>" . $formatos['safesearch'] . "</safesearch>\n";
+				    $contenido .= "\t\t\t\t<rewrite>" . $formatos['rewrite'] . "</rewrite>\n";
+				    $contenido .= "\t\t\t\t<overrewrite>" . $formatos['rewritetime'] . "</overrewrite>\n";
+				    $contenido .= "\t\t\t\t<description>" . $formatos['description'] . "</description>\n";
+				    $contenido .= "\t\t\t\t<enablelog>" . $formatos['log'] . "</enablelog>\n";
+				    $contenido .= "\t\t\t</config>\n";
+				}
+				// Se termina el nombre de la etiqueta 
+				$contenido .= "</squidguardacl>";
+				// Se crea o actualiza el archivo 
+				$archivo = fopen('conf.xml', 'w');
+				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+				fwrite($archivo, $contenido);
+				// Se cierra el archivo 
+				fclose($archivo); 
+				if(!$archivo)
+			    {
+			    	// Se notifica al actor si hubo algun problema
+			    	$estatus="Problems with the server try later.";
+			    	$this->session->getFlashBag()->add("estatus",$estatus);
+			    	return $this->redirectToRoute("listAcl");
+			    }
+			    // Se notifica al actor que la configuracion se guardo
+			    else
+			    {
+			    	$estatus="The configuration has been saved";
+			    	$this->session->getFlashBag()->add("estatus",$estatus);
+			    	return $this->redirectToRoute("listAcl");
+			    }
+	        }
+	    }
+	}
+
+	// funcion para correr el script aplicar cambios en target categories
+	public function aplicateXMLAclAction()
+	{
+		// Se evalua si el scrip fue ejecutado correactmante con la funcion exec se puede ejecuat archivos de py
+		if(exec('python aclgroups.py'))
+	    {
+	    	// Se notifica al actor si hubo algun problema
+	    	$estatus="Problems with the server try later.";
+	    	$this->session->getFlashBag()->add("estatus",$estatus);
+	    	return $this->redirectToRoute("listAcl");
+	    }
+	    // Se notifica al actor que la configuracion se guardo
+	    else
+	    {
+	    	$estatus="The configuration has been saved.";
+	    	$this->session->getFlashBag()->add("estatus",$estatus);
+	    	return $this->redirectToRoute("listAcl");
+	    }
 	}
 }

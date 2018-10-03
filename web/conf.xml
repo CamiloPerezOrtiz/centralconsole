@@ -1,12 +1,10 @@
 <?xml version='1.0'?>
-<squidguardacl>
-			<config>
-				<disabled>Recursoso humanos</disabled>
-				<disabled>192.168.0.1</disabled>
-				<disabled>192.168.0.2</disabled>
-			<config>
-				<disabled>Soporte</disabled>
-				<disabled>192.168.0.1</disabled>
-				<disabled>192.168.0.2</disabled>
-				<disabled>192.168.03</disabled>
-</squidguardacl>
+<aliases>
+			<alias>
+				<name>Recursos Humanos</name>
+				<type>host</type>
+				<address>192.168.0.1 192.168.0.2</address>
+				<descr>Area de recursos humanos</descr>
+				<destdetail>Maquina 1 ||Maquina 2</detail>
+			</alias>
+</aliases>

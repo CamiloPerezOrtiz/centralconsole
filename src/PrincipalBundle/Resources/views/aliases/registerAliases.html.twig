@@ -11,7 +11,7 @@
                             <a href="{{path('dashboard')}}">Dashboard</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{path('listAliases')}}">List aliases</a>
+                            <a href="{{path('listGroupAliases')}}">List aliases</a>
                         </li>
                         <li class="breadcrumb-item active">Aliases</li>
                     </ol>
@@ -33,104 +33,104 @@
                                             {% endfor %}
                                         </div>
                                     </div>
-                                    <div class="card mx-auto mt-1">
-                                        <div class="card-header bg-dark text-white">General Options</div>
-                                        <div  class="card-body">
-                                            {{ form_start(form) }}
-
-                                                <div class="form-group">   
-                                                    {{ form_label(form.name) }}
-                                                    <footer class="blockquote-footer">
-                                                        The name of the alias may only consist of the characters "a-z, A-Z, 0-9 and _".
-                                                    </footer>
-                                                    {{ form_widget(form.name) }}
-                                                    <span class="text-danger">{{ form_errors(form.name) }}</span>
+                                    <div class="card mx-auto">
+                                        <div class="card-header bg-dark text-white">Properties</div>
+                                        <form role="form" method="post">
+                                            <div  class="card-body">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Name</label>
+                                                    <footer class="blockquote-footer">The name of the alias may only consist of the characters "a-z, A-Z, 0-9 and _".</footer>
+                                                    <input type="text" id="name" name="name" class="form-control">
                                                 </div>
-                                                
-                                                <div class="form-group">   
-                                                    {{ form_label(form.description) }}
-                                                    <footer class="blockquote-footer">
-                                                        A description may be entered here for administrative reference (not parsed).
-                                                    </footer>
-                                                    {{ form_widget(form.description) }}
-                                                    <span class="text-danger">{{ form_errors(form.description) }}</span>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Description</label>
+                                                    <footer class="blockquote-footer">A description may be entered here for administrative reference (not parsed).</footer>
+                                                    <input type="text" id="description" name="description" class="form-control">
                                                 </div>
-                                                {{ form_row(form.status, {'attr': {'onChange':'mostrar(this.value);'} } ) }}
-                                                <br>
-                                                <div class="card-header bg-dark text-white">Host(s)</div>
-                                                <div  class="card-body">
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Type:</label>
+                                                    <select class="form-control" id="status" name="status" onChange="mostrar(this.value);">
+                                                        <option value="1" >Choose a method to complete the form</option>
+                                                        <option value="host">Host</option>
+                                                        <option value="network">Network(s)</option>
+                                                        <option value="port">Port(s)</option>
+                                                        <option value="url">URL (Ips)</option>
+                                                        <option value="url_ports">URL (Ports)</option>
+                                                        <option value="urltable">URL Table (Ips)</option>
+                                                        <option value="urltable_ports">URL Table (Ports)</option>
+                                                     </select>
+                                                </div>
+                                            </div>
+                                            <div class="card-header bg-dark text-white">Host(s)</div>
+                                            <div  class="card-body">
+                                                <div class="form-group">
                                                     <div id="host" style="display: none;">
-                                                        <label for="exampleInputEmail1">Information</label> 
-                                                        <footer class="blockquote-footer">
-                                                            Enter as many hosts as desired. Hosts must be specified by their IP address or fully qualified domain name (FQDN). 
-                                                        </footer>
-                                                        <footer class="blockquote-footer">
-                                                            FQDN hostnames are periodically re-resolved and updated. If multiple IPs are returned by a DNS query, all are used.
-                                                        </footer>
+                                                        <label for="exampleInputEmail1">Hint</label> 
+                                                        <footer class="blockquote-footer">Enter as many hosts as desired. Hosts must be specified by their IP address or fully qualified domain name (FQDN). FQDN hostnames are periodically re-resolved and updated. If multiple IPs are returned by a DNS query, all are used</footer>
                                                     </div>
                                                     <div id="network" style="display: none;">
-                                                        <label for="exampleInputEmail1">Information</label> 
-                                                        <footer class="blockquote-footer">
-                                                            Networks are specified in CIDR format. Select the CIDR mask that pertains to each entry. /32 specifies a single IPv4 host, /128 
-                                                            specifies a single IPv6 host, /24 specifies 255.255.255.0, /64 specifies a normal IPv6 network, etc.  
-                                                        </footer>
-                                                        <footer class="blockquote-footer">
-                                                            Hostnames (FQDNs) may also be specified, using a /32 mask for IPv4 or /128 for IPv6.
-                                                        </footer>
+                                                        <label for="exampleInputEmail1">Hint</label> 
+                                                        <footer class="blockquote-footer">Networks are specified in CIDR format. Select the CIDR mask that pertains to each entry. /32 specifies a single IPv4 host, /128 specifies a single IPv6 host, /24 specifies 255.255.255.0, /64 specifies a normal IPv6 network, etc. Hostnames (FQDNs) may also be specified, using a /32 mask for IPv4 or /128 for IPv6. </footer>
                                                     </div>
                                                     <div id="port" style="display: none;">
-                                                        <label for="exampleInputEmail1">Information</label> 
-                                                        <footer class="blockquote-footer">
-                                                            Enter ports as desired. 
-                                                        </footer>
+                                                        <label for="exampleInputEmail1">Hint</label> 
+                                                        <footer class="blockquote-footer">Enter ports as desired, with a single port or port range per entry. Port ranges can be expressed by separating with a colon.</footer>
                                                     </div>
                                                     <div id="url" style="display: none;">
-                                                        <label for="exampleInputEmail1">Information</label> 
-                                                        <footer class="blockquote-footer">
-                                                            Enter as many URLs as desired. Use only with small sets of IP addresses (less than 3000). 
-                                                        </footer>
+                                                        <label for="exampleInputEmail1">Hint</label> 
+                                                        <footer class="blockquote-footer">Example: foo.bar</footer>
                                                     </div>
                                                     <div id="url_ports" style="display: none;">
-                                                        <label for="exampleInputEmail1">Information</label> 
-                                                        <footer class="blockquote-footer">
-                                                            Enter as many URLs as desired. Use only with small sets of Ports (less than 3000). 
-                                                        </footer>
+                                                        <label for="exampleInputEmail1">Hint</label> 
+                                                        <footer class="blockquote-footer">Example: user1</footer>
                                                     </div>
                                                     <div id="urltable" style="display: none;">
-                                                        <label for="exampleInputEmail1">Information</label> 
-                                                        <footer class="blockquote-footer">
-                                                            Enter a single URL containing a large number of IPs and/or Subnets. The value after the "/" is the update frequency in days. 
-                                                        </footer>
+                                                        <label for="exampleInputEmail1">Hint</label> 
+                                                        <footer class="blockquote-footer">Example:  </footer>
                                                     </div>
                                                     <div id="urltable_ports" style="display: none;">
-                                                        <label for="exampleInputEmail1">Information</label> 
-                                                        <footer class="blockquote-footer">
-                                                            Enter a single URL containing a list of Port numbers and/or Port ranges. After saving, the URL will be downloaded.
-                                                            The value after the "/" is the update frequency in days. 
-                                                        </footer>
+                                                        <label for="exampleInputEmail1">Ldap search</label> 
+                                                        <footer class="blockquote-footer">Example:  </footer>
                                                     </div>
-                                                    <div class="card-body" id="exp_list" data-prototype="{{ form_widget(form.exp.vars.prototype)|e('html_attr') }}">
-                                                        {% for row in form.exp %}
-                                                            <div class="panel panel-warning">
-                                                                <div class="panel-body">
-                                                                    {{ form_row(row) }}
-                                                                </div>
+                                                    <div id="items" class="form-group" style="display: none;">
+                                                        <div class="form-row">
+                                                            <div class="col-md-6">  
+                                                                <input type="text" name="input[]" class="form-control">
                                                             </div>
-                                                        {% endfor %}
+                                                            <div class="col-md-6">  
+                                                                <input type="text" name="input2[]" class="form-control">
+                                                                <br>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="container-fluid">
+                                                        <div class="col-md-4">
+                                                            <div class="col"></div>
+                                                            <input type="button" id="add" class="btn btn-success" value="Add">
+                                                            <button type="submit" class="btn btn-primary" name="enviar">Save</button>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            {{ form_end(form) }}
-                                        </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         {% endblock %}
-        {% block javascript %}
+        {% block javascripts %}
             <script>
+                //when the Add Field button is clicked
+                $("#add").click(function (e) {
+                //Append a new row of code to the "#items" div
+                $("#items").append('<div><br><div id="items" class="form-group"><div class="form-row"><div class="col-md-6"><input type="text" name="input[]" class="form-control"></div><div class="col-md-6"><input type="text" name="input2[]" class="form-control"></div></div></div><button class="delete btn btn-danger">Delete</button></div>'); });
+                $("body").on("click", ".delete", function (e) {
+                    $(this).parent("div").remove();
+                });
+                //item tiene 3 input item2 tiene 2 input
                 function mostrar(id) {
                     if (id == "host") {
                         $("#host").show();
@@ -140,6 +140,7 @@
                         $("#url_ports").hide();
                         $("#urltable").hide();
                         $("#urltable_ports").hide();
+                        $("#items").show();
                     }
                     if (id == "network") {
                         $("#host").hide();
@@ -149,6 +150,7 @@
                         $("#url_ports").hide();
                         $("#urltable").hide();
                         $("#urltable_ports").hide();
+                        $("#items").show();
                     }
                     if (id == "port") {
                         $("#host").hide();
@@ -158,6 +160,7 @@
                         $("#url_ports").hide();
                         $("#urltable").hide();
                         $("#urltable_ports").hide();
+                        $("#items").show();
                     }
                     if (id == "url") {
                         $("#host").hide();
@@ -167,6 +170,7 @@
                         $("#url_ports").hide();
                         $("#urltable").hide();
                         $("#urltable_ports").hide();
+                        $("#items").show();
                     }
                     if (id == "url_ports") {
                         $("#host").hide();
@@ -176,6 +180,7 @@
                         $("#url_ports").show();
                         $("#urltable").hide();
                         $("#urltable_ports").hide();
+                        $("#items").show();
                     }
                     if (id == "urltable") {
                         $("#host").hide();
@@ -185,6 +190,7 @@
                         $("#url_ports").hide();
                         $("#urltable").show();
                         $("#urltable_ports").hide();
+                        $("#items").show();
                     }
                     if (id == "urltable_ports") {
                         $("#host").hide();
@@ -194,10 +200,11 @@
                         $("#url_ports").hide();
                         $("#urltable").hide();
                         $("#urltable_ports").show();
+                        $("#items").show();
                     }
                 }
                 $( function() {
-                    $("#principalbundle_aliasesname_status").change( function() {
+                    $("#status").change( function() {
                         if ($(this).val() === "1") {
                             $("#id_input").prop("disabled", true);
                         } else {

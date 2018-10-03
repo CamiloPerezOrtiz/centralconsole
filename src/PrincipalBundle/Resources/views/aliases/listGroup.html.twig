@@ -15,7 +15,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{path('dashboard')}}">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Groups list</li>
+                        <li class="breadcrumb-item active">Groups list aliases</li>
                     </ol>
                     <div class="card mb-3">
                         <div class="card-header">
@@ -23,23 +23,25 @@
                             Groups
                         </div>
                         <div class="card-body">
-                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                <a href="{{path ('listAcl') }}">
-                                    <button type="button" class="btn btn-success btn-lg">
-                                        View list acl <i class="fa fa-fw fa-list"></i>
-                                    </button>
-                                </a>
-                                <br><br>
-                            {% endif %}
+                            {#
+                                {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                    <a href="{{path ('listAliases') }}">
+                                        <button type="button" class="btn btn-success btn-lg">
+                                            View list aliases <i class="fa fa-fw fa-list"></i>
+                                        </button>
+                                    </a>
+                                    <br><br>
+                                {% endif %}
+                            #}
                             {% if app.user.role == "ROLE_SUPERUSER" %}
                                 <div class="alert alert-primary">
-                                    <strong> Choose a group to register a new aliases.</strong>
+                                    <strong> Choose a group to register a new aliases or view the list.</strong>
                                 </div>
                                 <br>
                             {% endif %}
                             {% if app.user.role == "ROLE_ADMIN" %}
                                 <div class="alert alert-primary">
-                                    <strong> Register a new aliases in this group.</strong>
+                                    <strong> Register a new aliases in this group or view the list.</strong>
                                 </div>
                                 <br>
                             {% endif %}
@@ -53,8 +55,14 @@
                                                 </div>
                                                 <div class="mr-5">{{ listaGrupo.cliente }}</div>
                                             </div>
-                                            <a class="card-footer text-white clearfix small z-1" href="{{path('registerAliases',{id:listaGrupo.cliente})}}">
+                                            <a class="card-footer text-white btn-outline-dark clearfix small z-1" href="{{path('registerAliases',{id:listaGrupo.cliente})}}">
                                                 <span class="float-left">Register a new aliases in this group</span>
+                                                <span class="float-right">
+                                                    <i class="fa fa-angle-right"></i>
+                                                </span>
+                                            </a>
+                                            <a class="card-footer text-white btn-outline-dark clearfix small z-1" href="{{path('listAliases',{id:listaGrupo.cliente})}}">
+                                                <span class="float-left">View list aliases</span>
                                                 <span class="float-right">
                                                     <i class="fa fa-angle-right"></i>
                                                 </span>

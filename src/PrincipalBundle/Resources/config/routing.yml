@@ -120,6 +120,11 @@ registerTarget:
     path:     /registerTarget/{id}
     defaults: { _controller: PrincipalBundle:Target:registerTarget }
 
+#Edita el acl el cual fue seleccionado controlador: AclgroupsController funcion editarAclgroups#
+txtTarget:
+    path:     /txtTarget
+    defaults: { _controller: PrincipalBundle:Target:txtTarget }
+
 #Crear XML target categories controlador:TargetcategoriesController funcion crearXMLTargetcategories #
 createXMLTarget:
     path:     /createXMLTarget
@@ -179,7 +184,7 @@ listGroupAliases:
 
 #Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
 listAliases:
-    path:     /listAliases
+    path:     /listAliases/{id}
     defaults: { _controller: PrincipalBundle:Aliases:listAliases }
 
 listAliasesInformation:
@@ -203,7 +208,7 @@ registerAliases:
 
 #Crear XML acl groups controlador:AliasesController funcion crearXMLAliases #
 createXMLAliases:
-    path:     /createXMLAliases 
+    path:     /createXMLAliases/{id}
     defaults: { _controller: PrincipalBundle:Aliases:createXMLAliases }
 
 #Crear XML acl groups controlador:AliasesController funcion crearXMLAliases #

@@ -66,6 +66,56 @@ class TargetController extends Controller
 		return $this->redirectToRoute("dashboard");
 	}
 
+	public function txtTargetAction()
+	{
+		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+
+		//Query para borrar la tabla txtip de la base de datos
+		$queryDrop = "DELETE FROM targetclient";
+		$stmtDrop = $db->prepare($queryDrop);
+		$paramsDrop =array();
+		$stmtDrop->execute($paramsDrop);
+		$flushDrop=$em->flush();
+
+		//Query para que la secuencia del contador regrese a 1
+		$queryReset = "ALTER SEQUENCE targetclient_id_seq RESTART WITH 1";
+		$stmtReset = $db->prepare($queryReset);
+		$paramsReset =array();
+		$stmtReset->execute($paramsReset);
+		$flushReset=$em->flush();
+
+		//Variable para leer el archivo informacionGrupo.txt e insertar en la tabla txtip de la base de datos
+		$filas=file('squidguarddest.txt'); 
+		foreach($filas as $value)
+		{
+			list($name, $domains, $urls,$expressions, $redirect_mode, $redirect, $description, $enablelog) = explode(":", $value);
+			 'name: '.$name.'<br/>'; 
+			 'domains: '.$domains.'<br/>'; 
+			 'urls: '.$urls.'<br/>';
+			 'expressions: '.$expressions.'<br/>'; 
+			 'redirect_mode: '.$redirect_mode.'<br/>'; 
+			 'redirect: '.$redirect.'<br/>';
+			 'description: '.$description.'<br/>'; 
+			 'enablelog: '.$enablelog.'<br/><br/>';
+			$query = "INSERT INTO targetclient(name, domains, urls, expressions, redirect_mode, redirect, description, enablelog) VALUES ('$name','$domains','$urls','$expressions','$redirect_mode','$redirect','$description','$enablelog')";
+			$stmt = $db->prepare($query);
+			$params =array();
+			$stmt->execute($params);
+			$flush=$em->flush();
+		}
+
+		$query2 = "SELECT * FROM targetclient";
+		$st = $db->prepare($query2);
+		$p =array();
+		$st->execute($p);
+		$target=$st->fetchAll();
+
+		return $this->render("@Principal/target/listTxtTarget.html.twig", array("targets"=>$target));
+		//return $this->redirectToRoute("listGroup");
+	}
+
 	// Funcion para listar las Target categories del sistema 
 	public function listTargetAction()
     {
