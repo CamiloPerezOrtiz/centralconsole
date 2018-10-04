@@ -57,10 +57,17 @@ class GroupController extends Controller
 			{
 			  echo "la ruta: " . $ruta . " ya existe ";
 			}
+			/*
+	                 *Se establecen los archivos py para ser copiados en la carpeta que se crean 
+			 *de la misma manera es estable el destino 
+			 */
 			$origenSquidGuardDest = "/var/www/html/centralconsole/web/squidguarddest.py"; 
 			$origenSquidGuardAcl = "/var/www/html/centralconsole/web/squidguardacl.py";
 			$origenAliases = "/var/www/html/centralconsole/web/aliases.py";
 			$destino = "/var/www/html/centralconsole/web/Groups/$ruta";
+			/*
+			* se crea los archivos encapa carpeta 
+			*/
 			if (file_exists($destino))
 			{      
 				copy("$origenSquidGuardDest","$destino");  
