@@ -57,6 +57,16 @@ class GroupController extends Controller
 			{
 			  echo "la ruta: " . $ruta . " ya existe ";
 			}
+			$origenSquidGuardDest = "/var/www/html/centralconsole/web/squidguarddest.py"; 
+			$origenSquidGuardAcl = "/var/www/html/centralconsole/web/squidguardacl.py";
+			$origenAliases = "/var/www/html/centralconsole/web/aliases.py";
+			$destino = "/var/www/html/centralconsole/web/Groups/$ruta";
+			if (file_exists($destino))
+			{      
+				copy("$origenSquidGuardDest","$destino");  
+				copy("$origenSquidGuardAcl","$destino");  
+				copy("$origenAliases","$destino");  
+		    	}
 		}
 		return $this->redirectToRoute("listGroup");
 	}
