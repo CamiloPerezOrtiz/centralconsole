@@ -42,6 +42,21 @@ class GroupController extends Controller
 			$params =array();
 			$stmt->execute($params);
 			$flush=$em->flush();
+			
+			/*Crear carpetas para cada grupo o cliente
+			 *Si la carpeta exite ya no la crear de lo contrario si no exite la carpeta lo crea 
+			 */
+			$serv = $_SERVER['DOCUMENT_ROOT'] . "/var/www/html/centralconsole";
+			$ruta = $serv . $cliente;
+			if(!file_exists($ruta))
+			{
+			  mkdir ($ruta);
+			  echo "Se ha creado el directorio: " . $ruta;
+			} 
+			else 
+			{
+			  echo "la ruta: " . $ruta . " ya existe ";
+			}
 		}
 		return $this->redirectToRoute("listGroup");
 	}
