@@ -1078,79 +1078,9 @@
 		<squidguarddest>
 			<config>
 			</config>
-			<config>
-				<name>Correo_Gmail</name>
-				<domains>gmail.com</domains>
-				<urls>gmail.com/</urls>
-				<expressions>|mail|gmail|</expressions>
-				<redirect_mode>rmod_int</redirect_mode>
-				<redirect>google.com</redirect>
-				<description>Bloquear gmail</description>
-				<enablelog>on</enablelog>
-			</config>
 		</squidguarddest>
 		<squidguardacl>
             <config>
-			</config>
-			<config>
-				<disabled>on</disabled>
-				<name>Group testing</name>
-				<source>192.168.0.1</source>
-				<time>none</time>
-				<dest>All [ All]</dest>
-				<notallowingip>on</notallowingip>
-				<redirect_mode>rmod_int_bpg</redirect_mode>
-				<redirect>google.com</redirect>
-				<safesearch>on</safesearch>
-				<rewrite>none</rewrite>
-				<overrewrite>safesearch</overrewrite>
-				<description>Group of testing</description>
-				<enablelog>off</enablelog>
-			</config>
-			<config>
-				<disabled>on</disabled>
-				<name>Group resources</name>
-				<source>192.168.1.1</source>
-				<time>none</time>
-				<dest>All [ All]</dest>
-				<notallowingip>on</notallowingip>
-				<redirect_mode>rmod_none</redirect_mode>
-				<redirect>yahoo.com.mx</redirect>
-				<safesearch>on</safesearch>
-				<rewrite>none</rewrite>
-				<overrewrite>none</overrewrite>
-				<description>Group of resorces</description>
-				<enablelog>on</enablelog>
-			</config>
-			<config>
-				<disabled>on</disabled>
-				<name>Grupo_Ventas</name>
-				<source>192.168.0.1</source>
-				<time>none</time>
-				<dest>All [ All]</dest>
-				<notallowingip>on</notallowingip>
-				<redirect_mode>rmod_none</redirect_mode>
-				<redirect>youtube.com</redirect>
-				<safesearch>on</safesearch>
-				<rewrite>none</rewrite>
-				<overrewrite>none</overrewrite>
-				<description>Grupo ventas</description>
-				<enablelog>on</enablelog>
-			</config>
-			<config>
-				<disabled>on</disabled>
-				<name>Soporte</name>
-				<source>192.168.0.3</source>
-				<time>none</time>
-				<dest>All [ All]</dest>
-				<notallowingip>on</notallowingip>
-				<redirect_mode>rmod_none</redirect_mode>
-				<redirect>google.com</redirect>
-				<safesearch>on</safesearch>
-				<rewrite>none</rewrite>
-				<overrewrite>none</overrewrite>
-				<description>Testing soporte</description>
-				<enablelog>on</enablelog>
 			</config>
 		</squidguardacl>
 	</installedpackages>

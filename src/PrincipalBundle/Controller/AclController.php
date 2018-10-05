@@ -61,7 +61,14 @@ class AclController extends Controller
 	        }
 	        if($role == "ROLE_USER")
 	        {
-	        	return $this->redirectToRoute("listAcl");
+	        	$grupo=$u->getNameGroup();
+	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$querySelect = "SELECT DISTINCT cliente FROM txtip WHERE cliente = '$grupo' ORDER BY cliente ASC";
+				$stmtSelect = $db->prepare($querySelect);
+				$paramsSelect =array();
+				$stmtSelect->execute($paramsSelect);
+				$listaGrupo=$stmtSelect->fetchAll();
+				return $this->render("@Principal/target/listGroup.html.twig", array("grupo"=>$listaGrupo));
 	        }
 	    }
 		return $this->redirectToRoute("dashboard");
@@ -81,37 +88,23 @@ class AclController extends Controller
 		{
 			// Se manada llamr al asistende de base de datos
 			$em = $this->getDoctrine()->getEntityManager();
-			// Se realiza una consulta previa para saber si el nombre que se esta intentando registrar ya exite
-			$query = $em->createQuery("SELECT u FROM PrincipalBundle:Acl u WHERE u.name = :name")->setParameter("name",$form->get("name")->getData());
-			// Se guarda en una variable el resultado de la consulta
-			$resultado = $query->getResult();
-			// Si el nombre no existe en la base de datos se procede a guardar la demas informacion del formulario
-			if(count($resultado) == 0)
+			// Se guarda la informacion en la base de datos 
+			$video->setNameGroup($id);
+			$em->persist($video);
+			$flush=$em->flush();
+			// Se validad si se inserto los datos correctamente
+			if($flush == null)
 			{
-				// Se guarda la informacion en la base de datos 
-				$video->setNameGroup($id);
-				$em->persist($video);
-				$flush=$em->flush();
-				// Se validad si se inserto los datos correctamente
-				if($flush == null)
-				{
-					// Se notifica al actor que su registro fue correcto
-					$estatus="Acl group successfully registered";
-					$this->session->getFlashBag()->add("estatus",$estatus);
-					// Se redirecciona al listado
-					return $this->redirectToRoute("listAcl");
-				}
-				// De lo contrario se notifica al actor
-				else
-				{
-					$estatus="Problems with the server try later.";
-					$this->session->getFlashBag()->add("estatus",$estatus);
-				}
+				// Se notifica al actor que su registro fue correcto
+				$estatus="Acl group successfully registered";
+				$this->session->getFlashBag()->add("estatus",$estatus);
+				// Se redirecciona al listado
+				return $this->redirectToRoute("listGroupAcl");
 			}
-			// De lo contrario regresa al formulario para corregir el error
+			// De lo contrario se notifica al actor
 			else
 			{
-				$estatus="The name of the acl group you are trying to register already exists try again.";
+				$estatus="Problems with the server try later.";
 				$this->session->getFlashBag()->add("estatus",$estatus);
 			}
 		}
@@ -120,7 +113,7 @@ class AclController extends Controller
     }
 
     // Funcion para listar las acl groups del sistema 
-    public function listAclAction()
+    public function listAclAction($id)
     {
     	$authenticationUtils = $this->get("security.authentication_utils");
 		$error = $authenticationUtils->getLastAuthenticationError();
@@ -136,7 +129,7 @@ class AclController extends Controller
 	        if($role == "ROLE_SUPERUSER")
 	        {
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM acl";
+				$query = "SELECT * FROM acl WHERE namegroup = '$id'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
@@ -209,7 +202,7 @@ class AclController extends Controller
 				$estatus="Alc group successfully updated";
 				$this->session->getFlashBag()->add("estatus",$estatus);
 				// Se redirecciona al listado
-				return $this->redirectToRoute("listAcl");
+				return $this->redirectToRoute("listGroupAcl");
 			}
 			// De lo contrario se notifica al actor
 			else
@@ -246,11 +239,11 @@ class AclController extends Controller
 			$this->session->getFlashBag()->add("estatus",$estatus);
 		}
 		// Se redirecciona al listado
-		return $this->redirectToRoute("listAcl");
+		return $this->redirectToRoute("listGroupAcl");
 	}
 
 	// Funcion para crear XML de target categories
-	public function createXMLAclAction()
+	public function createXMLAclAction($id)
 	{
 		$authenticationUtils = $this->get("security.authentication_utils");
 		$error = $authenticationUtils->getLastAuthenticationError();
@@ -270,7 +263,8 @@ class AclController extends Controller
 								ac.allowip, ac.redirectmode, ac.redirect, ac.safesearch,
 								ac.rewrite, ac.rewritetime, ac.description, l.description AS log
 							FROM acl AS ac, log AS l 
-							WHERE ac.acl_id = l.id";
+							WHERE ac.acl_id = l.id
+							AND namegroup = '$id'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
@@ -312,14 +306,14 @@ class AclController extends Controller
 			    	// Se notifica al actor si hubo algun problema
 			    	$estatus="Problems with the server try later.";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listAcl");
+			    	return $this->redirectToRoute("listGroupAcl");
 			    }
 			    // Se notifica al actor que la configuracion se guardo
 			    else
 			    {
 			    	$estatus="The configuration has been saved";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listAcl");
+			    	return $this->redirectToRoute("listGroupAcl");
 			    }
 	        }
 	        if($role == "ROLE_ADMIN")
@@ -372,36 +366,41 @@ class AclController extends Controller
 			    	// Se notifica al actor si hubo algun problema
 			    	$estatus="Problems with the server try later.";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listAcl");
+			    	return $this->redirectToRoute("listGroupAcl");
 			    }
 			    // Se notifica al actor que la configuracion se guardo
 			    else
 			    {
 			    	$estatus="The configuration has been saved";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listAcl");
+			    	return $this->redirectToRoute("listGroupAcl");
 			    }
 	        }
 	    }
 	}
 
 	// funcion para correr el script aplicar cambios en target categories
-	public function aplicateXMLAclAction()
+	public function aplicateXMLAclAction($id)
 	{
-		// Se evalua si el scrip fue ejecutado correactmante con la funcion exec se puede ejecuat archivos de py
-		if(exec('python aclgroups.py'))
+	    if(!exec("python aclgroups.py"))
 	    {
-	    	// Se notifica al actor si hubo algun problema
-	    	$estatus="Problems with the server try later.";
-	    	$this->session->getFlashBag()->add("estatus",$estatus);
-	    	return $this->redirectToRoute("listAcl");
+	    	$archivoConfig = 'config.xml';
+			$destinoConfig = "Groups/$id/config.xml";
+		   	if (!copy($archivoConfig, $destinoConfig)) 
+		   	{
+			    echo "Error al copiar $archivoConfig...\n";
+			}
+			$estatus="The configuration has been saved";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+			return $this->redirectToRoute("listGroupAcl");
 	    }
 	    // Se notifica al actor que la configuracion se guardo
 	    else
 	    {
-	    	$estatus="The configuration has been saved.";
+	    	$estatus="Problems with the server try later.";
 	    	$this->session->getFlashBag()->add("estatus",$estatus);
-	    	return $this->redirectToRoute("listAcl");
+	    	//die();
+	    	return $this->redirectToRoute('listGroupAcl');
 	    }
 	}
 }

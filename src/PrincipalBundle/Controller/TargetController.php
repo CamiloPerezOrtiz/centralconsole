@@ -60,64 +60,21 @@ class TargetController extends Controller
 	        }
 	        if($role == "ROLE_USER")
 	        {
-	        	return $this->redirectToRoute("listTarget");
+	        	$grupo=$u->getNameGroup();
+	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$querySelect = "SELECT DISTINCT cliente FROM txtip WHERE cliente = '$grupo' ORDER BY cliente ASC";
+				$stmtSelect = $db->prepare($querySelect);
+				$paramsSelect =array();
+				$stmtSelect->execute($paramsSelect);
+				$listaGrupo=$stmtSelect->fetchAll();
+				return $this->render("@Principal/target/listGroup.html.twig", array("grupo"=>$listaGrupo));
 	        }
 	    }
 		return $this->redirectToRoute("dashboard");
 	}
 
-	public function txtTargetAction()
-	{
-		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
-		$em = $this->getDoctrine()->getEntityManager();
-		$db = $em->getConnection();
-
-		//Query para borrar la tabla txtip de la base de datos
-		$queryDrop = "DELETE FROM targetclient";
-		$stmtDrop = $db->prepare($queryDrop);
-		$paramsDrop =array();
-		$stmtDrop->execute($paramsDrop);
-		$flushDrop=$em->flush();
-
-		//Query para que la secuencia del contador regrese a 1
-		$queryReset = "ALTER SEQUENCE targetclient_id_seq RESTART WITH 1";
-		$stmtReset = $db->prepare($queryReset);
-		$paramsReset =array();
-		$stmtReset->execute($paramsReset);
-		$flushReset=$em->flush();
-
-		//Variable para leer el archivo informacionGrupo.txt e insertar en la tabla txtip de la base de datos
-		$filas=file('squidguarddest.txt'); 
-		foreach($filas as $value)
-		{
-			list($name, $domains, $urls,$expressions, $redirect_mode, $redirect, $description, $enablelog) = explode(":", $value);
-			 'name: '.$name.'<br/>'; 
-			 'domains: '.$domains.'<br/>'; 
-			 'urls: '.$urls.'<br/>';
-			 'expressions: '.$expressions.'<br/>'; 
-			 'redirect_mode: '.$redirect_mode.'<br/>'; 
-			 'redirect: '.$redirect.'<br/>';
-			 'description: '.$description.'<br/>'; 
-			 'enablelog: '.$enablelog.'<br/><br/>';
-			$query = "INSERT INTO targetclient(name, domains, urls, expressions, redirect_mode, redirect, description, enablelog) VALUES ('$name','$domains','$urls','$expressions','$redirect_mode','$redirect','$description','$enablelog')";
-			$stmt = $db->prepare($query);
-			$params =array();
-			$stmt->execute($params);
-			$flush=$em->flush();
-		}
-
-		$query2 = "SELECT * FROM targetclient";
-		$st = $db->prepare($query2);
-		$p =array();
-		$st->execute($p);
-		$target=$st->fetchAll();
-
-		return $this->render("@Principal/target/listTxtTarget.html.twig", array("targets"=>$target));
-		//return $this->redirectToRoute("listGroup");
-	}
-
 	// Funcion para listar las Target categories del sistema 
-	public function listTargetAction()
+	public function listTargetAction($id)
     {
 		$authenticationUtils = $this->get("security.authentication_utils");
 		$error = $authenticationUtils->getLastAuthenticationError();
@@ -133,7 +90,7 @@ class TargetController extends Controller
 	        if($role == "ROLE_SUPERUSER")
 	        {
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM target";
+				$query = "SELECT * FROM target WHERE namegroup = '$id'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
@@ -181,37 +138,23 @@ class TargetController extends Controller
 		{
 			// Se manada llamr al asistende de base de datos
 			$em = $this->getDoctrine()->getEntityManager();
-			// Se realiza una consulta previa para saber si el nombre que se esta intentando registrar ya exite
-			$query = $em->createQuery("SELECT u FROM PrincipalBundle:Target u WHERE u.name = :name")->setParameter("name",$form->get("name")->getData());
-			// Se guarda en una variable el resultado de la consulta
-			$resultado = $query->getResult();
-			// Si el nombre no existe en la base de datos se procede a guardar la demas informacion del formulario
-			if(count($resultado) == 0)
+			// Se guarda la informacion en la base de datos 
+			$video->setNameGroup($id);
+			$em->persist($video);
+			$flush=$em->flush();
+			// Se validad si se inserto los datos correctamente 
+			if($flush == null)
 			{
-				// Se guarda la informacion en la base de datos 
-				$video->setNameGroup($id);
-				$em->persist($video);
-				$flush=$em->flush();
-				// Se validad si se inserto los datos correctamente 
-				if($flush == null)
-				{
-					// Se notifica al actor que su registro fue correcto
-					$estatus="Target Categorie successfully registered";
-					$this->session->getFlashBag()->add("estatus",$estatus);
-					// Se redirecciona al listado
-					return $this->redirectToRoute("listTarget");
-				}
-				// De lo contrario se notifica al actor
-				else
-				{
-					$estatus="Problems with the server try later.";
-					$this->session->getFlashBag()->add("estatus",$estatus);
-				}
+				// Se notifica al actor que su registro fue correcto
+				$estatus="Target Categorie successfully registered";
+				$this->session->getFlashBag()->add("estatus",$estatus);
+				// Se redirecciona al listado
+				return $this->redirectToRoute("listGroupTarget");
 			}
-			// De lo contrario regresa al formulario para corregir el error
+			// De lo contrario se notifica al actor
 			else
 			{
-				$estatus="The name of the target categories you are trying to register already exists try again.";
+				$estatus="Problems with the server try later.";
 				$this->session->getFlashBag()->add("estatus",$estatus);
 			}
 		}
@@ -252,7 +195,7 @@ class TargetController extends Controller
 				$estatus="Target categorie successfully updated";
 				$this->session->getFlashBag()->add("estatus",$estatus);
 				// Se redirecciona al listado
-				return $this->redirectToRoute("listTarget");
+				return $this->redirectToRoute("listGroupTarget");
 			}
 			// De lo contrario se notifica al actor
 			else
@@ -289,11 +232,11 @@ class TargetController extends Controller
 			$this->session->getFlashBag()->add("estatus",$estatus);
 		}
 		// Se redirecciona al listado
-		return $this->redirectToRoute("listTarget");
+		return $this->redirectToRoute("listGroupTarget");
 	}
 
 	// Funcion para crear XML de target categories
-	public function createXMLTargetAction()
+	public function createXMLTargetAction($id)
 	{
 		$authenticationUtils = $this->get("security.authentication_utils");
 		$error = $authenticationUtils->getLastAuthenticationError();
@@ -308,10 +251,12 @@ class TargetController extends Controller
 	        $role=$u->getRole();
 	        if($role == "ROLE_SUPERUSER")
 	        {
+	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
 				$query = "SELECT t.id, t.name, t.domainlist, t.urllist, t.regularexpression, t.redirectmode, t.redirect, t.description, l.description AS log
 							FROM target AS t, log AS l
-								WHERE t.log_id = l.id";
+								WHERE t.log_id = l.id
+								AND t.namegroup = '$id'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
@@ -348,14 +293,14 @@ class TargetController extends Controller
 			    	// Se notifica al actor si hubo algun problema
 			    	$estatus="Problems with the server try later.";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listTarget");
+			    	return $this->redirectToRoute("listGroupTarget");
 			    }
 			    // Se notifica al actor que la configuracion se guardo
 			    else
 			    {
 			    	$estatus="The configuration has been saved";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listTarget");
+			    	return $this->redirectToRoute("listGroupTarget");
 			    }
 	        }
 	        if($role == "ROLE_ADMIN")
@@ -402,36 +347,41 @@ class TargetController extends Controller
 			    	// Se notifica al actor si hubo algun problema
 			    	$estatus="Problems with the server try later.";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listTarget");
+			    	return $this->redirectToRoute("listGroupTarget");
 			    }
 			    // Se notifica al actor que la configuracion se guardo
 			    else
 			    {
 			    	$estatus="The configuration has been saved";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listTarget");
+			    	return $this->redirectToRoute("listGroupTarget");
 			    }
 	        }
 	    }
 	}
 
 	// funcion para correr el script aplicar cambios en target categories
-	public function aplicateXMLTargetAction()
+	public function aplicateXMLTargetAction($id)
 	{
-		// Se evalua si el scrip fue ejecutado correactmante con la funcion exec se puede ejecuat archivos de py
-		if(exec('python targetcategories.py'))
+	    if(!exec("python targetcategories.py"))
 	    {
-	    	// Se notifica al actor si hubo algun problema
-	    	$estatus="Problems with the server try later.";
-	    	$this->session->getFlashBag()->add("estatus",$estatus);
-	    	return $this->redirectToRoute("listaTargetcategories");
+	    	$archivoConfig = 'config.xml';
+			$destinoConfig = "Groups/$id/config.xml";
+		   	if (!copy($archivoConfig, $destinoConfig)) 
+		   	{
+			    echo "Error al copiar $archivoConfig...\n";
+			}
+			$estatus="The configuration has been saved";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+			return $this->redirectToRoute("listGroupAliases");
 	    }
 	    // Se notifica al actor que la configuracion se guardo
 	    else
 	    {
-	    	$estatus="The configuration has been saved.";
+	    	$estatus="Problems with the server try later.";
 	    	$this->session->getFlashBag()->add("estatus",$estatus);
-	    	return $this->redirectToRoute("listTarget");
+	    	//die();
+	    	return $this->redirectToRoute('listGroupAliases');
 	    }
 	}
 }

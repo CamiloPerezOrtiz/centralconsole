@@ -1,6 +1,0 @@
-pentestering:pentester.com:pentester.com/:|pentester|:rmod_int_bim:google.com/:errorlogin:None:
-pent:pentestertester.com:pentestertester.com/:|pentestertester|:rmod_int_bim:google.com/:errorlogin:None:
-camilotest:test.com:test.com/:|test|:rmod_int_bpg:google.com/:testing:on:
-Pruebatestings2:mail.com:mail.com/:|mail|:rmod_ext_fnd:yahoo.com:Prueba #2:off:
-Pruebatesting3:192.168.0.1:192.168.0.1/prueba:|redes|juegos|:rmod_int_bim:facebook.com:Prueba #3:on:
-Pruebatesting3:192.168.0.1:192.168.0.1/prueba:|redes|juegos|:rmod_int_bim:facebook.com:Prueba #3:on:

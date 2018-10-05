@@ -97,7 +97,7 @@ registerUser:
 
 #Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
 listTarget:
-    path:     /listTarget
+    path:     /listTarget/{id}
     defaults: { _controller: PrincipalBundle:Target:listTarget }
 
 #Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
@@ -127,12 +127,12 @@ txtTarget:
 
 #Crear XML target categories controlador:TargetcategoriesController funcion crearXMLTargetcategories #
 createXMLTarget:
-    path:     /createXMLTarget
+    path:     /createXMLTarget/{id}
     defaults: { _controller: PrincipalBundle:Target:createXMLTarget}
 
 #Crear XML target categories controlador:TargetcategoriesController funcion crearXMLTargetcategories #
 aplicateXMLTarget:
-    path:     /aplicateXMLTarget 
+    path:     /aplicateXMLTarget/{id}
     defaults: { _controller: PrincipalBundle:Target:aplicateXMLTarget }
 
 ###################################################
@@ -151,7 +151,7 @@ listGroupAcl:
 
 #Listado de las acl groups controlador: AclgroupsController funcion: listaAclgroupsAction #  
 listAcl:
-    path:     /listAcl
+    path:     /listAcl/{id}
     defaults: { _controller: PrincipalBundle:Acl:listAcl }
 
 deleteAcl:
@@ -165,12 +165,12 @@ editAcl:
 
 #Crear XML acl groups controlador:AclgroupsController funcion crearXMLAclgroups #
 createXMLAcl:
-    path:     /createXMLAcl 
+    path:     /createXMLAcl/{id}
     defaults: { _controller: PrincipalBundle:Acl:createXMLAcl }
 
 #Crear XML acl groups controlador:AclgroupsController funcion crearXMLAclgroups #
 aplicateXMLAcl:
-    path:     /aplicateXMLAcl 
+    path:     /aplicateXMLAcl/{id} 
     defaults: { _controller: PrincipalBundle:Acl:aplicateXMLAcl }
 
 ###############################################
@@ -213,5 +213,5 @@ createXMLAliases:
 
 #Crear XML acl groups controlador:AliasesController funcion crearXMLAliases #
 aplicateXMLAliases:
-    path:     /aplicateXMLAliases 
+    path:     /aplicateXMLAliases/{id}
     defaults: { _controller: PrincipalBundle:Aliases:aplicateXMLAliases }

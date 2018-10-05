@@ -1,7 +1,7 @@
 {# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
 {% if app.user != null %}
     {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
-    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
         {% include '@Principal/templates/base.html.twig' %}
         {% block body %}
             <div class="content-wrapper">
@@ -18,44 +18,50 @@
                             Groups
                         </div>
                         <div class="card-body">
-                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                <a href="{{path ('listTarget') }}">
-                                    <button type="button" class="btn btn-success btn-lg">
-                                        View list target <i class="fa fa-fw fa-list"></i>
-                                    </button>
-                                </a>
-                                <br><br>
-                            {% endif %}
+                            <div class="container">
+                                <div class="col-md-11">
+                                    {# Se crea una clase de alerta para que mantega informado el estatus #}
+                                    {% for msg in app.session.flashbag().get('estatus') %}
+                                        <div class="alert alert-success" aria-label="Close">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Success!</strong> {{ msg }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                             {% if app.user.role == "ROLE_SUPERUSER" %}
-                                <div class="alert alert-primary">
-                                    <strong> Choose a group to register a new target.</strong>
+                                <div class="jumbotron bg-dark text-white">
+                                    <h1>Target categories</h1>      
+                                    <strong> Choose a group to register a new Target categories or view the list.</strong>
                                 </div>
-                                <br>
                             {% endif %}
-                            {% if app.user.role == "ROLE_ADMIN" %}
-                                <div class="alert alert-primary">
-                                    <strong> Register a new target in this group.</strong>
+                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
+                                <div class="jumbotron bg-dark text-white">
+                                    <h1>Target categories</h1>      
+                                    <strong> Vew the list of aliases.</strong>
+                                    <p>Remember you as a user, you can not add, communicate with the administrator to change roles.</p>
                                 </div>
-                                <br>
                             {% endif %}
                             <div class="row">
                                 {% for listaGrupo in grupo %}
                                     <div class="col-xl-3 col-sm-6 mb-3">
-                                        <div class="card text-white bg-info o-hidden h-100">
+                                        <div class="card text-white bg-dark o-hidden h-100">
                                             <div class="card-body">
                                                 <div class="card-body-icon">
                                                     <i class="fa fa-fw fa-list"></i>
                                                 </div>
                                                 <div class="mr-5">{{ listaGrupo.cliente }}</div>
                                             </div>
-                                            <a class="card-footer text-white clearfix small z-1" href="{{path('registerTarget',{id:listaGrupo.cliente})}}">
-                                                <span class="float-left">Register a new target in this group</span>
-                                                <span class="float-right">
-                                                    <i class="fa fa-angle-right"></i>
-                                                </span>
-                                            </a>
-                                            <a class="card-footer text-white clearfix small z-1" href="{{path('txtTarget')}}">
-                                                <span class="float-left">Server configuration</span>
+                                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                                <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerTarget',{id:listaGrupo.cliente})}}">
+                                                    <span class="float-left">Register a new target in this group</span>
+                                                    <span class="float-right">
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </span>
+                                                </a>
+                                            {% endif %}
+                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listTarget',{id:listaGrupo.cliente})}}">
+                                                <span class="float-left">View list target categories</span>
                                                 <span class="float-right">
                                                     <i class="fa fa-angle-right"></i>
                                                 </span>

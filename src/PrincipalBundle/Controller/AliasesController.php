@@ -4,6 +4,7 @@ namespace PrincipalBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 // Se importa el componente request de Symfony esto permite hacer peticiones
 use Symfony\Component\HttpFoundation\Request;
 // se importa el componete de session de Symfony esto permite declarar sessiones
@@ -92,7 +93,7 @@ class AliasesController extends Controller
 						VALUES ('$name','$description','$status','$res1','$res2', '$id')";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
-			return $this->redirectToRoute("listAliases");
+			return $this->redirectToRoute("listGroupAliases");
 		}
         // Se renderiza el formulario para que el actor lo llene los campos solicitados
         return $this->render("@Principal/aliases/registerAliases.html.twig");
@@ -125,7 +126,7 @@ class AliasesController extends Controller
 			$query = "UPDATE aliases SET name = '$name', description = '$description', status = '$status', ip = '$res1', descriptionhost = '$res2' WHERE id = '$id'";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
-			return $this->redirectToRoute("listAliases");
+			return $this->redirectToRoute("listGroupAliases");
 		}
 		return $this->render("@Principal/aliases/editAliases.html.twig", array("value"=>$array1,"value2"=>$array2,"value3"=>$listaGrupo));
 	}
@@ -202,7 +203,7 @@ class AliasesController extends Controller
 			$this->session->getFlashBag()->add("estatus",$estatus);
 		}
 		// Se redirecciona al listado
-		return $this->redirectToRoute("listAliases");
+		return $this->redirectToRoute("listGroupAliases");
 	}
 
 	// Funcion para crear XML de target categories
@@ -246,7 +247,7 @@ class AliasesController extends Controller
 				// Se termina el nombre de la etiqueta 
 				$contenido .= "</aliases>";
 				// Se crea o actualiza el archivo 
-				$archivo = fopen('conf.xml', 'w');
+				$archivo = fopen("conf.xml", 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
 				fwrite($archivo, $contenido);
 				// Se cierra el archivo 
@@ -257,7 +258,7 @@ class AliasesController extends Controller
 			    	$estatus="Problems with the server try later.";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
 			    	//die();
-			    	return $this->redirectToRoute();
+			    	return $this->redirectToRoute('listGroupAliases');
 			    }
 			    // Se notifica al actor que la configuracion se guardo
 			    else
@@ -265,18 +266,14 @@ class AliasesController extends Controller
 			    	$estatus="The configuration has been saved";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
 			    	//die();
-			    	return $this->redirectToRoute();
+			    	return $this->redirectToRoute('listGroupAliases');
 			    }
 	        }
 	        if($role == "ROLE_ADMIN")
 	        {
 	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT ac.disabled, ac.name, ac.client, ac.time, ac.targetrule, ac.allowip, ac.redirectmode, ac.redirect, ac.safesearch,
-								ac.rewrite, ac.rewritetime, ac.description, l.description AS log
-							FROM acl AS ac, log AS l 
-							WHERE ac.acl_id = l.id
-									AND ac.namegroup = '$grupo'";
+				$query = "SELECT * FROM aliases WHERE namegroup = '$id'";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
@@ -285,30 +282,22 @@ class AliasesController extends Controller
 				// Se crea un nuevo documento XML con la version 
 			    $contenido = "<?xml version='1.0'?>\n";
 			    // Se crear el nombre de la etiqueta
-				$contenido .= "<squidguardacl>\n";
+				$contenido .= "<aliases>\n";
 				// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 				foreach ($formato as $formatos) 
 				{
-					$contenido .= "\t\t\t<config>\n";
-				    $contenido .= "\t\t\t\t<disabled>" . $formatos['disabled'] . "</disabled>\n";
+					$contenido .= "\t\t\t<alias>\n";
 				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
-				    $contenido .= "\t\t\t\t<source>" . $formatos['client'] . "</source>\n";
-				    $contenido .= "\t\t\t\t<time>" . $formatos['time'] . "</time>\n";
-				    $contenido .= "\t\t\t\t<dest>" . $formatos['targetrule'] . "</dest>\n";
-				    $contenido .= "\t\t\t\t<notallowingip>" . $formatos['allowip'] . "</notallowingip>\n";
-				    $contenido .= "\t\t\t\t<redirect_mode>" . $formatos['redirectmode'] . "</redirect_mode>\n";
-				    $contenido .= "\t\t\t\t<redirect>" . $formatos['redirect'] . "</redirect>\n";
-				    $contenido .= "\t\t\t\t<safesearch>" . $formatos['safesearch'] . "</safesearch>\n";
-				    $contenido .= "\t\t\t\t<rewrite>" . $formatos['rewrite'] . "</rewrite>\n";
-				    $contenido .= "\t\t\t\t<overrewrite>" . $formatos['rewritetime'] . "</overrewrite>\n";
-				    $contenido .= "\t\t\t\t<description>" . $formatos['description'] . "</description>\n";
-				    $contenido .= "\t\t\t\t<enablelog>" . $formatos['log'] . "</enablelog>\n";
-				    $contenido .= "\t\t\t</config>\n";
+				    $contenido .= "\t\t\t\t<type>" . $formatos['status'] . "</type>\n";
+				    $contenido .= "\t\t\t\t<address>" . $formatos['ip'] . "</address>\n";
+				    $contenido .= "\t\t\t\t<descr>" . $formatos['description'] . "</descr>\n";
+				    $contenido .= "\t\t\t\t<destdetail>" . $formatos['descriptionhost'] . "</detail>\n";
+				    $contenido .= "\t\t\t</alias>\n";
 				}
 				// Se termina el nombre de la etiqueta 
-				$contenido .= "</squidguardacl>";
+				$contenido .= "</aliases>";
 				// Se crea o actualiza el archivo 
-				$archivo = fopen('conf.xml', 'w');
+				$archivo = fopen("conf.xml", 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
 				fwrite($archivo, $contenido);
 				// Se cierra el archivo 
@@ -318,36 +307,43 @@ class AliasesController extends Controller
 			    	// Se notifica al actor si hubo algun problema
 			    	$estatus="Problems with the server try later.";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listAcl");
+			    	//die();
+			    	return $this->redirectToRoute('listGroupAliases');
 			    }
 			    // Se notifica al actor que la configuracion se guardo
 			    else
 			    {
 			    	$estatus="The configuration has been saved";
 			    	$this->session->getFlashBag()->add("estatus",$estatus);
-			    	return $this->redirectToRoute("listAcl");
+			    	//die();
+			    	return $this->redirectToRoute('listGroupAliases');
 			    }
 	        }
 	    }
 	}
 
 	// funcion para correr el script aplicar cambios en target categories
-	public function aplicateXMLAclAction()
+	public function aplicateXMLAliasesAction($id)
 	{
-		// Se evalua si el scrip fue ejecutado correactmante con la funcion exec se puede ejecuat archivos de py
-		if(exec('python aclgroups.py'))
+		if(!exec("python aliases.py"))
 	    {
-	    	// Se notifica al actor si hubo algun problema
-	    	$estatus="Problems with the server try later.";
-	    	$this->session->getFlashBag()->add("estatus",$estatus);
-	    	return $this->redirectToRoute("listAcl");
+	    	$archivoConfig = 'config.xml';
+			$destinoConfig = "Groups/$id/config.xml";
+		   	if (!copy($archivoConfig, $destinoConfig)) 
+		   	{
+			    echo "Error al copiar $archivoConfig...\n";
+			}
+			$estatus="The configuration has been saved";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+			return $this->redirectToRoute("listGroupAliases");
 	    }
 	    // Se notifica al actor que la configuracion se guardo
 	    else
 	    {
-	    	$estatus="The configuration has been saved.";
+	    	$estatus="Problems with the server try later.";
 	    	$this->session->getFlashBag()->add("estatus",$estatus);
-	    	return $this->redirectToRoute("listAcl");
+	    	//die();
+	    	return $this->redirectToRoute('listGroupAliases');
 	    }
 	}
 }

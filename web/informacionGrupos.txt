@@ -7,3 +7,7 @@ Perez5|192.168.0.6|GrupoA|
 perez6|192.168.0.7|GrupoD|
 perez7|192.168.0.8|GrupoA|
 Perez8|192.168.0.9|GrupoA|
+Perez9|192.168.0.10|GrupoE|
+Perez10|192.168.0.11|GrupoF|
+Perez11|192.168.0.12|GrupoG|
+Perez12|192.168.0.13|GrupoH|

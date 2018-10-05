@@ -42,8 +42,10 @@
                                         <th>Name</th>       
                                         <th>Values</th> 
                                         <th>Group</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>    
+                                        {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        {% endif %}    
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,45 +60,46 @@
                                             <td>
                                                 {{ res.namegroup }}
                                             </td>
-                                             <td>
-                                                <a href="{{path('editAliases',{id:res.id})}}">
-                                                    <button class="btn btn-warning btn-sm" type="submit">
-                                                        Edit <i class="fa fa-pencil" aria-hidden="true"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="{{path('deleteAliases',{id:res.id})}}">
-                                                    <button class="btn btn-danger btn-sm" type="submit">
-                                                        Delete <i class="fa fa-times" aria-hidden="true"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
+                                            {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+                                                <td>
+                                                    <a href="{{path('editAliases',{id:res.id})}}">
+                                                        <button class="btn btn-warning btn-sm" type="submit">
+                                                            Edit <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <a href="{{path('deleteAliases',{id:res.id})}}">
+                                                        <button class="btn btn-danger btn-sm" type="submit">
+                                                            Delete <i class="fa fa-times" aria-hidden="true"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            {% endif %}
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            <br>
-                            <div class="card-header bg-dark text-white">Save the configuration</div>
-                            {# Se hace una evaluacion para saber si se muestra los botones para generar el XML si el actor que ingreso al sistema tiene el rol #}
                             {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                <br>
+                                <div class="card-header bg-dark text-white">Save the configuration</div>
+                                {# Se hace una evaluacion para saber si se muestra los botones para generar el XML si el actor que ingreso al sistema tiene el rol #}
                                 <br>
                                 <div class="panel-body text-center">
                                     When you do click on save button you are saving the target categories list and if you do click on apply button, the process about new configuration changes will be starting. <br>
                                     <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
                                     <div class="form-group">
-                                        {% for res in ress %}
-                                            <a href="{{path('createXMLAliases',{id:res.namegroup})}}">
-                                                <button type="button" onclick="myFunction()" class="btn btn-primary btn-lg">
-                                                    <b>
-                                                        <i class="fa fa-check-square-o"></i>   
-                                                        Save aliases list
-                                                    </b>
-                                                </button>
-                                            </a>
-                                        {% endfor %}
+                                    {% if ress == true %} 
+                                        <a href="{{path('createXMLAliases',{id:ress[0]['namegroup']})}}">
+                                            <button type="button" class="btn btn-primary btn-lg">
+                                                <b>
+                                                    <i class="fa fa-check-square-o"></i>   
+                                                    Save aliases list
+                                                </b>
+                                            </button>
+                                        </a>
                                         <br><br>
-                                        <a href="#">
+                                         <a href="{{path('aplicateXMLAliases',{id:ress[0]['namegroup']})}}">
                                             <button type="" class="btn btn-success btn-lg">
                                                 <b>
                                                     <i class="fa fa-check-square-o"></i>   
@@ -104,7 +107,7 @@
                                                 </b>
                                             </button>
                                         </a>
-                                    </div>
+                                    {% endif %} 
                                 </div>
                             {% endif %}
                         </div>

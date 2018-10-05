@@ -42,6 +42,21 @@ class GroupController extends Controller
 			$params =array();
 			$stmt->execute($params);
 			$flush=$em->flush();
+
+			/*Crear carpetas para cada grupo o cliente
+			*Si la carpeta exite ya no la crear de lo contrario si no exite la carpeta lo crea 
+			*/
+			$serv = '/var/www/html/centralconsole/web/Groups/';
+			$ruta = $serv . $cliente;
+			if(!file_exists($ruta))
+			{
+			  mkdir ($ruta);
+			  echo "Se ha creado el directorio: " . $ruta;
+			} 
+			else 
+			{
+			  echo "la ruta: " . $ruta . " ya existe ";
+			}
 		}
 		return $this->redirectToRoute("listGroup");
 	}
@@ -116,6 +131,11 @@ class GroupController extends Controller
 	
 	public function saveListIpAction($id)
 	{
+		/*$authenticationUtils = $this->get("security.authentication_utils");
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		$u = $this->getUser();
+		$role=$u->getNameGroup();*/
 		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
 		$em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
@@ -127,7 +147,7 @@ class GroupController extends Controller
 		$formato=$stmt->fetchAll();
 		$res = array("formatos"=>$formato);
 		//Varibale para abrir el archivo ipGrupos.txt y guardar las ip que tenga el grupo seleccionado
-		$file=fopen("ipGrupos.txt","w") or die("Problemas");
+		$file=fopen("Groups/$id/ipGrupos.txt","w") or die("Problemas");
 		foreach ($formato as $formatos) 
 		{
 			fputs($file,$formatos['ip']."\n");
