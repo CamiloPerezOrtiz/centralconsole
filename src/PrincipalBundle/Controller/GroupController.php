@@ -42,11 +42,19 @@ class GroupController extends Controller
 			$params =array();
 			$stmt->execute($params);
 			$flush=$em->flush();
+<<<<<<< HEAD
 
 			/*Crear carpetas para cada grupo o cliente
 			*Si la carpeta exite ya no la crear de lo contrario si no exite la carpeta lo crea 
 			*/
 			$serv = '/var/www/html/centralconsole/web/Groups/';
+=======
+			
+			/*Crear carpetas para cada grupo o cliente
+			 *Si la carpeta exite ya no la crear de lo contrario si no exite la carpeta lo crea 
+			 */
+			$serv = $_SERVER['DOCUMENT_ROOT'] . "/var/www/html/centralconsole";
+>>>>>>> 4e5eb2cbddfa87fa28719050fc07dafe7104772f
 			$ruta = $serv . $cliente;
 			if(!file_exists($ruta))
 			{
@@ -57,6 +65,26 @@ class GroupController extends Controller
 			{
 			  echo "la ruta: " . $ruta . " ya existe ";
 			}
+<<<<<<< HEAD
+=======
+			/*
+	                 *Se establecen los archivos py para ser copiados en la carpeta que se crean 
+			 *de la misma manera es estable el destino 
+			 */
+			$origenSquidGuardDest = "/var/www/html/centralconsole/web/squidguarddest.py"; 
+			$origenSquidGuardAcl = "/var/www/html/centralconsole/web/squidguardacl.py";
+			$origenAliases = "/var/www/html/centralconsole/web/aliases.py";
+			$destino = "/var/www/html/centralconsole/web/Groups/$ruta";
+			/*
+			* se crea los archivos encapa carpeta 
+			*/
+			if (file_exists($destino))
+			{      
+				copy("$origenSquidGuardDest","$destino");  
+				copy("$origenSquidGuardAcl","$destino");  
+				copy("$origenAliases","$destino");  
+		    	}
+>>>>>>> 4e5eb2cbddfa87fa28719050fc07dafe7104772f
 		}
 		return $this->redirectToRoute("listGroup");
 	}
