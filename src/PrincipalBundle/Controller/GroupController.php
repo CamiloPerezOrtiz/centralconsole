@@ -1,12 +1,9 @@
 <?php
-
 namespace PrincipalBundle\Controller;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
-
 class GroupController extends Controller
 {
 	public function txtIpAction()
@@ -14,21 +11,18 @@ class GroupController extends Controller
 		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
 		$em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
-
 		//Query para borrar la tabla txtip de la base de datos
 		$queryDrop = "DELETE FROM txtip";
 		$stmtDrop = $db->prepare($queryDrop);
 		$paramsDrop =array();
 		$stmtDrop->execute($paramsDrop);
 		$flushDrop=$em->flush();
-
 		//Query para que la secuencia del contador regrese a 1
 		$queryReset = "ALTER SEQUENCE txtip_id_seq RESTART WITH 1";
 		$stmtReset = $db->prepare($queryReset);
 		$paramsReset =array();
 		$stmtReset->execute($paramsReset);
 		$flushReset=$em->flush();
-
 		//Variable para leer el archivo informacionGrupo.txt e insertar en la tabla txtip de la base de datos
 		$filas=file('informacionGrupos.txt'); 
 		foreach($filas as $value)
@@ -42,19 +36,10 @@ class GroupController extends Controller
 			$params =array();
 			$stmt->execute($params);
 			$flush=$em->flush();
-<<<<<<< HEAD
-
 			/*Crear carpetas para cada grupo o cliente
 			*Si la carpeta exite ya no la crear de lo contrario si no exite la carpeta lo crea 
 			*/
 			$serv = '/var/www/html/centralconsole/web/Groups/';
-=======
-			
-			/*Crear carpetas para cada grupo o cliente
-			 *Si la carpeta exite ya no la crear de lo contrario si no exite la carpeta lo crea 
-			 */
-			$serv = $_SERVER['DOCUMENT_ROOT'] . "/var/www/html/centralconsole";
->>>>>>> 4e5eb2cbddfa87fa28719050fc07dafe7104772f
 			$ruta = $serv . $cliente;
 			if(!file_exists($ruta))
 			{
@@ -65,30 +50,9 @@ class GroupController extends Controller
 			{
 			  echo "la ruta: " . $ruta . " ya existe ";
 			}
-<<<<<<< HEAD
-=======
-			/*
-	                 *Se establecen los archivos py para ser copiados en la carpeta que se crean 
-			 *de la misma manera es estable el destino 
-			 */
-			$origenSquidGuardDest = "/var/www/html/centralconsole/web/squidguarddest.py"; 
-			$origenSquidGuardAcl = "/var/www/html/centralconsole/web/squidguardacl.py";
-			$origenAliases = "/var/www/html/centralconsole/web/aliases.py";
-			$destino = "/var/www/html/centralconsole/web/Groups/$ruta";
-			/*
-			* se crea los archivos encapa carpeta 
-			*/
-			if (file_exists($destino))
-			{      
-				copy("$origenSquidGuardDest","$destino");  
-				copy("$origenSquidGuardAcl","$destino");  
-				copy("$origenAliases","$destino");  
-		    	}
->>>>>>> 4e5eb2cbddfa87fa28719050fc07dafe7104772f
 		}
 		return $this->redirectToRoute("listGroup");
 	}
-
 	public function listGroupAction()
 	{
 		$authenticationUtils = $this->get("security.authentication_utils");
@@ -100,7 +64,6 @@ class GroupController extends Controller
 			//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
 			$em = $this->getDoctrine()->getEntityManager();
 	        $db = $em->getConnection();
-
 	        $role=$u->getRole();
 	        if($role == "ROLE_SUPERUSER")
 	        {
@@ -137,7 +100,6 @@ class GroupController extends Controller
 	    }
 		return $this->redirectToRoute("dashboard");
 	}
-
 	public function listGroupIpAction($id)
 	{
 		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
@@ -149,7 +111,6 @@ class GroupController extends Controller
 		$params =array();
 		$stmt->execute($params);
 		$listaGrupoIp=$stmt->fetchAll();
-
 		//Variable para abrir el archivo nombreGrupo e insertar el nombre del grupo el cual fue seleccionado
 		$file=fopen("nombreGrupo.txt","w") or die("Problemas");
 		fputs($file,$id);
@@ -183,7 +144,6 @@ class GroupController extends Controller
 		fclose($file);
 		return $this->redirectToRoute("listGroup");
 	}
-
 	public function deleteIpAction($id)
 	{
 		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine

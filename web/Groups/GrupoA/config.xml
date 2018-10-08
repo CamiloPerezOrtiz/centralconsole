@@ -1137,21 +1137,6 @@
 				<description>Grupo ventas</description>
 				<enablelog>on</enablelog>
 			</config>
-			<config>
-				<disabled>on</disabled>
-				<name>Soporte</name>
-				<source>192.168.0.3</source>
-				<time>none</time>
-				<dest>All [ All]</dest>
-				<notallowingip>on</notallowingip>
-				<redirect_mode>rmod_none</redirect_mode>
-				<redirect>google.com</redirect>
-				<safesearch>on</safesearch>
-				<rewrite>none</rewrite>
-				<overrewrite>none</overrewrite>
-				<description>Testing soporte</description>
-				<enablelog>on</enablelog>
-			</config>
 		</squidguardacl>
 	</installedpackages>
 	<nat>
