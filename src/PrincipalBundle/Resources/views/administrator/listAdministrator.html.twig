@@ -38,7 +38,7 @@
                             {% endif %}
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
+                            <div class="table-responsive-sm">
                                 {% if app.user.role == 'ROLE_SUPERUSER' %}
                                     <a href="{{path ('registerAdministrator') }}">
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#">
@@ -47,7 +47,7 @@
                                     </a>
                                 <br><br>
                                 {% endif %}
-                                <table class="table table-hover table-bordered text-center" id="dtBasicExample">
+                                <table class="table table-hover" id="dtBasicExample">
                                     <div class="container">
                                         <div class="col-md-11">
                                             {% for msg in app.session.flashbag().get('estatus') %}

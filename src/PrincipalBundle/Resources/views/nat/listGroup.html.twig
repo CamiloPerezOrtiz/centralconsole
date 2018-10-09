@@ -1,0 +1,87 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
+    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/base.html.twig' %}
+        {% block body %}
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{path('dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item active">Groups list</li>
+                    </ol>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>
+                            Groups
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="col-md-11">
+                                    {# Se crea una clase de alerta para que mantega informado el estatus #}
+                                    {% for msg in app.session.flashbag().get('estatus') %}
+                                        <div class="alert alert-success" aria-label="Close">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Success!</strong> {{ msg }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if app.user.role == "ROLE_SUPERUSER" %}
+                                <div class="jumbotron bg-dark text-white">
+                                    <h1>Nat </h1>      
+                                    <strong> Choose a group to register a new nat or view the list.</strong>
+                                </div>
+                            {% endif %}
+                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
+                                <div class="jumbotron bg-dark text-white">
+                                    <h1>Nat </h1>      
+                                    <strong> Vew the list of Nats groups.</strong>
+                                    <p>Remember you as a user, you can not add, communicate with the administrator to change roles.</p>
+                                </div>
+                            {% endif %}
+                            <div class="row">
+                                {% for listaGrupo in grupo %}
+                                    <div class="col-xl-3 col-sm-6 mb-3">
+                                        <div class="card text-white bg-dark o-hidden h-100">
+                                            <div class="card-body">
+                                                <div class="card-body-icon">
+                                                    <i class="fa fa-fw fa-list"></i>
+                                                </div>
+                                                <div class="mr-5">{{ listaGrupo.cliente }}</div>
+                                            </div>
+                                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                                <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerNat',{id:listaGrupo.cliente})}}">
+                                                    <span class="float-left">Register a new nat in this group</span>
+                                                    <span class="float-right">
+                                                        <i class="fa fa-angle-right"></i>
+                                                    </span>
+                                                </a>
+                                            {% endif %}
+                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listNat',{id:listaGrupo.cliente})}}">
+                                                <span class="float-left">View list nats</span>
+                                                <span class="float-right">
+                                                    <i class="fa fa-angle-right"></i>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    {% else %}
+        <script type="text/javascript">
+            location.href ="{{path('login')}}";
+        </script>
+    {% endif %}
+{% else %}
+    <script type="text/javascript">
+        location.href ="{{path('login')}}";
+    </script>
+{% endif %}

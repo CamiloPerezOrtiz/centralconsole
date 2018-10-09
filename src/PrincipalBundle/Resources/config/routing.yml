@@ -3,7 +3,9 @@ principal_homepage:
     defaults: { _controller: PrincipalBundle:Default:index }
 
 #######################################################
+#                                                     #
 #  Direcciones para el inicio de session              #
+#                                                     #
 #######################################################
 
 #Muestra el formulario para que el usuario realize el login correspondiente controlador: UsuarioController funcion login#
@@ -187,10 +189,6 @@ listAliases:
     path:     /listAliases/{id}
     defaults: { _controller: PrincipalBundle:Aliases:listAliases }
 
-listAliasesInformation:
-    path:     /listAliasesInformation/{id}
-    defaults: { _controller: PrincipalBundle:Aliases:listAliasesInformation }
-
 #Elimina el target categories seleccionado controlador: AliasesController funcion eliminarAliases#
 deleteAliases:
     path:     /deleteAliases/{id}
@@ -215,3 +213,44 @@ createXMLAliases:
 aplicateXMLAliases:
     path:     /aplicateXMLAliases/{id}
     defaults: { _controller: PrincipalBundle:Aliases:aplicateXMLAliases }
+
+#############################################################################
+#                                                                           #                                                 
+#       Area de nats                                                        #
+#                                                                           #
+#############################################################################
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+listGroupNat:
+    path:     /listGroupNat
+    defaults: { _controller: PrincipalBundle:Nat:listGroupNat }
+
+#Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
+listNat:
+    path:     /listNat/{id}
+    defaults: { _controller: PrincipalBundle:Nat:listNat }
+
+#Elimina el target categories seleccionado controlador: AliasesController funcion eliminarAliases#
+deleteNat:
+    path:     /deleteNat/{id}
+    defaults: { _controller: PrincipalBundle:Nat:deleteNat }
+
+#Edita el usuario el cual fue seleccionado controlador: NatController funcion editarNat#
+editNat:
+    path:     /editNat/{id}
+    defaults: { _controller: PrincipalBundle:Nat:editNat }
+
+#Registro de un nuevo target categories controlador:NatController funcion registroNatr#
+registerNat:
+    path:     /registerNat/{id} 
+    defaults: { _controller: PrincipalBundle:Nat:registerNat }
+
+#Crear XML acl groups controlador:NatController funcion crearXMLNat #
+createXMLNat:
+    path:     /createXMLNat/{id}
+    defaults: { _controller: PrincipalBundle:Nat:createXMLNat }
+
+#Crear XML acl groups controlador:NatController funcion crearXMLNat #
+aplicateXMLNat:
+    path:     /aplicateXMLNat/{id}
+    defaults: { _controller: PrincipalBundle:Nat:aplicateXMLNat }

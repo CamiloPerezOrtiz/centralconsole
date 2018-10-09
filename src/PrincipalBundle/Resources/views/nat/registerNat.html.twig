@@ -1,0 +1,322 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
+    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/base.html.twig' %}
+        {% block body %}
+            <div class="content-wrapper">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{path('dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{path('listGroupNat')}}">List nat</a>
+                        </li>
+                        <li class="breadcrumb-item active">Nat</li>
+                    </ol>
+                    <div class="card mb-1">
+                        <div class="card-header">
+                            <i class="fa fa-table"></i>
+                            Register a new nat
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="container">
+                                    <div class="container">
+                                        <div class="col-md-11">
+                                            {% for msg in app.session.flashbag().get('estatus') %}
+                                                <div class="alert alert-danger" aria-label="Close">
+                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                    <strong>Danger!</strong> {{ msg }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="card mx-auto">
+                                        <div class="card-header bg-dark text-white">Properties</div>
+                                        <form role="form" method="post">
+                                            <div class="panel-group">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">Panel with panel-default class</div>
+                                                    <div class="panel-body">Panel Content</div>
+                                                </div>
+                                            </div>
+
+                                                <div class="form-group">
+                                                    <div  class="card-body">
+                                                        <label for="exampleInputEmail1">Disabled:</label>
+                                                        <select class="form-control">
+                                                            <option value="1" >On</option>
+                                                            <option value="host">Off</option>
+                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+
+                                                <div class="form-group">
+                                                    <div  class="card-body">
+                                                        <label for="exampleInputEmail1">No RDR (NOT):</label>
+                                                        <footer class="blockquote-footer">
+                                                            This option is rarely needed. Don't use this without thorough knowledge of the implications.
+                                                        </footer>
+                                                        <select class="form-control">
+                                                            <option value="1" >On</option>
+                                                            <option value="host">Off</option>
+                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+
+                                                <div class="form-group">
+                                                    <div  class="card-body">
+                                                        <label for="exampleInputEmail1">Interface:</label>
+                                                        <footer class="blockquote-footer">
+                                                            Choose which interface this rule applies to. In most cases "WAN" is specified.
+                                                        </footer>
+                                                        <select class="form-control">
+                                                            <option value="1" >WAN</option>
+                                                            <option value="host">LAN</option>
+                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+
+                                                <div class="form-group">
+                                                    <div  class="card-body">
+                                                        <label for="exampleInputEmail1">Protocol:</label>
+                                                        <footer class="blockquote-footer">
+                                                            Choose which protocol this rule should match. In most cases "TCP" is specified.
+                                                        </footer>
+                                                        <select class="form-control">
+                                                            <option value="1" >TCP</option>
+                                                            <option value="host">UDP</option>
+                                                            <option value="1" >TCP/UDP</option>
+                                                            <option value="host">ICMP</option>
+                                                            <option value="1" >ESP</option>
+                                                            <option value="host">AH</option>
+                                                            <option value="1" >GRE</option>
+                                                            <option value="host">IPV6</option>
+                                                            <option value="host">IGMP</option>
+                                                            <option value="1" >PIM</option>
+                                                            <option value="host">OSPF</option>
+                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+
+                                                <div class="form-group">
+                                                    <div  class="card-body">
+                                                        <label for="exampleInputEmail1">Source</label>
+                                                        <footer class="blockquote-footer">
+                                                            Hide advanced
+                                                        </footer>
+                                                        <div class="form-group">
+                                                            <div class="form-row">
+                                                                <div class="col-md-2">
+                                                                    <label for="exampleInputEmail1">Invert match:</label>
+                                                                    <select class="form-control">
+                                                                        <option value="1" >On</option>
+                                                                        <option value="host">Off</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label for="exampleInputPassword1">Type</label>
+                                                                    <select class="form-control">
+                                                                        <option value="1" >Any</option>
+                                                                        <option value="host">Single host or alias</option>
+                                                                        <option value="1" >Network</option>
+                                                                        <option value="host">PPPoE clients</option>
+                                                                        <option value="1" >L2TP clientes</option>
+                                                                        <option value="host">WAN net</option>
+                                                                        <option value="1" >WAN address</option>
+                                                                        <option value="host">LAN net</option>
+                                                                        <option value="host">LAN address</option>
+                                                                     </select>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label for="exampleInputPassword1">Address/mask</label>
+                                                                    <div class="input-group mb-3">
+                                                                        <input type="text" class="form-control col-sm-8">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">/</span>
+                                                                        </div>
+                                                                        <select class="form-control col-sm-3">
+                                                                            <option></option><option value="128">128</option><option value="127">127</option><option value="126">126</option><option value="125">125</option><option value="124">124</option><option value="123">123</option><option value="122">122</option><option value="121">121</option><option value="120">120</option><option value="119">119</option><option value="118">118</option><option value="117">117</option><option value="116">116</option><option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option><option value="104">104</option><option value="103">103</option><option value="102">102</option><option value="101">101</option><option value="100">100</option><option value="99">99</option><option value="98">98</option><option value="97">97</option><option value="96">96</option><option value="95">95</option><option value="94">94</option><option value="93">93</option><option value="92">92</option><option value="91">91</option><option value="90">90</option><option value="89">89</option><option value="88">88</option><option value="87">87</option><option value="86">86</option><option value="85">85</option><option value="84">84</option><option value="83">83</option><option value="82">82</option><option value="81">81</option><option value="80">80</option><option value="79">79</option><option value="78">78</option><option value="77">77</option><option value="76">76</option><option value="75">75</option><option value="74">74</option><option value="73">73</option><option value="72">72</option><option value="71">71</option><option value="70">70</option><option value="69">69</option><option value="68">68</option><option value="67">67</option><option value="66">66</option><option value="65">65</option><option value="64">64</option><option value="63">63</option><option value="62">62</option><option value="61">61</option><option value="60">60</option><option value="59">59</option><option value="58">58</option><option value="57">57</option><option value="56">56</option><option value="55">55</option><option value="54">54</option><option value="53">53</option><option value="52">52</option><option value="51">51</option><option value="50">50</option><option value="49">49</option><option value="48">48</option><option value="47">47</option><option value="46">46</option><option value="45">45</option><option value="44">44</option><option value="43">43</option><option value="42">42</option><option value="41">41</option><option value="40">40</option><option value="39">39</option><option value="38">38</option><option value="37">37</option><option value="36">36</option><option value="35">35</option><option value="34">34</option><option value="33">33</option><option value="32">32</option><option value="31">31</option><option value="30">30</option><option value="29">29</option><option value="28">28</option><option value="27">27</option><option value="26">26</option><option value="25">25</option><option value="24">24</option><option value="23">23</option><option value="22">22</option><option value="21">21</option><option value="20">20</option><option value="19">19</option><option value="18">18</option><option value="17">17</option><option value="16">16</option><option value="15">15</option><option value="14">14</option><option value="13">13</option><option value="12">12</option><option value="11">11</option><option value="10">10</option><option value="9">9</option><option value="8">8</option><option value="7">7</option><option value="6">6</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+                                                                        </select>
+                                                                    </div>  
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+
+                                                <div class="form-group">
+                                                    <div  class="card-body">
+                                                        <label for="exampleInputEmail1">Destination</label>
+                                                        <footer class="blockquote-footer">
+                                                            Hide advanced
+                                                        </footer>
+                                                        <div class="form-group">
+                                                            <div class="form-row">
+                                                                <div class="col-md-2">
+                                                                    <label for="exampleInputEmail1">Invert match:</label>
+                                                                    <select class="form-control">
+                                                                        <option value="1" >On</option>
+                                                                        <option value="host">Off</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label for="exampleInputPassword1">Type</label>
+                                                                    <select class="form-control">
+                                                                        <option value="1" >Any</option>
+                                                                        <option value="host">Single host or alias</option>
+                                                                        <option value="1" >Network</option>
+                                                                        <option value="host">This Firewall (self)</option>
+                                                                        <option value="host">PPPoE clients</option>
+                                                                        <option value="host">WAN net</option>
+                                                                        <option value="1" >WAN address</option>
+                                                                        <option value="host">LAN net</option>
+                                                                        <option value="host">LAN address</option>
+                                                                     </select>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label for="exampleInputPassword1">Address/mask</label>
+                                                                    <div class="input-group mb-3">
+                                                                        <input type="text" class="form-control col-sm-8">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">/</span>
+                                                                        </div>
+                                                                        <select class="form-control col-sm-3">
+                                                                            <option></option><option value="128">128</option><option value="127">127</option><option value="126">126</option><option value="125">125</option><option value="124">124</option><option value="123">123</option><option value="122">122</option><option value="121">121</option><option value="120">120</option><option value="119">119</option><option value="118">118</option><option value="117">117</option><option value="116">116</option><option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option><option value="104">104</option><option value="103">103</option><option value="102">102</option><option value="101">101</option><option value="100">100</option><option value="99">99</option><option value="98">98</option><option value="97">97</option><option value="96">96</option><option value="95">95</option><option value="94">94</option><option value="93">93</option><option value="92">92</option><option value="91">91</option><option value="90">90</option><option value="89">89</option><option value="88">88</option><option value="87">87</option><option value="86">86</option><option value="85">85</option><option value="84">84</option><option value="83">83</option><option value="82">82</option><option value="81">81</option><option value="80">80</option><option value="79">79</option><option value="78">78</option><option value="77">77</option><option value="76">76</option><option value="75">75</option><option value="74">74</option><option value="73">73</option><option value="72">72</option><option value="71">71</option><option value="70">70</option><option value="69">69</option><option value="68">68</option><option value="67">67</option><option value="66">66</option><option value="65">65</option><option value="64">64</option><option value="63">63</option><option value="62">62</option><option value="61">61</option><option value="60">60</option><option value="59">59</option><option value="58">58</option><option value="57">57</option><option value="56">56</option><option value="55">55</option><option value="54">54</option><option value="53">53</option><option value="52">52</option><option value="51">51</option><option value="50">50</option><option value="49">49</option><option value="48">48</option><option value="47">47</option><option value="46">46</option><option value="45">45</option><option value="44">44</option><option value="43">43</option><option value="42">42</option><option value="41">41</option><option value="40">40</option><option value="39">39</option><option value="38">38</option><option value="37">37</option><option value="36">36</option><option value="35">35</option><option value="34">34</option><option value="33">33</option><option value="32">32</option><option value="31">31</option><option value="30">30</option><option value="29">29</option><option value="28">28</option><option value="27">27</option><option value="26">26</option><option value="25">25</option><option value="24">24</option><option value="23">23</option><option value="22">22</option><option value="21">21</option><option value="20">20</option><option value="19">19</option><option value="18">18</option><option value="17">17</option><option value="16">16</option><option value="15">15</option><option value="14">14</option><option value="13">13</option><option value="12">12</option><option value="11">11</option><option value="10">10</option><option value="9">9</option><option value="8">8</option><option value="7">7</option><option value="6">6</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+                                                                        </select>
+                                                                    </div>  
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+
+                                                <div class="form-group">
+                                                    <div  class="card-body">
+                                                        <label for="exampleInputPassword1">Description</label>
+                                                        <footer class="blockquote-footer">A description may be entered here for administrative reference (not parsed).</footer>
+                                                        <input type="text" id="description" name="description" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <hr/>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+        {% block javascripts %}
+            <script>
+                //when the Add Field button is clicked
+                $("#add").click(function (e) {
+                //Append a new row of code to the "#items" div
+                $("#items").append('<div><br><div id="items" class="form-group"><div class="form-row"><div class="col-md-6"><input type="text" name="input[]" class="form-control"></div><div class="col-md-6"><input type="text" name="input2[]" class="form-control"></div></div></div><button class="delete btn btn-danger">Delete</button></div>'); });
+                $("body").on("click", ".delete", function (e) {
+                    $(this).parent("div").remove();
+                });
+                //item tiene 3 input item2 tiene 2 input
+                function mostrar(id) {
+                    if (id == "host") {
+                        $("#host").show();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                        $("#items").show();
+                    }
+                    if (id == "network") {
+                        $("#host").hide();
+                        $("#network").show();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                        $("#items").show();
+                    }
+                    if (id == "port") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").show();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                        $("#items").show();
+                    }
+                    if (id == "url") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").show();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                        $("#items").show();
+                    }
+                    if (id == "url_ports") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").show();
+                        $("#urltable").hide();
+                        $("#urltable_ports").hide();
+                        $("#items").show();
+                    }
+                    if (id == "urltable") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").show();
+                        $("#urltable_ports").hide();
+                        $("#items").show();
+                    }
+                    if (id == "urltable_ports") {
+                        $("#host").hide();
+                        $("#network").hide();
+                        $("#port").hide();
+                        $("#url").hide();
+                        $("#url_ports").hide();
+                        $("#urltable").hide();
+                        $("#urltable_ports").show();
+                        $("#items").show();
+                    }
+                }
+                $( function() {
+                    $("#status").change( function() {
+                        if ($(this).val() === "1") {
+                            $("#id_input").prop("disabled", true);
+                        } else {
+                            $("#id_input").prop("disabled", false);
+                        }
+                    });
+                });
+            </script>
+        {% endblock %}
+    {% else %}
+        <script type="text/javascript">
+            location.href ="{{path('login')}}";
+        </script>
+    {% endif %}
+{% else %}
+    <script type="text/javascript">
+        location.href ="{{path('login')}}";
+    </script>
+{% endif %}

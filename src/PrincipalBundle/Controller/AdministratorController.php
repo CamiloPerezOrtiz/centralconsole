@@ -62,7 +62,7 @@ class AdministratorController extends Controller
 		// Se declara un nuevo usuario
 		$superUser =  new Administrator();
 		// Se manda a llamar el formulario
-		$form = $this->createForm(AdministratorAdministratorType::class,$superUser);
+		$form = $this->createForm(AdministratorType::class,$superUser);
 		$form->handleRequest($request);
 		// Se valida si el boton de enviar fue presionado y valido
 		if($form->isSubmitted() && $form->isValid())
