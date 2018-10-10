@@ -4,13 +4,13 @@
     {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
         {% include '@Principal/templates/base.html.twig' %}
         {% block body %}
-            <div class="content-wrapper">
+            <div id="content-wrapper">
                 <div class="container-fluid">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="{{path('dashboard')}}">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item">
+                        <li class="breadcrumb-item active">
                             <a href="{{path('listGroup')}}">Groups list</a>
                         </li>
                         <li class="breadcrumb-item active">
@@ -22,12 +22,12 @@
                     </ol>
                     <div class="card mb-3">
                         <div class="card-header">
-                            <i class="fa fa-table"></i>
+                            <i class="fas fa-table"></i>
                             Table ips
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-hover table-bordered text-center" id="dtBasicExample">
+                                <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Ip</th>        
@@ -44,7 +44,7 @@
                                                     <td>
                                                         <a href="{{path('deleteIp',{id:listaGrupoIp.id})}}">
                                                             <button class="btn btn-danger btn-sm" type="submit">
-                                                                Delete <i class="fa fa-times" aria-hidden="true"></i>
+                                                                Delete <i class="fas fa-trash-alt"></i>
                                                             </button>
                                                         </a>
                                                     </td>
@@ -62,10 +62,10 @@
                                         <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
                                         <div class="responsive" align="center">
                                             <a href="{{path('saveListIp',{id:grupoIp[0]['cliente']})}}">
-                                                <button type="button" onclick="myFunction()" class="btn btn-primary btn-lg">
+                                                <button type="button" onclick="myFunction()" class="btn btn-primary">
                                                     <b>
                                                         <i class="fa fa-check-square-o"></i>   
-                                                        Save IP List
+                                                        Save IP List <i class="fas fa-save"></i>
                                                     </b>
                                                 </button>
                                             </a>
@@ -73,10 +73,10 @@
                                         </div>
                                         <div class="responsive" align="center">
                                             <a href="#">
-                                                <button type="" class="btn btn-success btn-lg">
+                                                <button type="" class="btn btn-success">
                                                     <b>
                                                         <i class="fa fa-check-square-o"></i>   
-                                                        Apply to IP List
+                                                        Apply to IP List <i class="fas fa-caret-square-down"></i>
                                                     </b>
                                                 </button>
                                             </a>
@@ -110,6 +110,7 @@
                 });
             </script>
         {% endblock %}
+    </div>
     {% else %}
         <script type="text/javascript">
             location.href ="{{path('login')}}";

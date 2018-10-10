@@ -4,7 +4,7 @@
     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
         {% include '@Principal/templates/base.html.twig' %}
         {% block body %}
-            <div class="content-wrapper">
+            <div id="content-wrapper">
                 <div class="container-fluid">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -13,107 +13,109 @@
                         <li class="breadcrumb-item">
                             <a href="{{path('listGroupAliases')}}">List aliases</a>
                         </li>
-                        <li class="breadcrumb-item active">Aliases</li>
+                        <li class="breadcrumb-item active">
+                            Aliases
+                        </li>
                     </ol>
-                    <div class="card mb-1">
+                    <div class="card mb-3">
                         <div class="card-header">
-                            <i class="fa fa-table"></i>
+                            <i class="fas fa-table"></i>
                             Register a new aliases
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="container">
+                            <div class="container">
+                                {# Mensaje a pantalla de notificacion de algun error #}
                                     <div class="container">
                                         <div class="col-md-11">
                                             {% for msg in app.session.flashbag().get('estatus') %}
-                                                <div class="alert alert-danger" aria-label="Close">
+                                                <div class="alert alert-info" aria-label="Close">
                                                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                    <strong>Danger!</strong> {{ msg }}
+                                                    <strong>Info!</strong> {{ msg }}
                                                 </div>
                                             {% endfor %}
                                         </div>
                                     </div>
-                                    <div class="card mx-auto">
-                                        <div class="card-header bg-dark text-white">Properties</div>
-                                        <form role="form" method="post">
-                                            <div  class="card-body">
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Name</label>
-                                                    <footer class="blockquote-footer">The name of the alias may only consist of the characters "a-z, A-Z, 0-9 and _".</footer>
-                                                    <input type="text" id="name" name="name" class="form-control" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputPassword1">Description</label>
-                                                    <footer class="blockquote-footer">A description may be entered here for administrative reference (not parsed).</footer>
-                                                    <input type="text" id="description" name="description" class="form-control" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Type:</label>
-                                                    <select class="form-control" id="status" name="status" onChange="mostrar(this.value);">
-                                                        <option value="1" >Choose a method to complete the form</option>
-                                                        <option value="host">Host</option>
-                                                        <option value="network">Network(s)</option>
-                                                        <option value="port">Port(s)</option>
-                                                        <option value="url">URL (Ips)</option>
-                                                        <option value="url_ports">URL (Ports)</option>
-                                                        <option value="urltable">URL Table (Ips)</option>
-                                                        <option value="urltable_ports">URL Table (Ports)</option>
-                                                     </select>
-                                                </div>
+                                {# Fin de Mensaje #}
+                                <div class="card mx-auto card-register">
+                                    <div class="card-header bg-dark text-white">Properties</div>
+                                    <form method="post">
+                                        <div  class="card-body">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Name</label>
+                                                <footer class="blockquote-footer">The name of the alias may only consist of the characters "a-z, A-Z, 0-9 and _".</footer>
+                                                <input type="text" id="name" name="name" class="form-control" required>
                                             </div>
-                                            <div class="card-header bg-dark text-white">Host(s)</div>
-                                            <div  class="card-body">
-                                                <div class="form-group">
-                                                    <div id="host" style="display: none;">
-                                                        <label for="exampleInputEmail1">Hint</label> 
-                                                        <footer class="blockquote-footer">Enter as many hosts as desired. Hosts must be specified by their IP address or fully qualified domain name (FQDN). FQDN hostnames are periodically re-resolved and updated. If multiple IPs are returned by a DNS query, all are used</footer>
-                                                    </div>
-                                                    <div id="network" style="display: none;">
-                                                        <label for="exampleInputEmail1">Hint</label> 
-                                                        <footer class="blockquote-footer">Networks are specified in CIDR format. Select the CIDR mask that pertains to each entry. /32 specifies a single IPv4 host, /128 specifies a single IPv6 host, /24 specifies 255.255.255.0, /64 specifies a normal IPv6 network, etc. Hostnames (FQDNs) may also be specified, using a /32 mask for IPv4 or /128 for IPv6. </footer>
-                                                    </div>
-                                                    <div id="port" style="display: none;">
-                                                        <label for="exampleInputEmail1">Hint</label> 
-                                                        <footer class="blockquote-footer">Enter ports as desired, with a single port or port range per entry. Port ranges can be expressed by separating with a colon.</footer>
-                                                    </div>
-                                                    <div id="url" style="display: none;">
-                                                        <label for="exampleInputEmail1">Hint</label> 
-                                                        <footer class="blockquote-footer">Example: foo.bar</footer>
-                                                    </div>
-                                                    <div id="url_ports" style="display: none;">
-                                                        <label for="exampleInputEmail1">Hint</label> 
-                                                        <footer class="blockquote-footer">Example: user1</footer>
-                                                    </div>
-                                                    <div id="urltable" style="display: none;">
-                                                        <label for="exampleInputEmail1">Hint</label> 
-                                                        <footer class="blockquote-footer">Example:  </footer>
-                                                    </div>
-                                                    <div id="urltable_ports" style="display: none;">
-                                                        <label for="exampleInputEmail1">Ldap search</label> 
-                                                        <footer class="blockquote-footer">Example:  </footer>
-                                                    </div>
-                                                    <div id="items" class="form-group" style="display: none;">
-                                                        <div class="form-row">
-                                                            <div class="col-md-6">  
-                                                                <input type="text" name="input[]" class="form-control">
-                                                            </div>
-                                                            <div class="col-md-6">  
-                                                                <input type="text" name="input2[]" class="form-control">
-                                                                <br>
-                                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Description</label>
+                                                <footer class="blockquote-footer">A description may be entered here for administrative reference (not parsed).</footer>
+                                                <input type="text" id="description" name="description" class="form-control" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Type:</label>
+                                                <select class="form-control" id="status" name="status" onChange="mostrar(this.value);">
+                                                    <option value="1" >Choose a method to complete the form</option>
+                                                    <option value="host">Host</option>
+                                                    <option value="network">Network(s)</option>
+                                                    <option value="port">Port(s)</option>
+                                                    <option value="url">URL (Ips)</option>
+                                                    <option value="url_ports">URL (Ports)</option>
+                                                    <option value="urltable">URL Table (Ips)</option>
+                                                    <option value="urltable_ports">URL Table (Ports)</option>
+                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="card-header bg-dark text-white">Host(s)</div>
+                                        <div  class="card-body">
+                                            <div class="form-group">
+                                                <div id="host" style="display: none;">
+                                                    <label for="exampleInputEmail1">Hint</label> 
+                                                    <footer class="blockquote-footer">Enter as many hosts as desired. Hosts must be specified by their IP address or fully qualified domain name (FQDN). FQDN hostnames are periodically re-resolved and updated. If multiple IPs are returned by a DNS query, all are used</footer>
+                                                </div>
+                                                <div id="network" style="display: none;">
+                                                    <label for="exampleInputEmail1">Hint</label> 
+                                                    <footer class="blockquote-footer">Networks are specified in CIDR format. Select the CIDR mask that pertains to each entry. /32 specifies a single IPv4 host, /128 specifies a single IPv6 host, /24 specifies 255.255.255.0, /64 specifies a normal IPv6 network, etc. Hostnames (FQDNs) may also be specified, using a /32 mask for IPv4 or /128 for IPv6. </footer>
+                                                </div>
+                                                <div id="port" style="display: none;">
+                                                    <label for="exampleInputEmail1">Hint</label> 
+                                                    <footer class="blockquote-footer">Enter ports as desired, with a single port or port range per entry. Port ranges can be expressed by separating with a colon.</footer>
+                                                </div>
+                                                <div id="url" style="display: none;">
+                                                    <label for="exampleInputEmail1">Hint</label> 
+                                                    <footer class="blockquote-footer">Example: foo.bar</footer>
+                                                </div>
+                                                <div id="url_ports" style="display: none;">
+                                                    <label for="exampleInputEmail1">Hint</label> 
+                                                    <footer class="blockquote-footer">Example: user1</footer>
+                                                </div>
+                                                <div id="urltable" style="display: none;">
+                                                    <label for="exampleInputEmail1">Hint</label> 
+                                                    <footer class="blockquote-footer">Example:  </footer>
+                                                </div>
+                                                <div id="urltable_ports" style="display: none;">
+                                                    <label for="exampleInputEmail1">Ldap search</label> 
+                                                    <footer class="blockquote-footer">Example:  </footer>
+                                                </div>
+                                                <div id="items" class="form-group" style="display: none;">
+                                                    <div class="form-row">
+                                                        <div class="col-md-6">  
+                                                            <input type="text" name="input[]" class="form-control">
                                                         </div>
-                                                    </div>
-                                                    <div class="container-fluid">
-                                                        <div class="col-md-4">
-                                                            <div class="col"></div>
-                                                            <input type="button" id="add" class="btn btn-success" value="Add">
-                                                            <button type="submit" class="btn btn-primary" name="enviar">Save</button>
+                                                        <div class="col-md-6">  
+                                                            <input type="text" name="input2[]" class="form-control">
+                                                            <br>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="container-fluid">
+                                                    <div class="col-md-4">
+                                                        <div class="col"></div>
+                                                        <input type="button" id="add" class="btn btn-success" value="Add">
+                                                        <button type="submit" class="btn btn-primary" name="enviar">Save</button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -214,6 +216,7 @@
                 });
             </script>
         {% endblock %}
+    </div>
     {% else %}
         <script type="text/javascript">
             location.href ="{{path('login')}}";

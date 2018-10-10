@@ -5,7 +5,7 @@
         {% include '@Principal/templates/base.html.twig' %}
     {% endif %}
     {% block body %}
-        <div class="content-wrapper">
+        <div id="content-wrapper">
             <div class="container-fluid">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
@@ -15,7 +15,7 @@
                 </ol>
                 <div class="card mb-3">
                     <div class="card-header">
-                        <i class="fa fa-table"></i>
+                        <i class="fas fa-table"></i>
                         Dashboard
                     </div>
                     <div class="card-body">
@@ -24,7 +24,7 @@
                                 <div class="card text-white bg-dark o-hidden h-100">
                                     <div class="card-body">
                                         <div class="card-body-icon">
-                                            <i class="fa fa-fw fa-list"></i>
+                                            <i class="fa fa-bookmark" aria-hidden="true"></i>
                                         </div>
                                         <div class="mr-5">Aliases</div>
                                     </div>
@@ -40,7 +40,7 @@
                                 <div class="card text-white bg-dark o-hidden h-100">
                                     <div class="card-body">
                                         <div class="card-body-icon">
-                                            <i class="fa fa-certificate" aria-hidden="true"></i>
+                                            <i class="fa fa-bookmark" aria-hidden="true"></i>
                                         </div>
                                         <div class="mr-5">Target categories</div>
                                     </div>
@@ -56,7 +56,7 @@
                                 <div class="card text-white bg-dark o-hidden h-100">
                                     <div class="card-body">
                                         <div class="card-body-icon">
-                                            <i class="fa fa-fw fa-support"></i>
+                                            <i class="fa fa-bookmark" aria-hidden="true"></i>
                                         </div>
                                         <div class="mr-5">ACL groups</div>
                                     </div>
@@ -72,7 +72,7 @@
                                 <div class="card text-white bg-dark o-hidden h-100">
                                     <div class="card-body">
                                         <div class="card-body-icon">
-                                            <i class="fa fa-wpforms" aria-hidden="true"></i>
+                                            <i class="fa fa-bookmark" aria-hidden="true"></i>
                                         </div>
                                         <div class="mr-5">NAT</div>
                                     </div>
@@ -88,7 +88,7 @@
                                 <div class="card text-white bg-dark o-hidden h-100">
                                     <div class="card-body">
                                         <div class="card-body-icon">
-                                            <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                                            <i class="fa fa-bookmark" aria-hidden="true"></i>
                                         </div>
                                         <div class="mr-5">Firewall rules</div>
                                     </div>
@@ -105,6 +105,7 @@
                 </div>
             </div>
         </div>
+    </div>
     {% endblock %}
 {% else %}
     <script type="text/javascript">

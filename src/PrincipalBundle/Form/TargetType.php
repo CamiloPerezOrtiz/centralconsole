@@ -19,10 +19,8 @@ class TargetType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        
-
         $builder
-            ->add('name',TextType::class,array("label"=>"Name: ","required"=>"required","attr"=>array("class"=>"form-control")))
+            ->add('name',TextType::class,array("label"=>"Name: ","required"=>"required","attr"=>array("class"=>"form-control form-control-sm")))
             ->add('domainList',TextareaType::class,array("label"=>"Domain list: ","required"=>"required","attr"=>array("class"=>"form-control", 'rows' => '7')))
             ->add('urlList',TextareaType::class,array("label"=>"URL list: ","required"=>"required","attr"=>array("class"=>"form-control", 'rows' => '7')))
             ->add('regularExpression',TextareaType::class,array("label"=>"Regular expression: ","required"=>"required","attr"=>array("class"=>"form-control", 'rows' => '7')))

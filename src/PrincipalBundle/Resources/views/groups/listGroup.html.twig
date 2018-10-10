@@ -4,18 +4,31 @@
     {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
         {% include '@Principal/templates/base.html.twig' %}
         {% block body %}
-            <div class="content-wrapper">
+            <div id="content-wrapper">
                 <div class="container-fluid">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <a href="{{path('dashboard')}}">Dashboard</a>
                         </li>
-                        <li class="breadcrumb-item active">Groups list</li>
+                        <li class="breadcrumb-item active">
+                            {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                All user
+                            {% endif %}
+                            {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_USER' %}
+                                Your group
+                            {% endif %}
+                        </li>
                     </ol>
                     <div class="card mb-3">
                         <div class="card-header">
-                            <i class="fa fa-table"></i>
-                            Groups
+                            <i class="fas fa-table"></i>
+                            {# Se evalua que si el rol es Administrador o super administrador #}
+                            {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                All user
+                            {% endif %}
+                            {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_USER' %}
+                                Your group
+                            {% endif %}
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -56,6 +69,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         {% endblock %}
     {% else %}
         <script type="text/javascript">

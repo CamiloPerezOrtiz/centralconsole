@@ -4,7 +4,7 @@
     {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
         {% include '@Principal/templates/base.html.twig' %}
         {% block body %}
-            <div class="content-wrapper">
+            <div id="content-wrapper">
                 <div class="container-fluid">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -25,7 +25,7 @@
                     </ol>
                     <div class="card mb-3">
                         <div class="card-header">
-                            <i class="fa fa-table"></i>
+                            <i class="fas fa-table"></i>
                             {# Se evalua que si el rol es Administrador o super administrador #}
                             {% if app.user.role == 'ROLE_SUPERUSER' %}
                                 Table super user - administrator - user
@@ -38,7 +38,7 @@
                             {% endif %}
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive-sm">
+                            <div class="table-responsive">
                                 {% if app.user.role == 'ROLE_SUPERUSER' %}
                                     <a href="{{path ('registerAdministrator') }}">
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#">
@@ -47,7 +47,7 @@
                                     </a>
                                 <br><br>
                                 {% endif %}
-                                <table class="table table-hover" id="dtBasicExample">
+                                <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
                                     <div class="container">
                                         <div class="col-md-11">
                                             {% for msg in app.session.flashbag().get('estatus') %}
@@ -67,8 +67,7 @@
                                             {% if app.user.role == 'ROLE_SUPERUSER' or app.user.role == 'ROLE_ADMIN' %}
                                                 <th>Edit</th>
                                                 <th>Delete</th>
-                                            {% endif %}
-                                                                                
+                                            {% endif %}                                 
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -82,14 +81,14 @@
                                                     <td>
                                                         <a href="{{path('editAdministrator',{id:administrador.id})}}">
                                                             <button class="btn btn-warning btn-sm" type="submit">
-                                                                Edit <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                <i class="fas fa-user-edit"></i>
                                                             </button>
                                                         </a>
                                                     </td>
                                                     <td>
                                                         <a href="{{path('deleteAdministrator',{id:administrador.id})}}">
                                                             <button class="btn btn-danger btn-sm" type="submit">
-                                                                Delete <i class="fa fa-times" aria-hidden="true"></i>
+                                                                <i class="fas fa-user-minus"></i>
                                                             </button>
                                                         </a>
                                                     </td>
@@ -103,19 +102,6 @@
                     </div>
                 </div>
             </div>
-            <script>
-                $(document).ready(function () {
-                    $('#dtBasicExample').DataTable();
-                    $('.dataTables_length').addClass('bs-select');
-                });
-            </script>
-             <script>
-                window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                        $(this).remove(); 
-                    });
-                }, 4000);
-            </script>
         {% endblock %}
         {% block javascripts %}
             <script>
@@ -131,7 +117,21 @@
                     });
                 }, 4000);
             </script>
+            <script>
+                $(document).ready(function () {
+                    $('#dtBasicExample').DataTable();
+                    $('.dataTables_length').addClass('bs-select');
+                });
+            </script>
+             <script>
+                window.setTimeout(function() {
+                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                        $(this).remove(); 
+                    });
+                }, 4000);
+            </script>
         {% endblock %}
+    </div>
     {% else %}
         <script type="text/javascript">
             location.href ="{{path('login')}}";
