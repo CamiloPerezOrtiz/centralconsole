@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
-class AdministratorType extends AbstractType
+class AdministratorUserType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -23,21 +23,20 @@ class AdministratorType extends AbstractType
             ->add('email', EmailType::class,array("label"=>"Email: ","required"=>"required","attr"=>array("class"=>"form-control")))
             ->add('role',ChoiceType::class, array("label"=>"Role: ","required"=>"required","attr"=>array("class"=>"form-control"),
             'choices' => array(
+                'Super user' => 'ROLE_SUPERUSER',
                 'Administrator' => 'ROLE_ADMIN',
                 'User' => 'ROLE_USER',
             )))
             ->add('password', PasswordType::class,array("label"=>"Password: ","required"=>"required","attr"=>array("class"=>"form-control")))
             ->add('Save', SubmitType::class,array("attr"=>array("class"=>"btn btn-primary btn-block")))
         ;
-    }
-    
-    /**
+    }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'PrincipalBundle\Entity\Administrator'
+            'data_class' => 'PrincipalBundle\Entity\AdministratorUser'
         ));
     }
 
@@ -46,7 +45,7 @@ class AdministratorType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'principalbundle_administrator';
+        return 'principalbundle_administratoruser';
     }
 
 

@@ -1,4 +1,9 @@
 <?php
+
+################################################################
+# This Code Has Been Developed By Camilo Perez                 #
+################################################################
+
 namespace PrincipalBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,9 +33,9 @@ class GroupController extends Controller
 		foreach($filas as $value)
 		{
 			list($hostname, $ip, $cliente) = explode("|", $value);
-			echo 'hostname: '.$hostname.'<br/>'; 
-			echo 'ip: '.$ip.'<br/>'; 
-			echo 'cliente: '.$cliente.'<br/><br/>';
+			'hostname: '.$hostname.'<br/>'; 
+			'ip: '.$ip.'<br/>'; 
+			'cliente: '.$cliente.'<br/><br/>';
 			$query = "INSERT INTO txtip VALUES (nextval('txtip_id_seq'),'$hostname','$ip','$cliente')";
 			$stmt = $db->prepare($query);
 			$params =array();
@@ -158,6 +163,17 @@ class GroupController extends Controller
 		else
 		{
 			$estatus="Problems with the server try later.";
+		}
+		return $this->redirectToRoute("listGroup");
+	}
+
+	public function applyIpAction($id)
+	{
+		$archivoConfig = "Groups/$id/config.xml";
+		$destinoConfig = "pf.xml";
+	   	if (!copy($archivoConfig, $destinoConfig)) 
+	   	{
+		    echo "Error al copiar $archivoConfig...\n";
 		}
 		return $this->redirectToRoute("listGroup");
 	}

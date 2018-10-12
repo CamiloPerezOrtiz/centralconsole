@@ -50,6 +50,11 @@ deleteIp:
     path:     /deleteIp/{id}
     defaults: { _controller: PrincipalBundle:Group:deleteIp }
 
+#Elimina la ip del grupo el cual fue seleccionado controlador GrupoController funcion eliminarIp#
+applyIp:
+    path:     /applyIp/{id}
+    defaults: { _controller: PrincipalBundle:Group:applyIp }
+
 ######################################################
 #  Area de Dashboard                                 #
 ######################################################
@@ -77,6 +82,11 @@ listAdministrator:
 editAdministrator:
     path:     /editAdministrator/{id}
     defaults: { _controller: PrincipalBundle:Administrator:editAdministrator }
+
+#Elimina el administrador seleccionado controlador AdministratorController funcion editAdministrator#
+editAdministratorUser:
+    path:     /editAdministratorUser/{id}
+    defaults: { _controller: PrincipalBundle:Administrator:editAdministratorUser }
 
 #Edita el Administrator el cual fue seleccionado cotrolador AdministratorController funcion deleteAdministrator#
 deleteAdministrator:

@@ -77,14 +77,35 @@
                                                 <td>{{ administrador.email }}</td>
                                                 <td>{{ administrador.role }}</td>
                                                 <td>{{ administrador.namegroup }}</td>
-                                                {% if app.user.role == 'ROLE_SUPERUSER' or app.user.role == 'ROLE_ADMIN' %}
+                                                {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                                    {% if administrador.role == 'ROLE_SUPERUSER' %}
+                                                        <td>
+                                                            <a href="{{path('editAdministrator',{id:administrador.id})}}">
+                                                                <button class="btn btn-warning btn-sm" type="submit">
+                                                                    <i class="fas fa-user-edit"></i>
+                                                                </button>
+                                                            </a>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                            <a href="{{path('editAdministratorUser',{id:administrador.id})}}">
+                                                                <button class="btn btn-warning btn-sm" type="submit">
+                                                                    <i class="fas fa-user-edit"></i>
+                                                                </button>
+                                                            </a>
+                                                        </td>
+                                                    {% endif %}
+                                                {% endif %}
+                                                {% if app.user.role == 'ROLE_ADMIN' %}
                                                     <td>
-                                                        <a href="{{path('editAdministrator',{id:administrador.id})}}">
+                                                        <a href="{{path('editAdministratorUser',{id:administrador.id})}}">
                                                             <button class="btn btn-warning btn-sm" type="submit">
                                                                 <i class="fas fa-user-edit"></i>
                                                             </button>
                                                         </a>
                                                     </td>
+                                                {% endif %}
+                                                {% if app.user.role == 'ROLE_SUPERUSER' or app.user.role == 'ROLE_ADMIN' %}
                                                     <td>
                                                         <a href="{{path('deleteAdministrator',{id:administrador.id})}}">
                                                             <button class="btn btn-danger btn-sm" type="submit">

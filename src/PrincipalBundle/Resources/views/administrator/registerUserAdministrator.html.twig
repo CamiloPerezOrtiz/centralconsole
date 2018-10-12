@@ -24,13 +24,13 @@
                         <li class="breadcrumb-item active">
                             {# Se evalua que si el rol es Administrador o super administrador #}
                             {% if app.user.role == 'ROLE_SUPERUSER' %}
-                               Update a super user - administrator - user
+                                Register a super user - administrator - user
                             {% endif %}
                             {% if app.user.role == 'ROLE_ADMIN' %}
-                               Update an Administrator - user
+                                Register an Administrator - user
                             {% endif %}
                             {% if app.user.role == 'ROLE_USER' %}
-                               Update an User
+                                Register an User
                             {% endif %}
                         </li>
                     </ol>
@@ -39,10 +39,10 @@
                             <i class="fas fa-table"></i>
                             {# Se evalua que si el rol es Administrador o super administrador #}
                             {% if app.user.role == 'ROLE_SUPERUSER' %}
-                               Update super user 
+                                Register super user 
                             {% endif %}
                             {% if app.user.role == 'ROLE_ADMIN' %}
-                               Update Administrator 
+                                Register Administrator 
                             {% endif %}
                         </div>
                         <div class="card-body">
@@ -79,7 +79,7 @@
                                             </div>
                                             <div class="form-group">
                                                 {{ form_label(form.role) }}
-                                                {{ form_widget(form.role,{'disabled':'disabled' }) }}
+                                                {{ form_widget(form.role) }}
                                                 <span class="text-danger">{{ form_errors(form.role) }}</span>
                                             </div>
                                             <div class="form-group">
@@ -89,6 +89,9 @@
                                             </div>
                                             <div class="form-group">
                                                 {{ form_widget(form.Save) }}
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
                                             </div>
                                         {{ form_end(form) }}
                                     </div>

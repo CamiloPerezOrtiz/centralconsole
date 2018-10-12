@@ -74,18 +74,6 @@ function validarAclgroups()
 			});
 		return false;
 	}
-	else if (status === "ip") 
-	{
-		if(!expresionClient.test(id_input))
-		{
-			swal({
-	  				icon: "error",
-	  				title: "Field client",
-	  				text: "Enter an ip.\nExample: 192.168.0.1"
-				});
-			return false;
-		}
-	}
 	else if (status === "domain")
 	{
 		if(!expresionRedirect.test(id_input))

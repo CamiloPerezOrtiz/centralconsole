@@ -1,3 +1,6 @@
+{#################################################################
+ # This Code Has Been Developed By Camilo Perez                  #
+ #################################################################}
 {# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
 {% if app.user != null %}
     {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
@@ -49,13 +52,7 @@
                                             </a>
                                             {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
                                                 <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerUserAdministrator',{id:listaGrupo.cliente})}}">
-                                                    <span class="float-left">Register an administrator</span>
-                                                    <span class="float-right">
-                                                        <i class="fa fa-angle-right"></i>
-                                                    </span>
-                                                </a>
-                                                <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerUser',{id:listaGrupo.cliente})}}">
-                                                    <span class="float-left">Register an user</span>
+                                                    <span class="float-left">Register an administrator or user</span>
                                                     <span class="float-right">
                                                         <i class="fa fa-angle-right"></i>
                                                     </span>
