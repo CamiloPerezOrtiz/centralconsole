@@ -2,267 +2,194 @@
 {% if app.user != null %}
     {# Se hace una evaluacion para saber que plantillas cargar, dependiendo del caso del actor que ingrese al sistema #}
     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/declaracionCabezera.html.twig' %}
         {% include '@Principal/templates/base.html.twig' %}
-        {% block body %}
-            <div id="content-wrapper">
-                <div class="container-fluid">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{path('dashboard')}}">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="{{path('listGroupAcl')}}">List acl groups</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            Acl groups
-                        </li>
-                    </ol>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fas fa-table"></i>
-                            Edit a new acl groups
-                        </div>
-                        <div class="card-body">
-                            <div class="container">
-                                {# Mensaje a pantalla de notificacion de algun error #}
-                                    <div class="container">
-                                        <div class="col-md-11">
-                                            {% for msg in app.session.flashbag().get('estatus') %}
-                                                <div class="alert alert-info" aria-label="Close">
-                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                    <strong>Info!</strong> {{ msg }}
-                                                </div>
-                                            {% endfor %}
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{path('dashboard')}}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{path('listGroupAcl')}}">List acl groups</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Acl groups
+                    </li>
+                </ol>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        Edit a new acl groups
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            {# Mensaje a pantalla de notificacion de algun error #}
+                                <div class="container">
+                                    <div class="col-md-11">
+                                        {% for msg in app.session.flashbag().get('estatus') %}
+                                            <div class="alert alert-info" aria-label="Close">
+                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                <strong>Info!</strong> {{ msg }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {# Fin de Mensaje #}
+                            <div class="card mx-auto card-register">                                        
+                                <div class="card-header bg-dark text-white">General Options</div>
+                                <div  class="card-body">
+                                    {{ form_start(form, {'attr': {'onsubmit':'return validarAclgroups();'} } ) }}
+                                        <div class="form-group">   
+                                            {{ form_label(form.disabled) }}
+                                            <footer class="blockquote-footer">Check this to disable this ACL rule.</footer>
+                                            {{ form_widget(form.disabled) }}
+                                            <span class="text-danger">{{ form_errors(form.disabled) }}</span>
                                         </div>
-                                    </div>
-                                {# Fin de Mensaje #}
-                                <div class="card mx-auto card-register">                                        
-                                    <div class="card-header bg-dark text-white">General Options</div>
-                                    <div  class="card-body">
-                                        {{ form_start(form, {'attr': {'onsubmit':'return validarAclgroups();'} } ) }}
-                                            <div class="form-group">   
-                                                {{ form_label(form.disabled) }}
-                                                <footer class="blockquote-footer">Check this to disable this ACL rule.</footer>
-                                                {{ form_widget(form.disabled) }}
-                                                <span class="text-danger">{{ form_errors(form.disabled) }}</span>
-                                            </div>
-                                            <div class="form-group">   
-                                                {{ form_label(form.name) }}
-                                                <footer class="blockquote-footer">Enter a unique name of this rule here.</footer>
-                                                <footer class="blockquote-footer">The name must consist between 4 and 15 symbols [a-Z_0-9].</footer>
-                                                <footer class="blockquote-footer">The first one must be a letter.e.</footer>
-                                                {{ form_widget(form.name, { 'id': 'name' }) }}
-                                                <span class="text-danger">{{ form_errors(form.name) }}</span>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Client (source):</label>
-                                                <footer class="blockquote-footer">Enter client's IP address or domain or "username" here.</footer>
-                                                <select class="form-control" id="status" name="status" onChange="mostrar(this.value);">
-                                                    <option value="1" >Choose a method to complete the form</option>
-                                                    <option value="ip">Ip</option>
-                                                    <option value="subnet">Subnet</option>
-                                                    <option value="ipRange">IP-Range</option>
-                                                    <option value="domain">Domain</option>
-                                                    <option value="username">Username</option>
-                                                    <option value="ldapSearch">Ldap search</option>
-                                                 </select>
-                                            </div>
-                                            <div id="ip" style="display: none;">
-                                                <label for="exampleInputEmail1">Enter the ip</label> 
-                                                <footer class="blockquote-footer">Example: 192.168.0.1</footer>
-                                            </div>
-                                            <div id="subnet" style="display: none;">
-                                                <label for="exampleInputEmail1">Enter the subnet</label> 
-                                                <footer class="blockquote-footer">Example: 192.168.0.0/24 or 192.168.1.0/255.255.255.0</footer>
-                                            </div>
-                                            <div id="ipRange" style="display: none;">
-                                                <label for="exampleInputEmail1">Enter the ip - range</label> 
-                                                <footer class="blockquote-footer">Example: 192.168.1.1-192.168.1.10</footer>
-                                            </div>
-                                            <div id="domain" style="display: none;">
-                                                <label for="exampleInputEmail1">Domain</label> 
-                                                <footer class="blockquote-footer">Example: foo.bar</footer>
-                                            </div>
-                                            <div id="username" style="display: none;">
-                                                <label for="exampleInputEmail1">Username</label> 
-                                                <footer class="blockquote-footer">Example: user1</footer>
-                                            </div>
-                                            <div id="ldapSearch" style="display: none;">
-                                                <label for="exampleInputEmail1">Ldap search</label> 
-                                                <footer class="blockquote-footer">Example:  ldap://192.168.0.100/DC=domain</footer>
-                                            </div>
-                                            <div class="form-group">
-                                                {{ form_widget(form.client, { 'id': 'id_input'}) }}
-                                                <span class="text-danger">{{ form_errors(form.client) }}</span>
-                                            </div>
-                                            <div class="form-group">   
-                                                {{ form_label(form.time) }}
-                                                {{ form_widget(form.time) }}
-                                                <span class="text-danger">{{ form_errors(form.time) }}</span>
-                                            </div>
-                                            <div class="form-group">   
-                                                {{ form_label(form.targetRule) }}
-                                                {{ form_widget(form.targetRule) }}
-                                                <span class="text-danger">{{ form_errors(form.targetRule) }}</span>
-                                            </div>
-                                            <div class="form-group">   
-                                                {{ form_label(form.allowIp) }}
-                                                <footer class="blockquote-footer">To make sure that people do not by pass the URL filter by simply using the IP_Addresses instead of the FQDN you can check this option</footer>
-                                                <footer class="blockquote-footer">This option has no effect on the whitelist.</footer>
-                                                {{ form_widget(form.allowIp) }}
-                                                <span class="text-danger">{{ form_errors(form.allowIp) }}</span>
-                                            </div>
-                                            <div class="form-group">   
-                                                {{ form_label(form.redirectMode) }}
-                                                <footer class="blockquote-footer">Select redirect mode here.</footer>
-                                                <footer class="blockquote-footer">Note:If you use 'transparent proxy', then 'int' redirect mode will not accessible</footer>
-                                                <footer class="blockquote-footer">Options: ext url err page, ext url redirect, ext url as 'move', ext url as 'found'</footer>
-                                                {{ form_widget(form.redirectMode) }}
-                                                <span class="text-danger">{{ form_errors(form.redirectMode) }}</span>
-                                            </div>
-                                            <div class="form-group">   
-                                                {{ form_label(form.redirect) }}
-                                                <footer class="blockquote-footer">Enter the external redirection URL, error message or size (bytes) here.</footer>
-                                                {{ form_widget(form.redirect, { 'id': 'redirect' }) }}
-                                                <span class="text-danger">{{ form_errors(form.redirect) }}</span>
-                                            </div>
-                                            <div class="form-group">   
-                                                {{ form_label(form.safeSearch) }}
-                                                <footer class="blockquote-footer">To protect your children from adult content you can use the protected mode of search engines.</footer>
-                                                <footer class="blockquote-footer">At the moment it is sopported by Google, Yandex, Yahoo, MSN, Live Search and Bing.</footer>
-                                                <footer class="blockquote-footer">Make sure that the search engines can be accessed. It is recommended to prohibit access to others.</footer>
-                                                <footer class="blockquote-footer">Note: this option overrides 'Rewrite''setting'.</footer>
-                                                {{ form_widget(form.safeSearch) }}
-                                                <span class="text-danger">{{ form_errors(form.safeSearch) }}</span>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-row">
-                                                    <div class="col-md-7">  
-                                                        {{ form_label(form.rewrite) }}
-                                                        <footer class="blockquote-footer">Enter the rewrite condition name for this rule or leave it blank.</footer>
-                                                        {{ form_widget(form.rewrite) }}
-                                                        <span class="text-danger">{{ form_errors(form.rewrite) }}</span>
-                                                    </div>
-                                                    <div class="col-md-5">   
-                                                        {{ form_label(form.rewriteTime) }}
-                                                        <footer class="blockquote-footer">Enter the rewrite condition name for this rule or leave it blank.</footer>
-                                                        {{ form_widget(form.rewriteTime) }}
-                                                        <span class="text-danger">{{ form_errors(form.rewriteTime) }}</span>
-                                                    </div>
+                                        <div class="form-group">   
+                                            {{ form_label(form.name) }}
+                                            <footer class="blockquote-footer">Enter a unique name of this rule here.</footer>
+                                            <footer class="blockquote-footer">The name must consist between 4 and 15 symbols [a-Z_0-9].</footer>
+                                            <footer class="blockquote-footer">The first one must be a letter.e.</footer>
+                                            {{ form_widget(form.name, { 'id': 'name' }) }}
+                                            <span class="text-danger">{{ form_errors(form.name) }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1">Client (source):</label>
+                                            <footer class="blockquote-footer">Enter client's IP address or domain or "username" here.</footer>
+                                            <select class="form-control" id="status" name="status" onChange="mostrar(this.value);">
+                                                <option value="1" >Choose a method to complete the form</option>
+                                                <option value="ip">Ip</option>
+                                                <option value="subnet">Subnet</option>
+                                                <option value="ipRange">IP-Range</option>
+                                                <option value="domain">Domain</option>
+                                                <option value="username">Username</option>
+                                                <option value="ldapSearch">Ldap search</option>
+                                             </select>
+                                        </div>
+                                        <div id="ip" style="display: none;">
+                                            <label for="exampleInputEmail1">Enter the ip</label> 
+                                            <footer class="blockquote-footer">Example: 192.168.0.1</footer>
+                                        </div>
+                                        <div id="subnet" style="display: none;">
+                                            <label for="exampleInputEmail1">Enter the subnet</label> 
+                                            <footer class="blockquote-footer">Example: 192.168.0.0/24 or 192.168.1.0/255.255.255.0</footer>
+                                        </div>
+                                        <div id="ipRange" style="display: none;">
+                                            <label for="exampleInputEmail1">Enter the ip - range</label> 
+                                            <footer class="blockquote-footer">Example: 192.168.1.1-192.168.1.10</footer>
+                                        </div>
+                                        <div id="domain" style="display: none;">
+                                            <label for="exampleInputEmail1">Domain</label> 
+                                            <footer class="blockquote-footer">Example: foo.bar</footer>
+                                        </div>
+                                        <div id="username" style="display: none;">
+                                            <label for="exampleInputEmail1">Username</label> 
+                                            <footer class="blockquote-footer">Example: user1</footer>
+                                        </div>
+                                        <div id="ldapSearch" style="display: none;">
+                                            <label for="exampleInputEmail1">Ldap search</label> 
+                                            <footer class="blockquote-footer">Example:  ldap://192.168.0.100/DC=domain</footer>
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.client, { 'id': 'id_input'}) }}
+                                            <span class="text-danger">{{ form_errors(form.client) }}</span>
+                                        </div>
+                                        <div class="form-group">   
+                                            {{ form_label(form.time) }}
+                                            {{ form_widget(form.time) }}
+                                            <span class="text-danger">{{ form_errors(form.time) }}</span>
+                                        </div>
+                                        <div class="form-group">   
+                                            {{ form_label(form.targetRule) }}
+                                            {{ form_widget(form.targetRule) }}
+                                            <span class="text-danger">{{ form_errors(form.targetRule) }}</span>
+                                        </div>
+                                        <div class="form-group">   
+                                            {{ form_label(form.allowIp) }}
+                                            <footer class="blockquote-footer">To make sure that people do not by pass the URL filter by simply using the IP_Addresses instead of the FQDN you can check this option</footer>
+                                            <footer class="blockquote-footer">This option has no effect on the whitelist.</footer>
+                                            {{ form_widget(form.allowIp) }}
+                                            <span class="text-danger">{{ form_errors(form.allowIp) }}</span>
+                                        </div>
+                                        <div class="form-group">   
+                                            {{ form_label(form.redirectMode) }}
+                                            <footer class="blockquote-footer">Select redirect mode here.</footer>
+                                            <footer class="blockquote-footer">Note:If you use 'transparent proxy', then 'int' redirect mode will not accessible</footer>
+                                            <footer class="blockquote-footer">Options: ext url err page, ext url redirect, ext url as 'move', ext url as 'found'</footer>
+                                            {{ form_widget(form.redirectMode) }}
+                                            <span class="text-danger">{{ form_errors(form.redirectMode) }}</span>
+                                        </div>
+                                        <div class="form-group">   
+                                            {{ form_label(form.redirect) }}
+                                            <footer class="blockquote-footer">Enter the external redirection URL, error message or size (bytes) here.</footer>
+                                            {{ form_widget(form.redirect, { 'id': 'redirect' }) }}
+                                            <span class="text-danger">{{ form_errors(form.redirect) }}</span>
+                                        </div>
+                                        <div class="form-group">   
+                                            {{ form_label(form.safeSearch) }}
+                                            <footer class="blockquote-footer">To protect your children from adult content you can use the protected mode of search engines.</footer>
+                                            <footer class="blockquote-footer">At the moment it is sopported by Google, Yandex, Yahoo, MSN, Live Search and Bing.</footer>
+                                            <footer class="blockquote-footer">Make sure that the search engines can be accessed. It is recommended to prohibit access to others.</footer>
+                                            <footer class="blockquote-footer">Note: this option overrides 'Rewrite''setting'.</footer>
+                                            {{ form_widget(form.safeSearch) }}
+                                            <span class="text-danger">{{ form_errors(form.safeSearch) }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-row">
+                                                <div class="col-md-7">  
+                                                    {{ form_label(form.rewrite) }}
+                                                    <footer class="blockquote-footer">Enter the rewrite condition name for this rule or leave it blank.</footer>
+                                                    {{ form_widget(form.rewrite) }}
+                                                    <span class="text-danger">{{ form_errors(form.rewrite) }}</span>
+                                                </div>
+                                                <div class="col-md-5">   
+                                                    {{ form_label(form.rewriteTime) }}
+                                                    <footer class="blockquote-footer">Enter the rewrite condition name for this rule or leave it blank.</footer>
+                                                    {{ form_widget(form.rewriteTime) }}
+                                                    <span class="text-danger">{{ form_errors(form.rewriteTime) }}</span>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                <div class="form-row">
-                                                    <div class="col-md-7">   
-                                                        {{ form_label(form.description) }}
-                                                        <footer class="blockquote-footer">You may enter any description here for your reference.</footer>
-                                                        {{ form_widget(form.description, { 'id': 'description' }) }}
-                                                        <span class="text-danger">{{ form_errors(form.description) }}</span>
-                                                    </div>
-                                                    <div class="col-md-5">  
-                                                        {{ form_label(form.log) }}
-                                                        <footer class="blockquote-footer">
-                                                            Check this option to enable.
-                                                        </footer>
-                                                        {{ form_widget(form.log) }}
-                                                        <span class="text-danger">{{ form_errors(form.log) }}</span>
-                                                    </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-row">
+                                                <div class="col-md-7">   
+                                                    {{ form_label(form.description) }}
+                                                    <footer class="blockquote-footer">You may enter any description here for your reference.</footer>
+                                                    {{ form_widget(form.description, { 'id': 'description' }) }}
+                                                    <span class="text-danger">{{ form_errors(form.description) }}</span>
+                                                </div>
+                                                <div class="col-md-5">  
+                                                    {{ form_label(form.log) }}
+                                                    <footer class="blockquote-footer">
+                                                        Check this option to enable.
+                                                    </footer>
+                                                    {{ form_widget(form.log) }}
+                                                    <span class="text-danger">{{ form_errors(form.log) }}</span>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
-                                                {{ form_widget(form.Save) }}
-                                            </div>
-                                            <div class="text-center">
-                                                <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
-                                            </div>
-                                        {{ form_end(form) }}
-                                    </div>
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.Save) }}
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
+                                        </div>
+                                    {{ form_end(form) }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endblock %}
-        {% block javascripts %}
-            <script src="{{ asset ('js/jsPagina/validarAclgroups.js') }}"></script>
-            <script>
-                function mostrar(id) {
-                    if (id == "ip") {
-                        $("#ip").show();
-                        $("#subnet").hide();
-                        $("#ipRange").hide();
-                        $("#domain").hide();
-                        $("#username").hide();
-                        $("#ldapSearch").hide();
-                    }
-                    if (id == "subnet") {
-                        $("#ip").hide();
-                        $("#subnet").show();
-                        $("#ipRange").hide();
-                        $("#domain").hide();
-                        $("#username").hide();
-                        $("#ldapSearch").hide();
-                    }
-                    if (id == "ipRange") {
-                        $("#ip").hide();
-                        $("#subnet").hide();
-                        $("#ipRange").show();
-                        $("#domain").hide();
-                        $("#username").hide();
-                        $("#ldapSearch").hide();
-                    }
-                    if (id == "domain") {
-                        $("#ip").hide();
-                        $("#subnet").hide();
-                        $("#ipRange").hide();
-                        $("#domain").show();
-                        $("#username").hide();
-                        $("#ldapSearch").hide();
-                    }
-                    if (id == "username") {
-                        $("#ip").hide();
-                        $("#subnet").hide();
-                        $("#ipRange").hide();
-                        $("#domain").hide();
-                        $("#username").show();
-                        $("#ldapSearch").hide();
-                    }
-                    if (id == "ldapSearch") {
-                        $("#ip").hide();
-                        $("#subnet").hide();
-                        $("#ipRange").hide();
-                        $("#domain").hide();
-                        $("#username").hide();
-                        $("#ldapSearch").show();
-                    }
-                }
-                $( function() {
-                    $("#status").change( function() {
-                        if ($(this).val() === "1") {
-                            $("#id_input").prop("disabled", true);
-                        } else {
-                            $("#id_input").prop("disabled", false);
-                        }
-                    });
-                });
-            </script>
-            <script>
-                window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                        $(this).remove(); 
-                    });
-                }, 4000);
-            </script>
-        {% endblock %}
-    </div>
+        </div>
+        {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+        <script src="{{ asset ('js/jsPagina/validarAclgroups.js') }}"></script>
+        <script src="{{ asset ('js/jsPagina/mostrarRegisterAcl.js') }}"></script>
+        {% include '@Principal/templates/declaracionFin.html.twig' %}
     {% else %}
-        <script type="text/javascript">
-            location.href ="{{path('login')}}";
-        </script>
+        <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
     {% endif %}
 {% else %}
-    <script type="text/javascript">
-        location.href ="{{path('login')}}";
-    </script>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
 {% endif %}

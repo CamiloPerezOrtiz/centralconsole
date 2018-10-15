@@ -1,9 +1,3 @@
-/*!
- * Start Bootstrap - SB Admin v5.0.2 (https://startbootstrap.com/template-overviews/sb-admin)
- * Copyright 2013-2018 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-sb-admin/blob/master/LICENSE)
- */
-
 html {
   position: relative;
   min-height: 100%;
@@ -372,4 +366,11 @@ body.sidebar-toggled footer.sticky-footer {
   body.sidebar-toggled footer.sticky-footer {
     width: calc(100% - 90px);
   }
+}
+
+.footer-bottom{
+  position: absolute;
+  bottom: 0;
+  width: calc(106% - 100px);
+  background-color: #343a40;
 }

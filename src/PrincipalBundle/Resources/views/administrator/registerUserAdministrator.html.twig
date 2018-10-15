@@ -2,124 +2,118 @@
 {% if app.user != null %}
     {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
     {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+        {% include '@Principal/templates/declaracionCabezera.html.twig' %}
         {% include '@Principal/templates/base.html.twig' %}
-        {% block body %}
-            <div id="content-wrapper">
-                <div class="container-fluid">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{path('dashboard')}}">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="{{path('listAdministrator')}}">
-                                {# Se evalua que si el rol es Administrador o super administrador #}
-                                {% if app.user.role == 'ROLE_SUPERUSER' %}
-                                    List super user
-                                {% endif %}
-                                {% if app.user.role == 'ROLE_ADMIN' %}
-                                    List Administrator
-                                {% endif %}
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item active">
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{path('dashboard')}}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{path('listAdministrator')}}">
                             {# Se evalua que si el rol es Administrador o super administrador #}
                             {% if app.user.role == 'ROLE_SUPERUSER' %}
-                                Register a super user - administrator - user
+                                List super user
                             {% endif %}
                             {% if app.user.role == 'ROLE_ADMIN' %}
-                                Register an Administrator - user
+                                List Administrator
                             {% endif %}
-                            {% if app.user.role == 'ROLE_USER' %}
-                                Register an User
-                            {% endif %}
-                        </li>
-                    </ol>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fas fa-table"></i>
-                            {# Se evalua que si el rol es Administrador o super administrador #}
-                            {% if app.user.role == 'ROLE_SUPERUSER' %}
-                                Register super user 
-                            {% endif %}
-                            {% if app.user.role == 'ROLE_ADMIN' %}
-                                Register Administrator 
-                            {% endif %}
-                        </div>
-                        <div class="card-body">
-                            <div class="container">
-                                {# Mensaje a pantalla de notificacion de algun error #}
-                                    <div class="container">
-                                        <div class="col-md-11">
-                                            {% for msg in app.session.flashbag().get('estatus') %}
-                                                <div class="alert alert-info" aria-label="Close">
-                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                    <strong>Info!</strong> {{ msg }}
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        {# Se evalua que si el rol es Administrador o super administrador #}
+                        {% if app.user.role == 'ROLE_SUPERUSER' %}
+                            Register a super user - administrator - user
+                        {% endif %}
+                        {% if app.user.role == 'ROLE_ADMIN' %}
+                            Register an Administrator - user
+                        {% endif %}
+                        {% if app.user.role == 'ROLE_USER' %}
+                            Register an User
+                        {% endif %}
+                    </li>
+                </ol>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        {# Se evalua que si el rol es Administrador o super administrador #}
+                        {% if app.user.role == 'ROLE_SUPERUSER' %}
+                            Register super user 
+                        {% endif %}
+                        {% if app.user.role == 'ROLE_ADMIN' %}
+                            Register Administrator 
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            {# Mensaje a pantalla de notificacion de algun error #}
+                                <div class="container">
+                                    <div class="col-md-11">
+                                        {% for msg in app.session.flashbag().get('estatus') %}
+                                            <div class="alert alert-info" aria-label="Close">
+                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                <strong>Info!</strong> {{ msg }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {# Fin de Mensaje #}
+                            <div class="card card-register mx-auto mt-5">
+                                <div class="card-header bg-dark text-white">Register an Account</div>
+                                <div class="card-body">
+                                    {{ form_start(form, {'attr': {'onsubmit':'return validarRegistroAdministrador();'} } ) }}
+                                        <div class="form-group">
+                                            <div class="form-row">
+                                                <div class="col-md-6">
+                                                    {{ form_label(form.name) }}
+                                                    {{ form_widget(form.name) }}
+                                                    <span class="text-danger">{{ form_errors(form.name) }}</span>
                                                 </div>
-                                            {% endfor %}
+                                                <div class="col-md-6">
+                                                    {{ form_label(form.email) }}
+                                                    {{ form_widget(form.email) }}
+                                                    <span class="text-danger">{{ form_errors(form.email) }}</span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                {# Fin de Mensaje #}
-                                <div class="card card-register mx-auto mt-5">
-                                    <div class="card-header bg-dark text-white">Register an Account</div>
-                                    <div class="card-body">
-                                        {{ form_start(form, {'attr': {'onsubmit':'return validarRegistroAdministrador();'} } ) }}
-                                            <div class="form-group">
-                                                <div class="form-row">
-                                                    <div class="col-md-6">
-                                                        {{ form_label(form.name) }}
-                                                        {{ form_widget(form.name) }}
-                                                        <span class="text-danger">{{ form_errors(form.name) }}</span>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        {{ form_label(form.email) }}
-                                                        {{ form_widget(form.email) }}
-                                                        <span class="text-danger">{{ form_errors(form.email) }}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                {{ form_label(form.role) }}
-                                                {{ form_widget(form.role) }}
-                                                <span class="text-danger">{{ form_errors(form.role) }}</span>
-                                            </div>
-                                            <div class="form-group">
-                                                {{ form_label(form.password) }}
-                                                {{ form_widget(form.password) }}
-                                                <span class="text-danger">{{ form_errors(form.password) }}</span>
-                                            </div>
-                                            <div class="form-group">
-                                                {{ form_widget(form.Save) }}
-                                            </div>
-                                            <div class="text-center">
-                                                <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
-                                            </div>
-                                        {{ form_end(form) }}
-                                    </div>
+                                        <div class="form-group">
+                                            {{ form_label(form.role) }}
+                                            {{ form_widget(form.role) }}
+                                            <span class="text-danger">{{ form_errors(form.role) }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_label(form.password) }}
+                                            {{ form_widget(form.password) }}
+                                            <span class="text-danger">{{ form_errors(form.password) }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.Save) }}
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
+                                        </div>
+                                    {{ form_end(form) }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endblock %}
-        {% block javascripts %}
-            <script src="{{ asset ('js/jsPagina/validarRegistroAdministrador.js') }}"></script>
-            <script>
-                window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                        $(this).remove(); 
-                    });
-                }, 4000);
-            </script>
-        {% endblock %}
-    </div>
-    {% else %}
-        <script type="text/javascript">
-            location.href ="{{path('login')}}";
+        </div>
+        {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+        <script src="{{ asset ('js/jsPagina/validarRegistroAdministrador.js') }}"></script>
+        <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 4000);
         </script>
+        {% include '@Principal/templates/declaracionFin.html.twig' %}
+    {% else %}
+        <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
     {% endif %}
 {% else %}
-    <script type="text/javascript">
-        location.href ="{{path('login')}}";
-    </script>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
 {% endif %}

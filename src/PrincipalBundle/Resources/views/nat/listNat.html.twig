@@ -1,154 +1,148 @@
 {# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
 {% if app.user != null %}
-    {# Se hace una evaluacion para saber que plantillas cargar, dependiendo del caso del actor que ingrese al sistema #}
-    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
-        {% include '@Principal/templates/base.html.twig' %}
-    {% endif %}
-    {% block body %}
-    	<div id="content-wrapper">
-            <div class="container-fluid">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="{{path('dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        <a href="{{path('listGroupAcl')}}">List acl groups</a>
-                    </li>
-                    <li class="breadcrumb-item active">
-                        Acl groups
-                    </li>
-                </ol>
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fas fa-table"></i>
-                        Table acl groups
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            {# Mensaje a pantalla de notificacion de algun error #}
-                                <div class="container">
-                                    <div class="col-md-11">
-                                        {% for msg in app.session.flashbag().get('estatus') %}
-                                            <div class="alert alert-info" aria-label="Close">
-                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                <strong>Info!</strong> {{ msg }}
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {# Fin de Mensaje #}     
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home">Port forward</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu1">1:1</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div id="home" class="container tab-pane active"><br>
-                                    <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
-                                        <thead class="bg-dark text-white">
-                                            <tr>
-                                                <th>Disabled</th>                         
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <th>Group</th>
-                                                {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                                    <th>Edit</th>
-                                                    <th>Delete</th>
-                                                {% endif %}                 
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for acl in acls %}
-                                                <tr>
-                                                    <td>{{ acl.disabled }}</td>
-                                                    <td>{{ acl.name }}</td>
-                                                    <td>{{ acl.description }}</td>
-                                                    <td>{{ acl.namegroup }}</td>
-                                                    {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
-                                                    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                                        <td>
-                                                            <a href="{{path('editAcl',{id:acl.id})}}">
-                                                                <button class="btn btn-warning btn-sm" type="submit">
-                                                                    Edit <i class="far fa-edit"></i>
-                                                                </button>
-                                                            </a>
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{path('deleteAcl',{id:acl.id})}}">
-                                                                <button class="btn btn-danger btn-sm" type="submit">
-                                                                    Delete <i class="fas fa-times-circle"></i>
-                                                                </button>
-                                                            </a>
-                                                        </td>
-                                                    {% endif %}
-                                                </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div id="menu1" class="container tab-pane fade"><br>
-                                    <h3>Menu 1</h3>
-                                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+    {% include '@Principal/templates/declaracionCabezera.html.twig' %}
+    {% include '@Principal/templates/base.html.twig' %}
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{path('dashboard')}}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    <a href="{{path('listGroupAcl')}}">List acl groups</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Acl groups
+                </li>
+            </ol>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Table acl groups
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        {# Mensaje a pantalla de notificacion de algun error #}
+                            <div class="container">
+                                <div class="col-md-11">
+                                    {% for msg in app.session.flashbag().get('estatus') %}
+                                        <div class="alert alert-info" aria-label="Close">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Info!</strong> {{ msg }}
+                                        </div>
+                                    {% endfor %}
                                 </div>
                             </div>
-                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                <br>
-                                <div class="card-header bg-dark text-white">Save the configuration</div>
-                                {# Se hace una evaluacion para saber si se muestra los botones para generar el XML si el actor que ingreso al sistema tiene el rol #}
-                                <br>
-                                <div class="panel-body text-center">
-                                    When you do click on save button you are saving the acl list and if you do click on apply button, the process about new configuration changes will be starting. <br>
-                                    <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
-                                    <div class="form-group">
-                                        {% if acls == true %} 
-                                            <a href="{{path('createXMLAcl',{id:acls[0]['namegroup']})}}">
-                                                <button type="button" class="btn btn-primary">
-                                                    <b> 
-                                                        Save acl nats list <i class="fas fa-save"></i>
-                                                    </b>
-                                                </button>
-                                            </a>
-                                            <br><br>
-                                            <a href="{{path('aplicateXMLAcl',{id:acls[0]['namegroup']})}}">
-                                                <button type="" class="btn btn-success">
-                                                    <b> 
-                                                        Apply to nats list <i class="fas fa-caret-square-down"></i>
-                                                    </b>
-                                                </button>
-                                            </a>
-                                        {% endif %} 
-                                    </div>
-                                </div>
-                            {% endif %}
+                        {# Fin de Mensaje #}     
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#home">Port forward</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#menu1">1:1</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="home" class="container tab-pane active"><br>
+                                <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
+                                    <thead class="bg-dark text-white">
+                                        <tr>
+                                            <th>Disabled</th>                         
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Group</th>
+                                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            {% endif %}                 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for acl in acls %}
+                                            <tr>
+                                                <td>{{ acl.disabled }}</td>
+                                                <td>{{ acl.name }}</td>
+                                                <td>{{ acl.description }}</td>
+                                                <td>{{ acl.namegroup }}</td>
+                                                {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
+                                                {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                                    <td>
+                                                        <a href="{{path('editAcl',{id:acl.id})}}">
+                                                            <button class="btn btn-warning btn-sm" type="submit">
+                                                                Edit <i class="far fa-edit"></i>
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{path('deleteAcl',{id:acl.id})}}">
+                                                            <button class="btn btn-danger btn-sm" type="submit">
+                                                                Delete <i class="fas fa-times-circle"></i>
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="menu1" class="container tab-pane fade"><br>
+                                <h3>Menu 1</h3>
+                                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            </div>
                         </div>
+                        {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                            <br>
+                            <div class="card-header bg-dark text-white">Save the configuration</div>
+                            {# Se hace una evaluacion para saber si se muestra los botones para generar el XML si el actor que ingreso al sistema tiene el rol #}
+                            <br>
+                            <div class="panel-body text-center">
+                                When you do click on save button you are saving the acl list and if you do click on apply button, the process about new configuration changes will be starting. <br>
+                                <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
+                                <div class="form-group">
+                                    {% if acls == true %} 
+                                        <a href="{{path('createXMLAcl',{id:acls[0]['namegroup']})}}">
+                                            <button type="button" class="btn btn-primary">
+                                                <b> 
+                                                    Save acl nats list <i class="fas fa-save"></i>
+                                                </b>
+                                            </button>
+                                        </a>
+                                        <br><br>
+                                        <a href="{{path('aplicateXMLAcl',{id:acls[0]['namegroup']})}}">
+                                            <button type="" class="btn btn-success">
+                                                <b> 
+                                                    Apply to nats list <i class="fas fa-caret-square-down"></i>
+                                                </b>
+                                            </button>
+                                        </a>
+                                    {% endif %} 
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-          	</div>
-        </div>
-    {% endblock %}
-    {% block javascripts %}
-        <script>
-            $(document).ready(function () {
-                $('#dtBasicExample').DataTable();
-                $('.dataTables_length').addClass('bs-select');
-            });
-        </script>
-        {# Se hace una evaluacion para saber si cargar el script, si el actor que esta en el sistema es el adecuado #}
-        {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-            <script>
-                window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                        $(this).remove(); 
-                    });
-                }, 4000);
-            </script>
-        {% endif %}
-    {% endblock %}
-{% else %}
-    <script type="text/javascript">
-        location.href ="{{path('login')}}";
+            </div>
+      	</div>
+    </div>
+    {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+    <script>
+        $(document).ready(function () {
+            $('#dtBasicExample').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
     </script>
+    {# Se hace una evaluacion para saber si cargar el script, si el actor que esta en el sistema es el adecuado #}
+    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 4000);
+        </script>
+    {% endif %}
+    {% include '@Principal/templates/declaracionFin.html.twig' %}
+{% else %}
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
 {% endif %}

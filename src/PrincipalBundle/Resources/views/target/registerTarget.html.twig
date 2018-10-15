@@ -2,151 +2,145 @@
 {% if app.user != null %}
     {# Se hace una evaluacion para saber que plantillas cargar, dependiendo del caso del actor que ingrese al sistema #}
     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/declaracionCabezera.html.twig' %}
         {% include '@Principal/templates/base.html.twig' %}
-        {% block body %}
-            <div id="content-wrapper">
-                <div class="container-fluid">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{path('dashboard')}}">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="{{path('listGroupTarget')}}">List target categories</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            Target categories
-                        </li>
-                    </ol>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fas fa-table"></i>
-                            Register a new target categories
-                        </div>
-                        <div class="card-body">
-                            <div class="container">
-                                {# Mensaje a pantalla de notificacion de algun error #}
-                                    <div class="container">
-                                        <div class="col-md-11">
-                                            {% for msg in app.session.flashbag().get('estatus') %}
-                                                <div class="alert alert-info" aria-label="Close">
-                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                    <strong>Info!</strong> {{ msg }}
-                                                </div>
-                                            {% endfor %}
-                                        </div>
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{path('dashboard')}}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{path('listGroupTarget')}}">List target categories</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Target categories
+                    </li>
+                </ol>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        Register a new target categories
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            {# Mensaje a pantalla de notificacion de algun error #}
+                                <div class="container">
+                                    <div class="col-md-11">
+                                        {% for msg in app.session.flashbag().get('estatus') %}
+                                            <div class="alert alert-info" aria-label="Close">
+                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                <strong>Info!</strong> {{ msg }}
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                {# Fin de Mensaje #}
-                                <div class="card mx-auto card-register">
-                                    <div class="card-header bg-dark text-white">General Options</div>
-                                        {{ form_start(form, {'attr': {'onsubmit':'return validarTargetcategories();'} } ) }}
-                                            <div class="form-group">
-                                                <div  class="card-body">
-                                                    {{ form_label(form.name) }}
-                                                    <footer class="blockquote-footer">The name must be unique.</footer>
-                                                    <footer class="blockquote-footer">The name must consist between 4 and 15 symbols [a-z A-Z 0-9].</footer>
-                                                    <footer class="blockquote-footer">The first one must be a letter.</footer>
-                                                    {{ form_widget(form.name, { 'id': 'name' }) }}
-                                                    <span class="text-danger">{{ form_errors(form.name) }}</span>
-                                                </div>
-                                                <hr>
+                                </div>
+                            {# Fin de Mensaje #}
+                            <div class="card mx-auto card-register">
+                                <div class="card-header bg-dark text-white">General Options</div>
+                                    {{ form_start(form, {'attr': {'onsubmit':'return validarTargetcategories();'} } ) }}
+                                        <div class="form-group">
+                                            <div  class="card-body">
+                                                {{ form_label(form.name) }}
+                                                <footer class="blockquote-footer">The name must be unique.</footer>
+                                                <footer class="blockquote-footer">The name must consist between 4 and 15 symbols [a-z A-Z 0-9].</footer>
+                                                <footer class="blockquote-footer">The first one must be a letter.</footer>
+                                                {{ form_widget(form.name, { 'id': 'name' }) }}
+                                                <span class="text-danger">{{ form_errors(form.name) }}</span>
                                             </div>
-                                            <div class="form-group">
-                                                <div  class="card-body">
-                                                    {{ form_label(form.domainList) }}
-                                                    <footer class="blockquote-footer">Enter destination domains or IP-addresses here.</footer>
-                                                    <footer class="blockquote-footer">To separate them use space.</footer>
-                                                    <footer class="blockquote-footer">Example: mail.com yahoo.com 192.168.0.1</footer>
-                                                    {{ form_widget(form.domainList, { 'id': 'domainList' }) }}
-                                                    <span class="text-danger">{{ form_errors(form.domainList) }}</span>
-                                                </div>
-                                                <hr>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group">
+                                            <div  class="card-body">
+                                                {{ form_label(form.domainList) }}
+                                                <footer class="blockquote-footer">Enter destination domains or IP-addresses here.</footer>
+                                                <footer class="blockquote-footer">To separate them use space.</footer>
+                                                <footer class="blockquote-footer">Example: mail.com yahoo.com 192.168.0.1</footer>
+                                                {{ form_widget(form.domainList, { 'id': 'domainList' }) }}
+                                                <span class="text-danger">{{ form_errors(form.domainList) }}</span>
                                             </div>
-                                            <div class="form-group">
-                                                <div  class="card-body">
-                                                    {{ form_label(form.urlList) }}
-                                                    <footer class="blockquote-footer">Enter destination URLs here.</footer>
-                                                    <footer class="blockquote-footer">To separate them use space.</footer>
-                                                    <footer class="blockquote-footer">Example: host.com/xxx 192.168.0.1/alisa</footer>
-                                                    {{ form_widget(form.urlList, { 'id': 'urlList' }) }}
-                                                    <span class="text-danger">{{ form_errors(form.urlList) }}</span>
-                                                </div>
-                                                <hr>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group">
+                                            <div  class="card-body">
+                                                {{ form_label(form.urlList) }}
+                                                <footer class="blockquote-footer">Enter destination URLs here.</footer>
+                                                <footer class="blockquote-footer">To separate them use space.</footer>
+                                                <footer class="blockquote-footer">Example: host.com/xxx 192.168.0.1/alisa</footer>
+                                                {{ form_widget(form.urlList, { 'id': 'urlList' }) }}
+                                                <span class="text-danger">{{ form_errors(form.urlList) }}</span>
                                             </div>
-                                            <div class="form-group">
-                                                <div  class="card-body">
-                                                    {{ form_label(form.regularExpression) }}
-                                                    <footer class="blockquote-footer">Enter word fragments of the destination URL.</footer>
-                                                    <footer class="blockquote-footer">To separate them use |.</footer>
-                                                    <footer class="blockquote-footer">Example: |mail|casino|game|</footer>
-                                                    {{ form_widget(form.regularExpression , { 'id': 'regularExpression' }) }}
-                                                    <span class="text-danger">{{ form_errors(form.regularExpression) }}</span>
-                                                </div>
-                                                <hr>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group">
+                                            <div  class="card-body">
+                                                {{ form_label(form.regularExpression) }}
+                                                <footer class="blockquote-footer">Enter word fragments of the destination URL.</footer>
+                                                <footer class="blockquote-footer">To separate them use |.</footer>
+                                                <footer class="blockquote-footer">Example: |mail|casino|game|</footer>
+                                                {{ form_widget(form.regularExpression , { 'id': 'regularExpression' }) }}
+                                                <span class="text-danger">{{ form_errors(form.regularExpression) }}</span>
                                             </div>
-                                            <div class="form-group">
-                                                <div  class="card-body">
-                                                    {{ form_label(form.redirectMode) }}
-                                                    <footer class="blockquote-footer">Note: if you use 'transparent proxy', then 'int' redirect mode will not accessible.</footer>
-                                                    <footer class="blockquote-footer">Options:ext url err page , ext url redirect , ext url as 'move' , ext url as 'found'.</footer>
-                                                    {{ form_widget(form.redirectMode) }}
-                                                    <span class="text-danger">{{ form_errors(form.redirectMode) }}</span>
-                                                </div>
-                                                <hr>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group">
+                                            <div  class="card-body">
+                                                {{ form_label(form.redirectMode) }}
+                                                <footer class="blockquote-footer">Note: if you use 'transparent proxy', then 'int' redirect mode will not accessible.</footer>
+                                                <footer class="blockquote-footer">Options:ext url err page , ext url redirect , ext url as 'move' , ext url as 'found'.</footer>
+                                                {{ form_widget(form.redirectMode) }}
+                                                <span class="text-danger">{{ form_errors(form.redirectMode) }}</span>
                                             </div>
-                                            <div class="form-group">
-                                                <div  class="card-body">
-                                                    {{ form_label(form.redirect) }}
-                                                    <footer class="blockquote-footer">Enter the external redirection URL.</footer>
-                                                    {{ form_widget(form.redirect, { 'id': 'redirect' }) }}
-                                                    <span class="text-danger">{{ form_errors(form.redirect) }}</span>
-                                                </div>
-                                                <hr>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group">
+                                            <div  class="card-body">
+                                                {{ form_label(form.redirect) }}
+                                                <footer class="blockquote-footer">Enter the external redirection URL.</footer>
+                                                {{ form_widget(form.redirect, { 'id': 'redirect' }) }}
+                                                <span class="text-danger">{{ form_errors(form.redirect) }}</span>
                                             </div>
-                                            <div class="form-group">
-                                                <div  class="card-body">
-                                                    <div class="form-row">
-                                                        <div class="col-md-7">
-                                                            {{ form_label(form.description) }}
-                                                            <footer class="blockquote-footer">You may enter any description here for your reference..</footer>
-                                                            {{ form_widget(form.description, { 'id': 'description' }) }}
-                                                            <span class="text-danger">{{ form_errors(form.description) }}</span>
-                                                        </div>
-                                                        <div class="col-md-5">
-                                                            {{ form_label(form.log) }}
-                                                            <footer class="blockquote-footer">Enter the external redirection URL</footer>
-                                                            {{ form_widget(form.log) }}
-                                                            <span class="text-danger">{{ form_errors(form.log) }}</span>
-                                                        </div>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group">
+                                            <div  class="card-body">
+                                                <div class="form-row">
+                                                    <div class="col-md-7">
+                                                        {{ form_label(form.description) }}
+                                                        <footer class="blockquote-footer">You may enter any description here for your reference..</footer>
+                                                        {{ form_widget(form.description, { 'id': 'description' }) }}
+                                                        <span class="text-danger">{{ form_errors(form.description) }}</span>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        {{ form_label(form.log) }}
+                                                        <footer class="blockquote-footer">Enter the external redirection URL</footer>
+                                                        {{ form_widget(form.log) }}
+                                                        <span class="text-danger">{{ form_errors(form.log) }}</span>
                                                     </div>
                                                 </div>
-                                                <hr>
                                             </div>
-                                            <div class="form-group">
-                                                {{ form_widget(form.Save) }}
-                                            </div>
-                                            <div class="text-center">
-                                                <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
-                                            </div>
+                                            <hr>
                                         </div>
-                                    {{ form_end(form) }}
-                                </div>
+                                        <div class="form-group">
+                                            {{ form_widget(form.Save) }}
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
+                                        </div>
+                                    </div>
+                                {{ form_end(form) }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endblock %}
-        {% block javascripts %}
-            <script src="{{ asset ('js/jsPagina/validarTargetcategories.js') }}"></script>
-        {% endblock %}
-    </div>
+        </div>
+        {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+        <script src="{{ asset ('js/jsPagina/validarTargetcategories.js') }}"></script>
+        {% include '@Principal/templates/declaracionFin.html.twig' %}
     {% else %}
-        <script type="text/javascript">
-            location.href ="{{path('login')}}";
-        </script>
+        <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
     {% endif %}
 {% else %}
-    <script type="text/javascript">
-        location.href ="{{path('login')}}";
-    </script>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
 {% endif %}

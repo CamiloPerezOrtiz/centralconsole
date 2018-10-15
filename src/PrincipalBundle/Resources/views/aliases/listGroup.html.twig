@@ -1,96 +1,86 @@
 {# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
 {% if app.user != null %}
-    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
-        {% include '@Principal/templates/base.html.twig' %}
-        {% block body %}
-            <div id="content-wrapper">
-                <div class="container-fluid">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{path('dashboard')}}">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            Groups list aliases
-                        </li>
-                    </ol>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fas fa-table"></i>
-                            Groups
-                        </div>
-                        <div class="card-body">
-                            {# Mensaje a pantalla de notificacion de algun error #}
-                                <div class="container">
-                                    <div class="col-md-11">
-                                        {% for msg in app.session.flashbag().get('estatus') %}
-                                            <div class="alert alert-info" aria-label="Close">
-                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                <strong>Info!</strong> {{ msg }}
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            {# Fin de Mensaje #}
-                            {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN"  %}
-                                <h1>Aliases</h1>
-                                <p>Choose a group to register a new aliases or view the list.</p>
-                                <hr>
-                            {% endif %}
-                            {% if app.user.role == "ROLE_USER" %}
-                                    <h1>Aliases</h1>      
-                                    <p>Remember you as a user, you can not add, communicate with the administrator to change roles.</p>
-                                    <hr>
-                            {% endif %}
-                            <div class="row">
-                                {% for listaGrupo in grupo %}
-                                    <div class="col-xl-3 col-sm-6 mb-3">
-                                        <div class="card text-white bg-dark o-hidden h-100">
-                                            <div class="card-body">
-                                                <div class="card-body-icon">
-                                                    <i class="fa fa-list-ul" aria-hidden="true"></i>
-                                                </div>
-                                                <div class="mr-5">{{ listaGrupo.cliente }}</div>
-                                            </div>
-                                            {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                                <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerAliases',{id:listaGrupo.cliente})}}">
-                                                    <span class="float-left">Register a new aliases in this group</span>
-                                                    <span class="float-right">
-                                                        <i class="fa fa-angle-right"></i>
-                                                    </span>
-                                                </a>
-                                            {% endif %}
-                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listAliases',{id:listaGrupo.cliente})}}">
-                                                <span class="float-left">View list aliases</span>
-                                                <span class="float-right">
-                                                    <i class="fa fa-angle-right"></i>
-                                                </span>
-                                            </a>
-                                        </div>
+    {% include '@Principal/templates/declaracionCabezera.html.twig' %}
+    {% include '@Principal/templates/base.html.twig' %}
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{path('dashboard')}}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    Groups list aliases
+                </li>
+            </ol>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    Groups
+                </div>
+                <div class="card-body">
+                    {# Mensaje a pantalla de notificacion de algun error #}
+                        <div class="container">
+                            <div class="col-md-11">
+                                {% for msg in app.session.flashbag().get('estatus') %}
+                                    <div class="alert alert-info" aria-label="Close">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <strong>Info!</strong> {{ msg }}
                                     </div>
                                 {% endfor %}
                             </div>
                         </div>
+                    {# Fin de Mensaje #}
+                    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN"  %}
+                        <h1>Aliases</h1>
+                        <p>Choose a group to register a new aliases or view the list.</p>
+                        <hr>
+                    {% endif %}
+                    {% if app.user.role == "ROLE_USER" %}
+                            <h1>Aliases</h1>      
+                            <p>Remember you as a user, you can not add, communicate with the administrator to change roles.</p>
+                            <hr>
+                    {% endif %}
+                    <div class="row">
+                        {% for listaGrupo in grupo %}
+                            <div class="col-xl-3 col-sm-6 mb-3">
+                                <div class="card text-white bg-dark o-hidden h-100">
+                                    <div class="card-body">
+                                        <div class="card-body-icon">
+                                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="mr-5">{{ listaGrupo.cliente }}</div>
+                                    </div>
+                                    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                        <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerAliases',{id:listaGrupo.cliente})}}">
+                                            <span class="float-left">Register a new aliases in this group</span>
+                                            <span class="float-right">
+                                                <i class="fa fa-angle-right"></i>
+                                            </span>
+                                        </a>
+                                    {% endif %}
+                                    <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listAliases',{id:listaGrupo.cliente})}}">
+                                        <span class="float-left">View list aliases</span>
+                                        <span class="float-right">
+                                            <i class="fa fa-angle-right"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
-        {% endblock %}
-        {% block javascripts %}
-            <script>
-                window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                        $(this).remove(); 
-                    });
-                }, 4000);
-            </script>
-        {% endblock %}
+        </div>
     </div>
-    {% else %}
-        <script type="text/javascript">
-            location.href ="{{path('login')}}";
-        </script>
-    {% endif %}
-{% else %}
-    <script type="text/javascript">
-        location.href ="{{path('login')}}";
+    {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+    <script>
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove(); 
+            });
+        }, 4000);
     </script>
+    {% include '@Principal/templates/declaracionFin.html.twig' %}
+{% else %}
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
 {% endif %}

@@ -1,78 +1,68 @@
-{#################################################################
- # This Code Has Been Developed By Camilo Perez                  #
- #################################################################}
 {# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
 {% if app.user != null %}
-    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
-    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_USER" %}
-        {% include '@Principal/templates/base.html.twig' %}
-        {% block body %}
-            <div id="content-wrapper">
-                <div class="container-fluid">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item">
-                            <a href="{{path('dashboard')}}">Dashboard</a>
-                        </li>
-                        <li class="breadcrumb-item active">
-                            {% if app.user.role == 'ROLE_SUPERUSER' %}
-                                All user
-                            {% endif %}
-                            {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_USER' %}
-                                Your group
-                            {% endif %}
-                        </li>
-                    </ol>
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <i class="fas fa-table"></i>
-                            {# Se evalua que si el rol es Administrador o super administrador #}
-                            {% if app.user.role == 'ROLE_SUPERUSER' %}
-                                All user
-                            {% endif %}
-                            {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_USER' %}
-                                Your group
-                            {% endif %}
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                {% for listaGrupo in grupo %}
-                                    <div class="col-xl-3 col-sm-6 mb-3">
-                                        <div class="card text-white bg-dark o-hidden h-100">
-                                            <div class="card-body">
-                                                <div class="card-body-icon">
-                                                    <i class="fa fa-fw fa-list"></i>
-                                                </div>
-                                                <div class="mr-5">{{ listaGrupo.cliente }}</div>
-                                            </div>
-                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listGroupIp',{id:listaGrupo.cliente})}}">
-                                                <span class="float-left">Show ips</span>
-                                                <span class="float-right">
-                                                    <i class="fa fa-angle-right"></i>
-                                                </span>
-                                            </a>
-                                            {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
-                                                <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerUserAdministrator',{id:listaGrupo.cliente})}}">
-                                                    <span class="float-left">Register an administrator or user</span>
-                                                    <span class="float-right">
-                                                        <i class="fa fa-angle-right"></i>
-                                                    </span>
-                                                </a>
-                                            {% endif %}
+    {% include '@Principal/templates/declaracionCabezera.html.twig' %}
+    {% include '@Principal/templates/base.html.twig' %}
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{{path('dashboard')}}">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">
+                    {% if app.user.role == 'ROLE_SUPERUSER' %}
+                        All user
+                    {% endif %}
+                    {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_USER' %}
+                        Your group
+                    {% endif %}
+                </li>
+            </ol>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <i class="fas fa-table"></i>
+                    {# Se evalua que si el rol es Administrador o super administrador #}
+                    {% if app.user.role == 'ROLE_SUPERUSER' %}
+                        All user
+                    {% endif %}
+                    {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_USER' %}
+                        Your group
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for listaGrupo in grupo %}
+                            <div class="col-xl-3 col-sm-6 mb-3">
+                                <div class="card text-white bg-dark o-hidden h-100">
+                                    <div class="card-body">
+                                        <div class="card-body-icon">
+                                            <i class="fa fa-fw fa-list"></i>
                                         </div>
+                                        <div class="mr-5">{{ listaGrupo.cliente }}</div>
                                     </div>
-                                {% endfor %}
+                                    <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listGroupIp',{id:listaGrupo.cliente})}}">
+                                        <span class="float-left">Show ips</span>
+                                        <span class="float-right">
+                                            <i class="fa fa-angle-right"></i>
+                                        </span>
+                                    </a>
+                                    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+                                        <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerUserAdministrator',{id:listaGrupo.cliente})}}">
+                                            <span class="float-left">Register an administrator or user</span>
+                                            <span class="float-right">
+                                                <i class="fa fa-angle-right"></i>
+                                            </span>
+                                        </a>
+                                    {% endif %}
+                                </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
-        {% endblock %}
-    {% else %}
-        <script type="text/javascript">
-            location.href ="{{path('login')}}";
-        </script>
-    {% endif %}
+    </div>
+    {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+    {% include '@Principal/templates/declaracionFin.html.twig' %}
 {% else %}
     <script type="text/javascript">
         location.href ="{{path('login')}}";
