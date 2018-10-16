@@ -1,0 +1,33 @@
+<?xml version='1.0'?>
+<squidguardacl>
+			<config>
+				<disabled>on</disabled>
+				<name>Area_VIP</name>
+				<source>192.168.25.96</source>
+				<time></time>
+				<dest>all [ all]</dest>
+				<notallowingip></notallowingip>
+				<redirect_mode>rmod_int</redirect_mode>
+				<redirect>google.com</redirect>
+				<safesearch>on</safesearch>
+				<rewrite>none</rewrite>
+				<overrewrite>none</overrewrite>
+				<description>Area VIP</description>
+				<enablelog>on</enablelog>
+			</config>
+			<config>
+				<disabled>on</disabled>
+				<name>Area_Becario</name>
+				<source>192.168.25.198/24</source>
+				<time></time>
+				<dest>all [ all]</dest>
+				<notallowingip></notallowingip>
+				<redirect_mode>rmod_none</redirect_mode>
+				<redirect>bing.com</redirect>
+				<safesearch>on</safesearch>
+				<rewrite>none</rewrite>
+				<overrewrite>none</overrewrite>
+				<description>Area_Becario</description>
+				<enablelog>on</enablelog>
+			</config>
+</squidguardacl>

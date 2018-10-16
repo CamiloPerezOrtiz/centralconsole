@@ -90,6 +90,8 @@ class AclController extends Controller
 			$em = $this->getDoctrine()->getEntityManager();
 			// Se guarda la informacion en la base de datos 
 			$video->setNameGroup($id);
+			$video->setTime('');
+			$video->setTargetRule('all [ all]');
 			$em->persist($video);
 			$flush=$em->flush();
 			// Se validad si se inserto los datos correctamente
@@ -182,8 +184,6 @@ class AclController extends Controller
 			$formato->setDisabled($form->get("disabled")->getData());
 			$formato->setName($form->get("name")->getData());
 			$formato->setClient($form->get("client")->getData());
-			$formato->setTime($form->get("time")->getData());
-			$formato->setTargetRule($form->get("targetRule")->getData());
 			$formato->setAllowIp($form->get("allowIp")->getData());
 			$formato->setRedirectMode($form->get("redirectMode")->getData());
 			$formato->setRedirect($form->get("redirect")->getData());
@@ -281,9 +281,9 @@ class AclController extends Controller
 				    $contenido .= "\t\t\t\t<disabled>" . $formatos['disabled'] . "</disabled>\n";
 				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
 				    $contenido .= "\t\t\t\t<source>" . $formatos['client'] . "</source>\n";
-				    $contenido .= "\t\t\t\t<time>" . $formatos['time'] . "</time>\n";
+				    $contenido .= "\t\t\t\t<time></time>\n";
 				    $contenido .= "\t\t\t\t<dest>" . $formatos['targetrule'] . "</dest>\n";
-				    $contenido .= "\t\t\t\t<notallowingip>" . $formatos['allowip'] . "</notallowingip>\n";
+				    $contenido .= "\t\t\t\t<notallowingip></notallowingip>\n";
 				    $contenido .= "\t\t\t\t<redirect_mode>" . $formatos['redirectmode'] . "</redirect_mode>\n";
 				    $contenido .= "\t\t\t\t<redirect>" . $formatos['redirect'] . "</redirect>\n";
 				    $contenido .= "\t\t\t\t<safesearch>" . $formatos['safesearch'] . "</safesearch>\n";
@@ -341,9 +341,9 @@ class AclController extends Controller
 				    $contenido .= "\t\t\t\t<disabled>" . $formatos['disabled'] . "</disabled>\n";
 				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
 				    $contenido .= "\t\t\t\t<source>" . $formatos['client'] . "</source>\n";
-				    $contenido .= "\t\t\t\t<time>" . $formatos['time'] . "</time>\n";
+				    $contenido .= "\t\t\t\t<time></time>\n";
 				    $contenido .= "\t\t\t\t<dest>" . $formatos['targetrule'] . "</dest>\n";
-				    $contenido .= "\t\t\t\t<notallowingip>" . $formatos['allowip'] . "</notallowingip>\n";
+				    $contenido .= "\t\t\t\t<notallowingip></notallowingip>\n";
 				    $contenido .= "\t\t\t\t<redirect_mode>" . $formatos['redirectmode'] . "</redirect_mode>\n";
 				    $contenido .= "\t\t\t\t<redirect>" . $formatos['redirect'] . "</redirect>\n";
 				    $contenido .= "\t\t\t\t<safesearch>" . $formatos['safesearch'] . "</safesearch>\n";

@@ -26,12 +26,6 @@ class AclType extends AbstractType
                 'Off' => 'off',)))
             ->add('name',TextType::class,array("label"=>"Name: ","required"=>"required","attr"=>array("class"=>"form-control")))
             ->add('client',TextareaType::class,array("required"=>"required","attr"=>array("class"=>"form-control",'rows' => '7')))
-            ->add('time',ChoiceType::class, array("label"=>"Time: ","required"=>"required","attr"=>array("class"=>"form-control"),
-                'choices' => array(
-                    'none (time not defined)' => 'none',)))
-            ->add('targetRule',ChoiceType::class, array("label"=>"Target rules: ","required"=>"required","attr"=>array("class"=>"form-control"),
-                'choices' => array(
-                    'All [ All]' => 'All [ All]',)))
             ->add('allowIp',ChoiceType::class, array("label"=>"Do not allow IP-Addresses in URL: ","required"=>"required","attr"=>array("class"=>"form-control"),
                 'choices' => array(
                     'On' => 'on',

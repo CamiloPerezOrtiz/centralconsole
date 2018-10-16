@@ -175,6 +175,13 @@ class GroupController extends Controller
 	   	{
 		    echo "Error al copiar $archivoConfig...\n";
 		}
+
+		$archivoipGrupos = "Groups/$id/ipGrupos.txt";
+		$destinoipGrupos = "ipGrupos.txt";
+	   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
+	   	{
+		    echo "Error al copiar $archivoipGrupos...\n";
+		}
 		return $this->redirectToRoute("listGroup");
 	}
 }
