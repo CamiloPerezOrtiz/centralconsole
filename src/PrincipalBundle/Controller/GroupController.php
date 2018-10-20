@@ -169,7 +169,7 @@ class GroupController extends Controller
 
 	public function applyIpAction($id)
 	{
-		$archivoConfig = "Groups/$id/config.xml";
+		/*$archivoConfig = "Groups/$id/config.xml";
 		$destinoConfig = "pf.xml";
 	   	if (!copy($archivoConfig, $destinoConfig)) 
 	   	{
@@ -181,7 +181,8 @@ class GroupController extends Controller
 	   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
 	   	{
 		    echo "Error al copiar $archivoipGrupos...\n";
-		}
+		}*/
+		exec("python apply.py");
 		return $this->redirectToRoute("listGroup");
 	}
 }

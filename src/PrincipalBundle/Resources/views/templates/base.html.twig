@@ -1,9 +1,86 @@
 <!-- Inicio nav bar -->
+    <nav id="sidebar">
+        <div id="dismiss">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <div class="sidebar-header">
+            <img src="{{ asset('img/logoWarriors.png')}}">
+        </div>
+        <ul class="list-unstyled components">
+            <p>
+                <i class="fa fa-user-circle" ></i>
+                <span class="nav-link-text">
+                    {% if app.user.role == 'ROLE_SUPERUSER' %}
+                        Super user:
+                    {% endif %}
+                    {% if app.user.role == 'ROLE_ADMIN' %}
+                        Administrator:
+                    {% endif %}
+                    {% if app.user.role == 'ROLE_USER' %}
+                        User:
+                    {% endif %} 
+                    {% if app.user != null %}
+                        {{ app.user.name }}
+                    {% else %}
+                        <script type="text/javascript">
+                            location.href ="{{path('login')}}";
+                        </script>
+                    {% endif %} 
+                </span>
+            </p>
+            <li class="active">
+                <a href="{{path('dashboard')}}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>   
+            </li>
+            <li>
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a href="#">Home 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Home 2</a>
+                    </li>
+                    <li>
+                        <a href="#">Home 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">About</a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="#">Page 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 2</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 3</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">Portfolio</a>
+            </li>
+            <li>
+                <a href="#">Contact</a>
+            </li>
+        </ul>
+    </nav>
+<!-- Fin nav bar -->
+<div id="content">
     <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
         <a class="navbar-brand" href="{{path('dashboard')}}">
             <img src="{{ asset('img/logoWarriors.png')}}" style="width:85px;" alt="logo">
         </a>
-        <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
+        <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarCollapse">
             <i class="fas fa-bars"></i>
         </button>
         <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -44,45 +121,6 @@
             </li>
         </ul>
     </nav>
-<!-- Fin nav bar -->
-<div id="wrapper">
-    <!-- Inicio panel izquierdo -->
-        <ul class="sidebar navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{path('dashboard')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>          
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{path('listAdministrator')}}">
-                    <i class="fa fa-user-circle" aria-hidden="true"></i>
-                    <span class="nav-link-text">
-                        {# Se evalua que si el actor del sistema #}{% if app.user.role == 'ROLE_SUPERUSER' %}
-                            Super user
-                        {% endif %}
-                        {% if app.user.role == 'ROLE_ADMIN' %}
-                            Administrator
-                        {% endif %}
-                        {% if app.user.role == 'ROLE_USER' %}
-                            User
-                        {% endif %}
-                    </span>
-                </a>
-            </li>   
-            <li class="nav-item">
-                <a class="nav-link" href="{{path('txtIp')}}">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                    <span class="nav-link-text">
-                        {# Se evalua que si el actor del sistema #}{% if app.user.role == 'ROLE_SUPERUSER' %}
-                            All groups
-                        {% endif %}
-                        {% if app.user.role == 'ROLE_ADMIN' or app.user.role == 'ROLE_USER' %}
-                            Your Group
-                        {% endif %}
-                    </span>
-                </a>
-            </li>
-        </ul>
-    <!-- Fin de panel izquierdo -->
+
+
                 
