@@ -36,7 +36,7 @@ class GroupController extends Controller
 			'hostname: '.$hostname.'<br/>'; 
 			'ip: '.$ip.'<br/>'; 
 			'cliente: '.$cliente.'<br/><br/>';
-			$query = "INSERT INTO txtip VALUES (nextval('txtip_id_seq'),'$hostname','$ip','$cliente')";
+			$query = "INSERT INTO txtip VALUES (nextval('txtip_id_seq'),'$hostname','$ip','$cliente','Null')";
 			$stmt = $db->prepare($query);
 			$params =array();
 			$stmt->execute($params);
@@ -111,7 +111,7 @@ class GroupController extends Controller
 		$em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
 		//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-		$query = "SELECT id,ip,cliente FROM txtip WHERE cliente = '$id'";
+		$query = "SELECT * FROM txtip WHERE cliente = '$id'";
 		$stmt = $db->prepare($query);
 		$params =array();
 		$stmt->execute($params);

@@ -2,71 +2,73 @@
 {% if app.user != null %}
     {% include '@Principal/templates/declaracionCabezera.html.twig' %}
     {% include '@Principal/templates/base.html.twig' %}
-    <div id="content-wrapper">
-        <div class="container-fluid">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{path('dashboard')}}">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    Groups acl
-                </li>
-            </ol>
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fas fa-table"></i>
-                    Groups
-                </div>
-                <div class="card-body">
-                    {# Mensaje a pantalla de notificacion de algun error #}
-                        <div class="container">
-                            <div class="col-md-11">
-                                {% for msg in app.session.flashbag().get('estatus') %}
-                                    <div class="alert alert-info" aria-label="Close">
-                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                        <strong>Info!</strong> {{ msg }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {# Fin de Mensaje #}
-                    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN"  %}
-                        <h1>Acl groups</h1>
-                        <p>Choose a group to register a new Acl groups or view the list.</p>
-                        <hr>
-                    {% endif %}
-                    {% if app.user.role == "ROLE_USER" %}
-                            <h1>Acl groups</h1>      
-                            <p>Remember you as a user, you can not add, communicate with the administrator to change roles.</p>
-                            <hr>
-                    {% endif %}
-                    <div class="row">
-                        {% for listaGrupo in grupo %}
-                            <div class="col-xl-3 col-sm-6 mb-3">
-                                <div class="card text-white bg-dark o-hidden h-100">
-                                    <div class="card-body">
-                                        <div class="card-body-icon">
-                                            <i class="fa fa-list-ul" aria-hidden="true"></i>
+    <div class="container">
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{path('dashboard')}}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Groups acl
+                    </li>
+                </ol>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        Groups
+                    </div>
+                    <div class="card-body">
+                        {# Mensaje a pantalla de notificacion de algun error #}
+                            <div class="container">
+                                <div class="col-md-11">
+                                    {% for msg in app.session.flashbag().get('estatus') %}
+                                        <div class="alert alert-info" aria-label="Close">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Info!</strong> {{ msg }}
                                         </div>
-                                        <div class="mr-5">{{ listaGrupo.cliente }}</div>
-                                    </div>
-                                    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                        <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerAcl',{id:listaGrupo.cliente})}}">
-                                            <span class="float-left">Register a new acl in this group</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {# Fin de Mensaje #}
+                        {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN"  %}
+                            <h1>Acl groups</h1>
+                            <p>Choose a group to register a new Acl groups or view the list.</p>
+                            <hr>
+                        {% endif %}
+                        {% if app.user.role == "ROLE_USER" %}
+                                <h1>Acl groups</h1>      
+                                <p>Remember you as a user, you can not add, communicate with the administrator to change roles.</p>
+                                <hr>
+                        {% endif %}
+                        <div class="row">
+                            {% for listaGrupo in grupo %}
+                                <div class="col-xl-3 col-sm-6 mb-3">
+                                    <div class="card text-white bg-primary o-hidden h-100">
+                                        <div class="card-body">
+                                            <div class="card-body-icon">
+                                                <i class="fa fa-list-ul" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="mr-5">{{ listaGrupo.cliente }}</div>
+                                        </div>
+                                        {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerAcl',{id:listaGrupo.cliente})}}">
+                                                <span class="float-left">Register a new acl in this group</span>
+                                                <span class="float-right">
+                                                    <i class="fa fa-angle-right"></i>
+                                                </span>
+                                            </a>
+                                        {% endif %}
+                                        <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listAcl',{id:listaGrupo.cliente})}}">
+                                            <span class="float-left">View list acl</span>
                                             <span class="float-right">
                                                 <i class="fa fa-angle-right"></i>
                                             </span>
                                         </a>
-                                    {% endif %}
-                                    <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listAcl',{id:listaGrupo.cliente})}}">
-                                        <span class="float-left">View list acl</span>
-                                        <span class="float-right">
-                                            <i class="fa fa-angle-right"></i>
-                                        </span>
-                                    </a>
+                                    </div>
                                 </div>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>

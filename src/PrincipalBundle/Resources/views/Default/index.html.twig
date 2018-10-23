@@ -4,13 +4,13 @@
     <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('dashboard')}}">
 {% else %}
 	<!-- 
-	    #########################################################################
-	    #                                                                       #
-	    #     This Code Has Been Developed and programmed By Camilo Perez       #
-	    #                Company: Warriors Lab's S.A de C.V                     #
-	    #                     Ciudad de México 2018                             #
-	    #                                                                       #
-	    #########################################################################
+	    ####################################################################
+	    #                                                                  #
+	    #          This Code Has Been Developed By Camilo Perez            #
+	    #                Company: Warriors Lab's S.A de C.V                #
+	    #                     Ciudad de México 2018                        #
+	    #                                                                  #
+	    ####################################################################
 	-->
 	<!DOCTYPE html>
 	<html lang="es">
@@ -29,7 +29,7 @@
         <link href="{{ asset ('css/sb-admin.css') }}" rel="stylesheet">
         <link rel="icon" type="image/x-icon" href="{{ asset('log.ico') }}" />
     </head>
-    <body class="bg-dark">
+    <body style="background-image: url('../img/dark_stripes.png');">
 		<div class="container">
 			<br>
 			<div class="container">
@@ -44,20 +44,30 @@
 	            </div>
 			{% endif %}
 	    	<div class="card card-login mx-auto mt-5 text-center">
-	      		<div class="card-header"><h3>Login</h3></div>
+	      		<div class="card-header"><h3><i class="fas fa-sign-in-alt"></i> Login</h3></div>
 	      		<div class="card-body">
 		        	<form action="{{path('login_check')}}" method="post" onsubmit="return validarLogin();">
 		        		<!-- Inicio Email -->
-			          		<div class="form-group">
+		        			<div class="form-group">
 			            		<label for="exampleInputEmail1">Email address</label>
-			            		<input type="email" id="username" required="required" name="_username" placeholder="Enter your email" class="form-control"/>
 			          		</div>
+		        			<div class="input-group mb-3">
+						      	<div class="input-group-prepend">
+							        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+						      	</div>
+						      		<input type="email" id="username" required="required" name="_username" placeholder="Enter your email" class="form-control"/>
+						    </div>
 			          	<!-- Fin Email  -->
 			          	<!-- Inicio Password  -->
 			          		<div class="form-group">
 			            		<label for="exampleInputPassword1">Password</label>
-			            		<input type="password" id="password" required="required" placeholder="Enter your password" name="_password" class="form-control"/>
+			          		<div class="input-group mb-3">
+						      	<div class="input-group-prepend">
+							        <span class="input-group-text"><i class="fas fa-unlock-alt"></i></span>
+						      	</div>
+						      	<input type="password" id="password" required="required" placeholder="Enter your password" name="_password" class="form-control"/>
 			          		</div>
+						    </div>
 			          	<!-- Fin password  -->
 			          	<!-- Inicio Botones  -->
 			          		<div class="form-group">
@@ -69,11 +79,13 @@
 	      		</div>
 	    	</div>
 	  	</div>
-	  	<footer class="footer-bottom">
-            <div class="text-center">
-                <p class="text-white">Warriors Lab's. All Rights Reserved.</p>
-            </div>
-	    </footer>
+	  	<footer class="text-center" id="piePagina">
+		    <div class="container">
+		        <hr><p>
+		            Warriors lab's <sup>©</sup> Todos los Derechos Reservados
+		        </p>
+		    </div>
+		</footer>
 	    <!-- Javascript de bootstrap -->
 	    <script src="{{ asset ('vendor/jquery/jquery.min.js') }}"></script>
 	    <script src="{{ asset ('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>

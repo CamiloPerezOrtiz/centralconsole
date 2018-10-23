@@ -2,83 +2,83 @@
 {% if app.user != null %}
     {% include '@Principal/templates/declaracionCabezera.html.twig' %}
     {% include '@Principal/templates/base.html.twig' %}
-    <div id="content-wrapper">
-        <div class="container-fluid">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{path('dashboard')}}">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    <a href="{{path('listGroup')}}">Groups list</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    Ip list group:
-                    {% if grupoIp == true %} 
-                        {{ grupoIp[0]['cliente'] }} 
-                    {% endif %}  
-                </li>
-            </ol>
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fas fa-table"></i>
-                    Table ips
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>Ip</th>        
-                                    {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}                 
-                                        <th>Delete</th>         
-                                    {% endif %}        
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for listaGrupoIp in grupoIp %}
+    <div class="container">
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{path('dashboard')}}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        <a href="{{path('listGroup')}}">Groups list</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        Ip list group:
+                        {% if grupoIp == true %} 
+                            {{ grupoIp[0]['cliente'] }} 
+                        {% endif %}  
+                    </li>
+                </ol>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        Table ips
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
+                                <thead class="bg-dark text-white">
                                     <tr>
-                                        <td>{{ listaGrupoIp.ip }}</td>
-                                        {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
-                                            <td>
-                                                <a href="{{path('deleteIp',{id:listaGrupoIp.id})}}">
-                                                    <button class="btn btn-danger btn-sm" type="submit">
-                                                        Delete <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        {% endif %}
+                                        <th>Ip</th>   
+                                        <th>Description</th>     
+                                        {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}                 
+                                            <th>Delete</th>      
+                                        {% endif %}        
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
-                            <br>
-                            <div class="card-header bg-dark text-white">Save the configuration</div>
-                            <br>
-                            <div class="panel-body text-center">
-                                When you do click on save button you are saving the IP List and if you do click on apply button, the process about new configuration changes will be starting. <br>
-                                <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
-                                <div class="responsive" align="center">
-                                    <a href="{{path('saveListIp',{id:grupoIp[0]['cliente']})}}">
-                                        <button type="button" onclick="myFunction()" class="btn btn-primary">
-                                            <b>  
-                                                Save IP List <i class="fas fa-save"></i>
-                                            </b>
-                                        </button>
-                                    </a>
-                                    <br><br>
+                                </thead>
+                                <tbody>
+                                    {% for listaGrupoIp in grupoIp %}
+                                        <tr>
+                                            <td>{{ listaGrupoIp.ip }}</td>
+                                            <td>{{ listaGrupoIp.description }}</td>
+                                            {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+                                                <td>
+                                                    <input type="checkbox" class="form-check-input" name="ids[]" checked>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+                                <br>
+                                <div class="card-header bg-dark text-white">Save the configuration</div>
+                                <br>
+                                <div class="panel-body text-center">
+                                    When you do click on save button you are saving the IP List and if you do click on apply button, the process about new configuration changes will be starting. <br>
+                                    <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
+                                    <div class="responsive" align="center">
+                                        <a href="{{path('saveListIp',{id:grupoIp[0]['cliente']})}}">
+                                            <button type="button" onclick="myFunction()" class="btn btn-primary">
+                                                <b>  
+                                                    Save IP List <i class="fas fa-save"></i>
+                                                </b>
+                                            </button>
+                                        </a>
+                                        <br><br>
+                                    </div>
+                                    <div class="responsive" align="center">
+                                        <a href="{{path('applyIp',{id:grupoIp[0]['cliente']})}}">
+                                            <button type="" class="btn btn-success">
+                                                <b> 
+                                                    Apply to IP List <i class="fas fa-caret-square-down"></i>
+                                                </b>
+                                            </button>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="responsive" align="center">
-                                    <a href="{{path('applyIp',{id:grupoIp[0]['cliente']})}}">
-                                        <button type="" class="btn btn-success">
-                                            <b> 
-                                                Apply to IP List <i class="fas fa-caret-square-down"></i>
-                                            </b>
-                                        </button>
-                                    </a>
-                                </div>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>

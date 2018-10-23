@@ -1,9 +1,9 @@
 </div>
-<footer class="sticky-footer">
-    <div class="container my-auto">
-        <div class="copyright text-center my-auto">
-            Warriors Lab's. All Rights Reserved.
-        </div>
+<footer class="text-center" id="piePagina">
+    <div class="container">
+        <hr><p>
+            Warriors lab's <sup>©</sup> Todos los Derechos Reservados
+        </p>
     </div>
 </footer>
 <a class="scroll-to-top rounded" href="#page-top">
@@ -38,3 +38,23 @@
 <script src="{{ asset ('js/sb-admin-datatables.min.js') }}"></script>
 <!-- Javascript de la notificaciones del sistema -->
 <script src="{{ asset ('js/sweetalert.min.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+            theme: "minimal"
+        });
+
+        $('#dismiss, .overlay').on('click', function () {
+            $('#sidebar').removeClass('active');
+            $('.overlay').removeClass('active');
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+            $('#sidebar').addClass('active');
+            $('.overlay').addClass('active');
+            $('.collapse.in').toggleClass('in');
+            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+    });
+</script>

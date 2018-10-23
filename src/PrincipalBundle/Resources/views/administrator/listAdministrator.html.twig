@@ -2,89 +2,100 @@
 {% if app.user != null %}
     {% include '@Principal/templates/declaracionCabezera.html.twig' %}
     {% include '@Principal/templates/base.html.twig' %}
-    <div id="content-wrapper">
-        <div class="container-fluid">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="{{path('dashboard')}}">Dashboard</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    {# Se evalua que si el rol es Administrador o super administrador #}
-                    {% if app.user.role == 'ROLE_SUPERUSER' %}
-                        List super user - administrator - user
-                    {% endif %}
-                    {% if app.user.role == 'ROLE_ADMIN' %}
-                        List Administrator - user
-                    {% endif %}
-                    {% if app.user.role == 'ROLE_USER' %}
-                        List User
-                    {% endif %}
-                </li>
-            </ol>
-            <div class="card mb-3">
-                <div class="card-header">
-                    <i class="fas fa-table"></i>
-                    {# Se evalua que si el rol es Administrador o super administrador #}
-                    {% if app.user.role == 'ROLE_SUPERUSER' %}
-                        Table super user - administrator - user
-                    {% endif %}
-                    {% if app.user.role == 'ROLE_ADMIN' %}
-                        Table Administrator - user
-                    {% endif %}
-                    {% if app.user.role == 'ROLE_USER' %}
-                        Table User
-                    {% endif %}
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
+    <div class="container">
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{path('dashboard')}}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        {# Se evalua que si el rol es Administrador o super administrador #}
                         {% if app.user.role == 'ROLE_SUPERUSER' %}
-                            <a href="{{path ('registerAdministrator') }}">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#">
-                                    Add super user <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                </button>
-                            </a>
-                        <br><br>
+                            List super user - administrator - user
                         {% endif %}
-                        <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
-                            <div class="container">
-                                <div class="col-md-11">
-                                    {% for msg in app.session.flashbag().get('estatus') %}
-                                        <div class="alert alert-info" aria-label="Close">
-                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                            <strong>Info!</strong> {{ msg }}
-                                        </div>
-                                    {% endfor %}
+                        {% if app.user.role == 'ROLE_ADMIN' %}
+                            List Administrator - user
+                        {% endif %}
+                        {% if app.user.role == 'ROLE_USER' %}
+                            List User
+                        {% endif %}
+                    </li>
+                </ol>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        {# Se evalua que si el rol es Administrador o super administrador #}
+                        {% if app.user.role == 'ROLE_SUPERUSER' %}
+                            Table super user - administrator - user
+                        {% endif %}
+                        {% if app.user.role == 'ROLE_ADMIN' %}
+                            Table Administrator - user
+                        {% endif %}
+                        {% if app.user.role == 'ROLE_USER' %}
+                            Table User
+                        {% endif %}
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                <a href="{{path ('registerAdministrator') }}">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#">
+                                        Add super user <i class="fa fa-user-plus" aria-hidden="true"></i>
+                                    </button>
+                                </a>
+                            <br><br>
+                            {% endif %}
+                            <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
+                                <div class="container">
+                                    <div class="col-md-11">
+                                        {% for msg in app.session.flashbag().get('estatus') %}
+                                            <div class="alert alert-info" aria-label="Close">
+                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                <strong>Info!</strong> {{ msg }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
-                            <thead class="bg-dark text-white">
-                                <tr>
-                                    <th>Name</th>                         
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Group</th>
-                                    {% if app.user.role == 'ROLE_SUPERUSER' or app.user.role == 'ROLE_ADMIN' %}
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    {% endif %}                                 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for administrador in administradores %}
+                                <thead class="bg-dark text-white">
                                     <tr>
-                                        <td>{{ administrador.name }}</td>
-                                        <td>{{ administrador.email }}</td>
-                                        <td>{{ administrador.role }}</td>
-                                        <td>{{ administrador.namegroup }}</td>
-                                        {% if app.user.role == 'ROLE_SUPERUSER' %}
-                                            {% if administrador.role == 'ROLE_SUPERUSER' %}
-                                                <td>
-                                                    <a href="{{path('editAdministrator',{id:administrador.id})}}">
-                                                        <button class="btn btn-warning btn-sm" type="submit">
-                                                            <i class="fas fa-user-edit"></i>
-                                                        </button>
-                                                    </a>
-                                                </td>
-                                            {% else %}
+                                        <th>Name</th>                         
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Group</th>
+                                        {% if app.user.role == 'ROLE_SUPERUSER' or app.user.role == 'ROLE_ADMIN' %}
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        {% endif %}                                 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for administrador in administradores %}
+                                        <tr>
+                                            <td>{{ administrador.name }}</td>
+                                            <td>{{ administrador.email }}</td>
+                                            <td>{{ administrador.role }}</td>
+                                            <td>{{ administrador.namegroup }}</td>
+                                            {% if app.user.role == 'ROLE_SUPERUSER' %}
+                                                {% if administrador.role == 'ROLE_SUPERUSER' %}
+                                                    <td>
+                                                        <a href="{{path('editAdministrator',{id:administrador.id})}}">
+                                                            <button class="btn btn-warning btn-sm" type="submit">
+                                                                <i class="fas fa-user-edit"></i>
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                {% else %}
+                                                    <td>
+                                                        <a href="{{path('editAdministratorUser',{id:administrador.id})}}">
+                                                            <button class="btn btn-warning btn-sm" type="submit">
+                                                                <i class="fas fa-user-edit"></i>
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if app.user.role == 'ROLE_ADMIN' %}
                                                 <td>
                                                     <a href="{{path('editAdministratorUser',{id:administrador.id})}}">
                                                         <button class="btn btn-warning btn-sm" type="submit">
@@ -93,29 +104,20 @@
                                                     </a>
                                                 </td>
                                             {% endif %}
-                                        {% endif %}
-                                        {% if app.user.role == 'ROLE_ADMIN' %}
-                                            <td>
-                                                <a href="{{path('editAdministratorUser',{id:administrador.id})}}">
-                                                    <button class="btn btn-warning btn-sm" type="submit">
-                                                        <i class="fas fa-user-edit"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        {% endif %}
-                                        {% if app.user.role == 'ROLE_SUPERUSER' or app.user.role == 'ROLE_ADMIN' %}
-                                            <td>
-                                                <a href="{{path('deleteAdministrator',{id:administrador.id})}}">
-                                                    <button class="btn btn-danger btn-sm" type="submit">
-                                                        <i class="fas fa-user-minus"></i>
-                                                    </button>
-                                                </a>
-                                            </td>
-                                        {% endif %}
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                            {% if app.user.role == 'ROLE_SUPERUSER' or app.user.role == 'ROLE_ADMIN' %}
+                                                <td>
+                                                    <a href="{{path('deleteAdministrator',{id:administrador.id})}}">
+                                                        <button class="btn btn-danger btn-sm" type="submit">
+                                                            <i class="fas fa-user-minus"></i>
+                                                        </button>
+                                                    </a>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

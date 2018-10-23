@@ -62,6 +62,7 @@ CREATE TABLE txtip (
 	hostname VARCHAR(40) NOT NULL, 
 	ip VARCHAR(40) NOT NULL, 
 	cliente VARCHAR(40) NOT NULL, 
+	description VARCHAR(50) DEFAULT NULL,
 	PRIMARY KEY(id)
 );
 
