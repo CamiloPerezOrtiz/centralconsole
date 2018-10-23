@@ -15,6 +15,8 @@ use PrincipalBundle\Entity\AliasesDescription;
 // Se importa el formulario AliasesType de la carpeta Form
 use PrincipalBundle\Form\AliasesNameType;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class AliasesController extends Controller
 {
@@ -250,13 +252,13 @@ class AliasesController extends Controller
 				// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 				foreach ($formato as $formatos) 
 				{
-					$contenido .= "\t\t\t<alias>\n";
-				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
-				    $contenido .= "\t\t\t\t<type>" . $formatos['status'] . "</type>\n";
-				    $contenido .= "\t\t\t\t<address>" . $formatos['ip'] . "</address>\n";
-				    $contenido .= "\t\t\t\t<descr>" . $formatos['description'] . "</descr>\n";
-				    $contenido .= "\t\t\t\t<destdetail>" . $formatos['descriptionhost'] . "</detail>\n";
-				    $contenido .= "\t\t\t</alias>\n";
+					$contenido .= "\t\t<alias>\n";
+				    $contenido .= "\t\t\t<name>" . $formatos['name'] . "</name>\n";
+				    $contenido .= "\t\t\t<type>" . $formatos['status'] . "</type>\n";
+				    $contenido .= "\t\t\t<address>" . $formatos['ip'] . "</address>\n";
+				    $contenido .= "\t\t\t<descr>" . $formatos['description'] . "</descr>\n";
+				    $contenido .= "\t\t\t<destdetail>" . $formatos['descriptionhost'] . "</detail>\n";
+				    $contenido .= "\t\t</alias>\n";
 				}
 				// Se termina el nombre de la etiqueta 
 				$contenido .= "</aliases>";
@@ -300,13 +302,13 @@ class AliasesController extends Controller
 				// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 				foreach ($formato as $formatos) 
 				{
-					$contenido .= "\t\t\t<alias>\n";
-				    $contenido .= "\t\t\t\t<name>" . $formatos['name'] . "</name>\n";
-				    $contenido .= "\t\t\t\t<type>" . $formatos['status'] . "</type>\n";
-				    $contenido .= "\t\t\t\t<address>" . $formatos['ip'] . "</address>\n";
-				    $contenido .= "\t\t\t\t<descr>" . $formatos['description'] . "</descr>\n";
-				    $contenido .= "\t\t\t\t<destdetail>" . $formatos['descriptionhost'] . "</detail>\n";
-				    $contenido .= "\t\t\t</alias>\n";
+					$contenido .= "\t<alias>\n";
+				    $contenido .= "\t\t<name>" . $formatos['name'] . "</name>\n";
+				    $contenido .= "\t\t<type>" . $formatos['status'] . "</type>\n";
+				    $contenido .= "\t\t<address>" . $formatos['ip'] . "</address>\n";
+				    $contenido .= "\t\t<descr>" . $formatos['description'] . "</descr>\n";
+				    $contenido .= "\t\t<destdetail>" . $formatos['descriptionhost'] . "</detail>\n";
+				    $contenido .= "\t</alias>\n";
 				}
 				// Se termina el nombre de la etiqueta 
 				$contenido .= "</aliases>";
@@ -339,7 +341,7 @@ class AliasesController extends Controller
 	// funcion para correr el script aplicar cambios en target categories
 	public function aplicateXMLAliasesAction($id)
 	{
-		if(!exec("python aliases.py"))
+		/*if(!exec("python aliases.py"))
 	    {
 	    	$archivoConfig = 'config.xml';
 			$destinoConfig = "Groups/$id/config.xml";
@@ -358,6 +360,14 @@ class AliasesController extends Controller
 	    	$this->session->getFlashBag()->add("estatus",$estatus);
 	    	//die();
 	    	return $this->redirectToRoute('listGroupAliases');
-	    }
+	    }*/
+	    $process = new Process('python aliases.py');
+		$process->run();
+		// executes after the command finishes
+		if (!$process->isSuccessful()) {
+		    throw new ProcessFailedException($process);
+		}
+		echo $process->getOutput();
+		return $this->redirectToRoute('listGroupAliases');
 	}
 }

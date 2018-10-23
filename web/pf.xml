@@ -27,7 +27,7 @@
 			<descr><![CDATA[System Administrator]]></descr>
 			<scope>system</scope>
 			<groupname>admins</groupname>
-			<bcrypt-hash>$2b$10$y9d.Tomfozoex/2b9rYu4Od.7FT4JRyl.VTdufpDcPlz0EDS3z0ta</bcrypt-hash>
+			<bcrypt-hash>$2b$10$13u6qwCOwODv34GyCMgdWub6oQF3RX0rG7c3d3X4JvzuEmAXLYDd2</bcrypt-hash>
 			<uid>0</uid>
 			<priv>user-shell-access</priv>
 			<expires></expires>
@@ -109,6 +109,46 @@
 			<subnetv6></subnetv6>
 			<gatewayv6></gatewayv6>
 		</lan>
+		<edu>
+			<if>em2</if>
+			<enable></enable>
+			<ipaddr>192.168.100.254</ipaddr>
+			<subnet>24</subnet>
+			<gateway></gateway>
+			<ipaddrv6></ipaddrv6>
+			<subnetv6></subnetv6>
+			<gatewayv6></gatewayv6>
+		</edu>
+		<xxx>
+			<if>em2</if>
+			<enable></enable>
+			<ipaddr>192.168.100.254</ipaddr>
+			<subnet>24</subnet>
+			<gateway></gateway>
+			<ipaddrv6></ipaddrv6>
+			<subnetv6></subnetv6>
+			<gatewayv6></gatewayv6>
+		</xxx>
+		<ultimaprueba>
+			<if>em2</if>
+			<enable></enable>
+			<ipaddr>192.168.100.254</ipaddr>
+			<subnet>24</subnet>
+			<gateway></gateway>
+			<ipaddrv6></ipaddrv6>
+			<subnetv6></subnetv6>
+			<gatewayv6></gatewayv6>
+		</ultimaprueba>
+		<centos>
+			<if>em2</if>
+			<enable></enable>
+			<ipaddr>192.168.100.254</ipaddr>
+			<subnet>24</subnet>
+			<gateway></gateway>
+			<ipaddrv6></ipaddrv6>
+			<subnetv6></subnetv6>
+			<gatewayv6></gatewayv6>
+		</centos>
 	</interfaces>
 	<staticroutes></staticroutes>
 	<dhcpd>
@@ -278,50 +318,13 @@
 	</filter>
 	<ipsec></ipsec>
 	<aliases>
-			<alias>
-			</alias>
-			<alias>
-				<name>Recursos Humanos</name>
-				<type>host</type>
-				<address>192.168.0.1 192.168.0.2</address>
-				<descr>Area de recursos humanos</descr>
-				<destdetail>Maquina 1 ||Maquina 2</detail>
-			</alias>
-			<alias>
-				<name>Soporte</name>
-				<type>host</type>
-				<address>192.168.1.0</address>
-				<descr>Area de soporte </descr>
-				<destdetail>Maquina1</detail>
-			</alias>
-			<alias>
-				<name>Desarrollo</name>
-				<type>network</type>
-				<address>192.168.0.1 192.168.0.2 192.168.0.3</address>
-				<descr>Area desarrolla</descr>
-				<destdetail>Esteban ||Nayeli ||Adrian</detail>
-			</alias>
-			<alias>
-				<name>Recursos Humanos</name>
-				<type>host</type>
-				<address>192.168.0.1 192.168.0.2</address>
-				<descr>Area de recursos humanos</descr>
-				<destdetail>Maquina 1 ||Maquina 2</detail>
-			</alias>
-			<alias>
-				<name>Soporte</name>
-				<type>host</type>
-				<address>192.168.1.0</address>
-				<descr>Area de soporte </descr>
-				<destdetail>Maquina1</detail>
-			</alias>
-			<alias>
-				<name>Desarrollo</name>
-				<type>network</type>
-				<address>192.168.0.1 192.168.0.2 192.168.0.3</address>
-				<descr>Area desarrolla</descr>
-				<destdetail>Esteban ||Nayeli ||Adrian</detail>
-			</alias>
+		<alias>
+			<name>pruebitas</name>
+			<type>host</type>
+			<address>192.168.1.16 192.168.1.17 192.168.1.18 192.168.1.19 192.168.1.20 192.168.1.21 192.168.1.22 192.168.1.23 192.168.1.24 192.168.1.25 192.168.1.26 192.168.1.27 192.168.1.28 192.168.1.29 192.168.1.30 192.168.1.31</address>
+			<descr><![CDATA[this is a prove ]]></descr>
+			<detail><![CDATA[description ||description ||description ||description ||description ||description ||description ||description ||description ||description ||description ||description ||description ||description ||description ||description ]]></detail>
+		</alias>
 	</aliases>
 	<proxyarp></proxyarp>
 	<cron>
@@ -525,9 +528,8 @@
 		<dnssecstripped></dnssecstripped>
 	</unbound>
 	<revision>
-		<time>1535480280</time>
-		<description><![CDATA[(system): /rc.start_packages made unknown change]]></description>
-		<username>(system)</username>
+		<time>1530301245</time>
+		<username>admin@192.168.0.17</username>
 	</revision>
 	<dyndnses></dyndnses>
 	<shaper></shaper>
@@ -1005,7 +1007,7 @@
 				<log_to_systemlog_facility>local1</log_to_systemlog_facility>
 				<live_swap_updates>on</live_swap_updates>
 				<last_rule_upd_status>success</last_rule_upd_status>
-				<last_rule_upd_time>1534984234</last_rule_upd_time>
+				<last_rule_upd_time>1530232237</last_rule_upd_time>
 			</config>
 		</suricata>
 		<squidcache>
@@ -1091,17 +1093,133 @@
 				<enable_log></enable_log>
 				<log_rotation></log_rotation>
 				<adv_blankimg></adv_blankimg>
-				<blacklist>on</blacklist>
+				<blacklist></blacklist>
 				<blacklist_proxy></blacklist_proxy>
-				<blacklist_url>http://warriorsdefender.com/warriorsblacklist/bigblacklist.tar.gz</blacklist_url>
+				<blacklist_url></blacklist_url>
 			</config>
 		</squidguardgeneral>
 		<squidguarddest>
 			<config>
+				<name>tester</name>
+				<domains>tester.com</domains>
+				<urls>tester.com/</urls>
+				<expressions>|tester|</expressions>
+				<redirect_mode>rmod_int_bim</redirect_mode>
+				<redirect>google.com/</redirect>
+				<description><![CDATA[errorlogin]]></description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<name>pentester</name>
+				<domains>pentester.com</domains>
+				<urls>pentester.com/</urls>
+				<expressions>|pentester|</expressions>
+				<redirect_mode>rmod_int_bim</redirect_mode>
+				<redirect>google.com/</redirect>
+				<description><![CDATA[errorlogin]]></description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<name>pentestertester</name>
+				<domains>pentestertester.com</domains>
+				<urls>pentestertester.com/</urls>
+				<expressions>|pentestertester|</expressions>
+				<redirect_mode>rmod_int_bim</redirect_mode>
+				<redirect>google.com/</redirect>
+				<description><![CDATA[errorlogin]]></description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<name>testering</name>
+				<domains>tester.com</domains>
+				<urls>tester.com/</urls>
+				<expressions>|tester|</expressions>
+				<redirect_mode>rmod_int_bim</redirect_mode>
+				<redirect>google.com/</redirect>
+				<description><![CDATA[errorlogin]]></description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<name>pentestering</name>
+				<domains>pentester.com</domains>
+				<urls>pentester.com/</urls>
+				<expressions>|pentester|</expressions>
+				<redirect_mode>rmod_int_bim</redirect_mode>
+				<redirect>google.com/</redirect>
+				<description><![CDATA[errorlogin]]></description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<name>pent</name>
+				<domains>pentestertester.com</domains>
+				<urls>pentestertester.com/</urls>
+				<expressions>|pentestertester|</expressions>
+				<redirect_mode>rmod_int_bim</redirect_mode>
+				<redirect>google.com/</redirect>
+				<description><![CDATA[errorlogin]]></description>
+				<enablelog></enablelog>
 			</config>
 		</squidguarddest>
 		<squidguardacl>
-            <config>
+			<config>
+				<disabled>on</disabled>
+				<name>prueba</name>
+				<source>192.168.0.101</source>
+				<time></time>
+				<dest>all [ all]</dest>
+				<notallowingip></notallowingip>
+				<redirect_mode>rmod_none</redirect_mode>
+				<redirect></redirect>
+				<safesearch></safesearch>
+				<rewrite></rewrite>
+				<overrewrite></overrewrite>
+				<description></description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<disabled>on</disabled>
+				<name>testeo</name>
+				<source>192.168.0.101</source>
+				<time></time>
+				<dest>all [ all]</dest>
+				<notallowingip></notallowingip>
+				<redirect_mode>rmod_none</redirect_mode>
+				<redirect></redirect>
+				<safesearch></safesearch>
+				<rewrite></rewrite>
+				<overrewrite></overrewrite>
+				<description></description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<disabled>on</disabled>
+				<name>pent</name>
+				<source>192.168.100.15/24</source>
+				<time></time>
+				<dest>all [ all]</dest>
+				<notallowingip></notallowingip>
+				<redirect_mode>rmod_none</redirect_mode>
+				<redirect></redirect>
+				<safesearch></safesearch>
+				<rewrite></rewrite>
+				<overrewrite></overrewrite>
+				<description></description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<disabled>on</disabled>
+				<name>google</name>
+				<source>192.168.100.12/24</source>
+				<time></time>
+				<dest>all [ all]</dest>
+				<notallowingip></notallowingip>
+				<redirect_mode>rmod_none</redirect_mode>
+				<redirect></redirect>
+				<safesearch></safesearch>
+				<rewrite></rewrite>
+				<overrewrite></overrewrite>
+				<description></description>
+				<enablelog></enablelog>
 			</config>
 		</squidguardacl>
 	</installedpackages>
@@ -1244,13 +1362,5 @@
 				</updated>
 			</rule>
 		</outbound>
-		<separator>
-			<sep0>
-				<row>fr2</row>
-				<text></text>
-				<color>bg-info</color>
-				<if></if>
-			</sep0>
-		</separator>
 	</nat>
 </pfsense>
