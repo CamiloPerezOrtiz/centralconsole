@@ -1,87 +1,6 @@
 <!-- Inicio nav bar -->
-<<<<<<< HEAD
     <div class="overlay"></div>
     <nav class="navbar navbar-expand navbar-dark bg-danger static-top">
-=======
-    <nav id="sidebar">
-        <div id="dismiss">
-            <i class="fas fa-arrow-left"></i>
-        </div>
-
-        <div class="sidebar-header">
-            <img src="{{ asset('img/logoWarriors.png')}}">
-        </div>
-        <ul class="list-unstyled components">
-            <p>
-                <i class="fa fa-user-circle" ></i>
-                <span class="nav-link-text">
-                    {% if app.user.role == 'ROLE_SUPERUSER' %}
-                        Super user:
-                    {% endif %}
-                    {% if app.user.role == 'ROLE_ADMIN' %}
-                        Administrator:
-                    {% endif %}
-                    {% if app.user.role == 'ROLE_USER' %}
-                        User:
-                    {% endif %} 
-                    {% if app.user != null %}
-                        {{ app.user.name }}
-                    {% else %}
-                        <script type="text/javascript">
-                            location.href ="{{path('login')}}";
-                        </script>
-                    {% endif %} 
-                </span>
-            </p>
-            <li class="active">
-                <a href="{{path('dashboard')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>   
-            </li>
-            <li>
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                        <a href="#">Home 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">About</a>
-            </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Page 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Portfolio</a>
-            </li>
-            <li>
-                <a href="#">Contact</a>
-            </li>
-        </ul>
-    </nav>
-<!-- Fin nav bar -->
-<div id="content">
-    <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
->>>>>>> df09de2ba711fb35bbf004fa9ab11238e26d3264
         <a class="navbar-brand" href="{{path('dashboard')}}">
             <img src="{{ asset('img/logoWarriors.png')}}" style="width:85px;" alt="logo">
         </a>
@@ -96,15 +15,7 @@
             <li class="nav-item dropdown no-arrow mx-1">
                 <a class="nav-link text-white">
                     {# Se evalua que si el rol es Administrador o super administrador #}
-                    {% if app.user.role == 'ROLE_SUPERUSER' %}
-                        Super user:
-                    {% endif %}
-                    {% if app.user.role == 'ROLE_ADMIN' %}
-                        Administrator:
-                    {% endif %}
-                    {% if app.user.role == 'ROLE_USER' %}
-                        User:
-                    {% endif %} 
+                    Welcome: 
                     {% if app.user != null %}
                         {{ app.user.name }}
                     {% else %}
@@ -126,7 +37,6 @@
             </li>
         </ul>
     </nav>
-<<<<<<< HEAD
 <!-- Fin nav bar -->
 <div id="wrapper">
     <nav id="sidebar">
@@ -161,15 +71,7 @@
                 <a class="text-white" href="{{path('listAdministrator')}}">
                     <i class="fas fa-address-card"></i>
                     <span class="nav-link-text">
-                        {# Se evalua que si el actor del sistema #}{% if app.user.role == 'ROLE_SUPERUSER' %}
-                            All super user, administrador and user
-                        {% endif %}
-                        {% if app.user.role == 'ROLE_ADMIN' %}
-                            All Administrator and users
-                        {% endif %}
-                        {% if app.user.role == 'ROLE_USER' %}
-                            All users
-                        {% endif %}
+                        All user
                     </span>
                 </a>
             </li>
@@ -186,10 +88,44 @@
                     </span>
                 </a>
             </li>
+            <li>
+                <a class="text-white" href="{{path('listGroupAliases')}}">
+                    <i class="fas fa-th-large"></i>
+                    <span class="nav-link-text">
+                        Aliases
+                </a>
+            </li>
+            <li>
+                <a class="text-white" href="{{path('listGroupTarget')}}">
+                    <i class="fas fa-certificate"></i>
+                    <span class="nav-link-text">
+                        Target categories
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="text-white" href="{{path('listGroupAcl')}}">
+                    <i class="fas fa-layer-group"></i>
+                    <span class="nav-link-text">
+                        ACL groups
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="text-white" href="{{path('listGroupNat')}}">
+                    <i class="fas fa-book-open"></i>
+                    <span class="nav-link-text">
+                        NAT
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="text-white" href="{{path('txtIp')}}">
+                    <i class="fas fa-fire"></i>
+                    <span class="nav-link-text">
+                        Firewall rules
+                    </span>
+                </a>
+            </li>
         </ul>
     </nav>
-=======
-
-
->>>>>>> df09de2ba711fb35bbf004fa9ab11238e26d3264
-                

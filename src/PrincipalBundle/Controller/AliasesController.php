@@ -148,49 +148,33 @@ class AliasesController extends Controller
 	        $role=$u->getRole();
 	        if($role == "ROLE_SUPERUSER")
 	        {
-	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				/*
-				$query = "SELECT * FROM aliases WHERE namegroup = '$id'";
-				$stmt = $db->prepare($query);
-				$params =array();
-				$stmt->execute($params);
-				$res=$stmt->fetchAll();
-				return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
-				*/
 				$querySelect = "SELECT * FROM aliases WHERE namegroup = '$id'";
 				$stmtSelect = $db->prepare($querySelect);
 				$paramsSelect =array();
 				$stmtSelect->execute($paramsSelect);
 				$listaGrupo=$stmtSelect->fetchAll();
-				foreach ($listaGrupo as $value) 
-				{
-					$array1= explode(' ',$value['ip']);
-					$array2 = explode(" ||",$value['descriptionhost']);
-				}
-				return $this->render("@Principal/aliases/listAliases.html.twig", array("value3"=>$listaGrupo,"value"=>$array1,"value2"=>$array2));
-				#return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
+				return $this->render("@Principal/aliases/listAliases.html.twig", array("grupo"=>$listaGrupo));
 	        }
 	        if($role == "ROLE_ADMIN")
 	        {
 	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM aliases WHERE namegroup ='$grupo'";
-				$stmt = $db->prepare($query);
-				$params =array();
-				$stmt->execute($params);
-				$res=$stmt->fetchAll();
-				return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
+				$querySelect = "SELECT * FROM aliases WHERE namegroup = '$id'";
+				$stmtSelect = $db->prepare($querySelect);
+				$paramsSelect =array();
+				$stmtSelect->execute($paramsSelect);
+				$listaGrupo=$stmtSelect->fetchAll();
+				return $this->render("@Principal/aliases/listAliases.html.twig", array("grupo"=>$listaGrupo));
 	        }
 	        if($role == "ROLE_USER")
 	        {
 	        	$grupo=$u->getNameGroup();
-	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM aliases WHERE namegroup ='$grupo'";
-				$stmt = $db->prepare($query);
-				$params =array();
-				$stmt->execute($params);
-				$res=$stmt->fetchAll();
-				return $this->render("@Principal/aliases/listAliases.html.twig", array("ress"=>$res, "ress"=>$res));
+	        	$querySelect = "SELECT * FROM aliases WHERE namegroup = '$id'";
+				$stmtSelect = $db->prepare($querySelect);
+				$paramsSelect =array();
+				$stmtSelect->execute($paramsSelect);
+				$listaGrupo=$stmtSelect->fetchAll();
+				return $this->render("@Principal/aliases/listAliases.html.twig", array("grupo"=>$listaGrupo));
 	        }
 	    }
 		// Regresa un arreglo con la informacion obtendia de la base de datos

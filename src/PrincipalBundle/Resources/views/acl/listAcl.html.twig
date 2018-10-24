@@ -40,6 +40,7 @@
                                     <tr>
                                         <th>Disabled</th>                         
                                         <th>Name</th>
+                                        <th>Ip</th>
                                         <th>Description</th>
                                         <th>Group</th>
                                         {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
@@ -53,6 +54,7 @@
                                         <tr>
                                             <td>{{ acl.disabled }}</td>
                                             <td>{{ acl.name }}</td>
+                                            <td>{{ acl.client }}</td>
                                             <td>{{ acl.description }}</td>
                                             <td>{{ acl.namegroup }}</td>
                                             {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}

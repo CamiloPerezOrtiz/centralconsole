@@ -2,8 +2,9 @@
 {% if app.user != null %}
     {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
     {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
+        {% include '@Principal/templates/declaracionCabezera.html.twig' %}
         {% include '@Principal/templates/base.html.twig' %}
-        {% block body %}
+        <div class="container">
             <div id="content-wrapper">
                 <div class="container-fluid">
                     <ol class="breadcrumb">
@@ -98,25 +99,20 @@
                     </div>
                 </div>
             </div>
-        {% endblock %}
-        {% block javascripts %}
-            <script src="{{ asset ('js/jsPagina/validarRegistroAdministrador.js') }}"></script>
-            <script>
-                window.setTimeout(function() {
-                    $(".alert").fadeTo(500, 0).slideUp(500, function(){
-                        $(this).remove(); 
-                    });
-                }, 4000);
-            </script>
-        {% endblock %}
-    </div>
-    {% else %}
-        <script type="text/javascript">
-            location.href ="{{path('login')}}";
+        </div>
+        {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+        <script src="{{ asset ('js/jsPagina/validarRegistroAdministrador.js') }}"></script>
+        <script>
+            window.setTimeout(function() {
+                $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                    $(this).remove(); 
+                });
+            }, 4000);
         </script>
+        {% include '@Principal/templates/declaracionFin.html.twig' %}
+    {% else %}
+        <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
     {% endif %}
 {% else %}
-    <script type="text/javascript">
-        location.href ="{{path('login')}}";
-    </script>
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
 {% endif %}
