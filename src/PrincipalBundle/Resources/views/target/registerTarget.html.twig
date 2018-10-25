@@ -4,8 +4,9 @@
     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
         {% include '@Principal/templates/declaracionCabezera.html.twig' %}
         {% include '@Principal/templates/base.html.twig' %}
-        <div class="container">
+        
             <div id="content-wrapper">
+                <div class="container">
                 <div class="container-fluid">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">

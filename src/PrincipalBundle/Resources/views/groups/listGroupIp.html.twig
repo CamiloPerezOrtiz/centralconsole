@@ -30,22 +30,15 @@
                                 <thead class="bg-dark text-white">
                                     <tr>
                                         <th>Ip</th>   
-                                        <th>Description</th>     
-                                        {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}                 
-                                            <th>Delete</th>      
-                                        {% endif %}        
+                                        <th>Description</th>       
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <form method="post">
                                     {% for listaGrupoIp in grupoIp %}
                                         <tr>
-                                            <td>{{ listaGrupoIp.ip }}</td>
+                                            <td><input type="checkbox" class="form-check-input" name="ids[]" value="{{ listaGrupoIp.ip }}" checked> {{ listaGrupoIp.ip }}</td>
                                             <td>{{ listaGrupoIp.description }}</td>
-                                            {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN" %}
-                                                <td>
-                                                    <input type="checkbox" class="form-check-input" name="ids[]" checked>
-                                                </td>
-                                            {% endif %}
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -58,8 +51,8 @@
                                     When you do click on save button you are saving the IP List and if you do click on apply button, the process about new configuration changes will be starting. <br>
                                     <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
                                     <div class="responsive" align="center">
-                                        <a href="{{path('saveListIp',{id:grupoIp[0]['cliente']})}}">
-                                            <button type="button" onclick="myFunction()" class="btn btn-primary">
+                                        <a href="{{ path('saveListIp') }}">
+                                            <button type="submit" class="btn btn-primary" name="enviar">
                                                 <b>  
                                                     Save IP List <i class="fas fa-save"></i>
                                                 </b>
@@ -78,6 +71,7 @@
                                     </div>
                                 </div>
                             {% endif %}
+                            </form>
                         </div>
                     </div>
                 </div>

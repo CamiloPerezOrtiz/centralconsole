@@ -105,8 +105,18 @@ class GroupController extends Controller
 	    }
 		return $this->redirectToRoute("dashboard");
 	}
+
 	public function listGroupIpAction($id)
 	{
+		if(isset($_POST['enviar']))
+		{
+			$ids = $_POST['ids'];
+			foreach ($ids as $key) {
+				echo $key;
+				echo "<br>";
+				exit;
+			}
+		}
 		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
 		$em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
@@ -123,31 +133,15 @@ class GroupController extends Controller
 		return $this->render("@Principal/groups/listGroupIp.html.twig", array("grupoIp"=>$listaGrupoIp));
 	}
 	
-	public function saveListIpAction($id)
+	public function saveListIpAction()
 	{
-		/*$authenticationUtils = $this->get("security.authentication_utils");
-		$error = $authenticationUtils->getLastAuthenticationError();
-		$lastUsername = $authenticationUtils->getLastUsername();
-		$u = $this->getUser();
-		$role=$u->getNameGroup();*/
-		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
-		$em = $this->getDoctrine()->getEntityManager();
-		$db = $em->getConnection();
-		//Query para selecionar todas las ip del grupo el cual fue seleccionado
-		$query = "SELECT ip FROM txtip WHERE cliente = '$id'";
-		$stmt = $db->prepare($query);
-		$params =array();
-		$stmt->execute($params);
-		$formato=$stmt->fetchAll();
-		$res = array("formatos"=>$formato);
-		//Varibale para abrir el archivo ipGrupos.txt y guardar las ip que tenga el grupo seleccionado
-		$file=fopen("Groups/$id/ipGrupos.txt","w") or die("Problemas");
-		foreach ($formato as $formatos) 
-		{
-			fputs($file,$formatos['ip']."\n");
-		}
-		fclose($file);
-		return $this->redirectToRoute("listGroup");
+			$ids = $_POST['ids'];
+			foreach ($ids as $key) {
+				echo $key;
+				echo "<br>";
+				die();
+			}
+		# return $this->redirectToRoute("listGroup");
 	}
 	public function deleteIpAction($id)
 	{

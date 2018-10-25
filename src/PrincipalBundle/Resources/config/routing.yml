@@ -42,7 +42,7 @@ listGroupIp:
 
 #Guardar las ip del grupo el cual fue seleccionado controlador: GrupoController funcion: guardarListaIp #
 saveListIp:
-    path:     /saveListIp/{id}
+    path:     /saveListIp
     defaults: { _controller: PrincipalBundle:Group:saveListIp }
 
 #Elimina la ip del grupo el cual fue seleccionado controlador GrupoController funcion eliminarIp#
@@ -196,8 +196,13 @@ listGroupAliases:
 
 #Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
 listAliases:
-    path:     /listAliases/{id}
+    path:     /listAliases
     defaults: { _controller: PrincipalBundle:Aliases:listAliases }
+
+#Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
+listAliasesSuperUser:
+    path:     /listAliasesSuperUser/{id}
+    defaults: { _controller: PrincipalBundle:Aliases:listAliasesSuperUser }
 
 #Elimina el target categories seleccionado controlador: AliasesController funcion eliminarAliases#
 deleteAliases:
@@ -211,8 +216,13 @@ editAliases:
 
 #Registro de un nuevo target categories controlador:AliasesController funcion registroAliasesr#
 registerAliases:
-    path:     /registerAliases/{id} 
+    path:     /registerAliases
     defaults: { _controller: PrincipalBundle:Aliases:registerAliases }
+
+#Registro de un nuevo target categories controlador:AliasesController funcion registroAliasesr#
+registerAliasesSuperUser:
+    path:     /registerAliasesSuperUser/{id} 
+    defaults: { _controller: PrincipalBundle:Aliases:registerAliasesSuperUser }
 
 #Crear XML acl groups controlador:AliasesController funcion crearXMLAliases #
 createXMLAliases:

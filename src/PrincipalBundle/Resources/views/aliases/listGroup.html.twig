@@ -31,16 +31,9 @@
                                 </div>
                             </div>
                         {# Fin de Mensaje #}
-                        {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN"  %}
-                            <h1>Aliases</h1>
-                            <p>Choose a group to register a new aliases or view the list.</p>
-                            <hr>
-                        {% endif %}
-                        {% if app.user.role == "ROLE_USER" %}
-                                <h1>Aliases</h1>      
-                                <p>Remember you as a user, you can not add, communicate with the administrator to change roles.</p>
-                                <hr>
-                        {% endif %}
+                        <h1>Aliases</h1>
+                        <p>Choose a group to register a new aliases or view the list.</p>
+                        <hr>
                         <div class="row">
                             {% for listaGrupo in grupo %}
                                 <div class="col-xl-3 col-sm-6 mb-3">
@@ -52,14 +45,14 @@
                                             <div class="mr-5">{{ listaGrupo.cliente }}</div>
                                         </div>
                                         {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerAliases',{id:listaGrupo.cliente})}}">
+                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerAliasesSuperUser',{id:listaGrupo.cliente})}}">
                                                 <span class="float-left">Register a new aliases</span>
                                                 <span class="float-right">
                                                     <i class="fa fa-angle-right"></i>
                                                 </span>
                                             </a>
                                         {% endif %}
-                                        <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listAliases',{id:listaGrupo.cliente})}}">
+                                        <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listAliasesSuperUser',{id:listaGrupo.cliente})}}">
                                             <span class="float-left">View list aliases</span>
                                             <span class="float-right">
                                                 <i class="fa fa-angle-right"></i>

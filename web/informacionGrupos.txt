@@ -1,13 +1,13 @@
-perez0|192.168.0.1|GrupoA|
-Perez1|192.168.0.2|GrupoB|
-perez2|192.168.0.3|GrupoC|
-perez3|192.168.0.4|GrupoD|
-perez4|192.168.0.5|GrupoA|
-Perez5|192.168.0.6|GrupoA|
-perez6|192.168.0.7|GrupoD|
-perez7|192.168.0.8|GrupoA|
-Perez8|192.168.0.9|GrupoA|
-Perez9|192.168.0.10|GrupoE|
-Perez10|192.168.0.11|GrupoF|
-Perez11|192.168.0.12|GrupoG|
-Perez12|192.168.0.13|GrupoH|
+perez0|192.168.0.1|Kasa|
+Perez1|192.168.0.2|UI plantel viaducto|
+perez2|192.168.0.3|Crista facil|
+perez3|192.168.0.4|Rectoria|
+perez4|192.168.0.5|Kasa|
+Perez5|192.168.0.6|Kasa|
+perez6|192.168.0.7|UI plantel via morelos|
+perez7|192.168.0.8|Kasa|
+Perez8|192.168.0.9|UI plantel viaducto|
+Perez9|192.168.0.10|UI plantel viaducto|
+Perez10|192.168.0.11|UI plantel via morelos|
+Perez11|192.168.0.12|UI plantel via morelos|
+Perez12|192.168.0.13|Crista facil|

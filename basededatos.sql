@@ -79,3 +79,20 @@ CREATE TABLE aliases (
 	descriptionhost TEXT DEFAULT NULL,
 	namegroup TEXT NOT NULL
 );
+
+CREATE TABLE nat(
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(15) NOT NULL,
+	description VARCHAR(40) NOT NULL,
+	status TEXT NOT NULL,
+	ip TEXT NOT NULL,
+	descriptionhost TEXT DEFAULT NULL,
+	namegroup TEXT NOT NULL,
+	SERIAL PRIMARY KEY,
+	name VARCHAR(15) NOT NULL,
+	description VARCHAR(40) NOT NULL,
+	status TEXT NOT NULL,
+	ip TEXT NOT NULL,
+	descriptionhost TEXT DEFAULT NULL,
+	namegroup TEXT NOT NULL
+);
