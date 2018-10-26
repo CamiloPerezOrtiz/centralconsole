@@ -31,16 +31,9 @@
                                 </div>
                             </div>
                         {# Fin de Mensaje #}
-                        {% if app.user.role == "ROLE_SUPERUSER" or app.user.role == "ROLE_ADMIN"  %}
-                            <h1>Nats</h1>
-                            <p>Choose a group to register a new nat or view the list.</p>
-                            <hr>
-                        {% endif %}
-                        {% if app.user.role == "ROLE_USER" %}
-                                <h1>Nats</h1>      
-                                <p>Remember you as a user, you can not add, communicate with the administrator to change roles.</p>
-                                <hr>
-                        {% endif %}
+                        <h1>Nats</h1>
+                        <p>Choose a group to register a new nat or view the list.</p>
+                        <hr>
                         <div class="row">
                             {% for listaGrupo in grupo %}
                                 <div class="col-xl-3 col-sm-6 mb-3">

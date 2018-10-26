@@ -130,6 +130,10 @@
 			<lan></lan>
 		</separator>
 	</filter>
+    <aliases>
+		<alias>
+        </alias>
+    </aliases>
 	<installedpackages>
 		<squidguarddest>
 			<config>

@@ -302,14 +302,14 @@ class AliasesController extends Controller
 		fwrite($archivo, $contenido);
 		// Se cierra el archivo 
 		fclose($archivo); 
-		# Mover el archivo config a la carpeta #
+		# Copiar el archivo original del config #
 		$archivo = 'configOriginal.xml';
 		$destino = "config.xml";
 	   	if (!copy($archivo, $destino)) 
 	   	{
 		    echo "Error al copiar $archivo...\n";
 		}
-		# Ejecutar python aliases # 
+		# Ejecutar python target # 
 		$process = new Process('python aliases.py');
 		$process->run();
 		// executes after the command finishes
@@ -333,6 +333,26 @@ class AliasesController extends Controller
 	// funcion para correr el script aplicar cambios en target categories
 	public function aplicateXMLAliasesAction($id)
 	{
-		return $this->redirectToRoute('listGroup');
+		$authenticationUtils = $this->get("security.authentication_utils");
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		$u = $this->getUser();
+		if($u != null)
+		{
+			//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+			$em = $this->getDoctrine()->getEntityManager();
+	        $db = $em->getConnection();
+
+	        $role=$u->getRole();
+	        if($role == "ROLE_SUPERUSER")
+	        {
+	        	return $this->redirectToRoute('listGroup');
+	        }
+	        if($role == "ROLE_ADMIN")
+	        {	        	
+				return $this->redirectToRoute('listGroupIp');
+			}
+		}
+		return $this->redirectToRoute('dashboard');
 	}
 }

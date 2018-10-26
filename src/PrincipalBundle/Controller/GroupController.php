@@ -106,17 +106,138 @@ class GroupController extends Controller
 		return $this->redirectToRoute("dashboard");
 	}
 
-	public function listGroupIpAction($id)
+	public function listGroupIpAction()
+	{
+		$authenticationUtils = $this->get("security.authentication_utils");
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		$u = $this->getUser();
+		$grupo=$u->getNameGroup();
+		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+		$query = "SELECT * FROM txtip WHERE cliente = '$grupo'";
+		$stmt = $db->prepare($query);
+		$params =array();
+		$stmt->execute($params);
+		$listaGrupoIp=$stmt->fetchAll();
+		//Variable para abrir el archivo nombreGrupo e insertar el nombre del grupo el cual fue seleccionado
+		$file=fopen("Groups/$grupo/nombreGrupo.txt","w") or die("Problemas");
+		fputs($file,$grupo);
+		fclose($file);
+		if(isset($_POST['enviar']))
+		{
+			$ids = $_POST['ids'];
+			//print_r($ids);
+			$file=fopen("Groups/$grupo/ipGrupos.txt","w") or die("Problemas");
+			foreach ($ids as $formatos) 
+			{
+				fputs($file,$formatos."\n");
+			}
+			fclose($file);
+			# Aplicar cambios en el sistema #
+			$archivoConfig = "Groups/$grupo/config.xml";
+			$destinoConfig = "pf.xml";
+		   	if (!copy($archivoConfig, $destinoConfig)) 
+		   	{
+			    echo "Error al copiar $archivoConfig...\n";
+			}
+
+			$archivoipGrupos = "Groups/$grupo/ipGrupos.txt";
+			$destinoipGrupos = "ipGrupos.txt";
+		   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
+		   	{
+			    echo "Error al copiar $archivoipGrupos...\n";
+			}
+			#exec("python apply.py");
+			# Ejecutar python aliases # 
+			/*$process = new Process('python apply.py');
+			$process->run();
+			// executes after the command finishes
+			if (!$process->isSuccessful()) {
+			    throw new ProcessFailedException($process);
+			}
+			echo $process->getOutput();*/
+			if($u != null)
+			{
+				//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+				$em = $this->getDoctrine()->getEntityManager();
+		        $db = $em->getConnection();
+
+		        $role=$u->getRole();
+		        if($role == "ROLE_SUPERUSER")
+		        {
+		        	return $this->redirectToRoute('listGroup');
+		        }
+		        if($role == "ROLE_ADMIN")
+		        {	        	
+					return $this->redirectToRoute('listGroupIp');
+				}
+			}
+			return $this->redirectToRoute('dashboard');
+		}
+		return $this->render("@Principal/groups/listGroupIp.html.twig", array("grupoIp"=>$listaGrupoIp));
+	}
+
+	public function listGroupIpSuperUserAction($id)
 	{
 		if(isset($_POST['enviar']))
 		{
 			$ids = $_POST['ids'];
-			foreach ($ids as $key) {
-				echo $key;
-				echo "<br>";
-				exit;
+			//print_r($ids);
+			$file=fopen("Groups/$id/ipGrupos.txt","w") or die("Problemas");
+			foreach ($ids as $formatos) 
+			{
+				fputs($file,$formatos."\n");
 			}
+			fclose($file);
+			# Aplicar cambios en el sistema #
+			$archivoConfig = "Groups/$id/config.xml";
+			$destinoConfig = "pf.xml";
+		   	if (!copy($archivoConfig, $destinoConfig)) 
+		   	{
+			    echo "Error al copiar $archivoConfig...\n";
+			}
+
+			$archivoipGrupos = "Groups/$id/ipGrupos.txt";
+			$destinoipGrupos = "ipGrupos.txt";
+		   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
+		   	{
+			    echo "Error al copiar $archivoipGrupos...\n";
+			}
+			#exec("python apply.py");
+			# Ejecutar python aliases # 
+			/*$process = new Process('python apply.py');
+			$process->run();
+			// executes after the command finishes
+			if (!$process->isSuccessful()) {
+			    throw new ProcessFailedException($process);
+			}
+			echo $process->getOutput();*/
+			$authenticationUtils = $this->get("security.authentication_utils");
+			$error = $authenticationUtils->getLastAuthenticationError();
+			$lastUsername = $authenticationUtils->getLastUsername();
+			$u = $this->getUser();
+			if($u != null)
+			{
+				//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+				$em = $this->getDoctrine()->getEntityManager();
+		        $db = $em->getConnection();
+
+		        $role=$u->getRole();
+		        if($role == "ROLE_SUPERUSER")
+		        {
+		        	return $this->redirectToRoute('listGroup');
+		        }
+		        if($role == "ROLE_ADMIN")
+		        {	        	
+					return $this->redirectToRoute('listGroupIp');
+				}
+			}
+			return $this->redirectToRoute('dashboard');
 		}
+
 		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
 		$em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
@@ -131,52 +252,5 @@ class GroupController extends Controller
 		fputs($file,$id);
 		fclose($file);
 		return $this->render("@Principal/groups/listGroupIp.html.twig", array("grupoIp"=>$listaGrupoIp));
-	}
-	
-	public function saveListIpAction()
-	{
-			$ids = $_POST['ids'];
-			foreach ($ids as $key) {
-				echo $key;
-				echo "<br>";
-				die();
-			}
-		# return $this->redirectToRoute("listGroup");
-	}
-	public function deleteIpAction($id)
-	{
-		//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
-		$em = $this->getDoctrine()->getEntityManager();
-		$formato = $em->getRepository("PrincipalBundle:Txtip")->find($id);
-		$em->remove($formato);
-		$flush=$em->flush();
-		if($flush == null)
-		{
-			$estatus="Registry successfully deleted";
-		}
-		else
-		{
-			$estatus="Problems with the server try later.";
-		}
-		return $this->redirectToRoute("listGroup");
-	}
-
-	public function applyIpAction($id)
-	{
-		/*$archivoConfig = "Groups/$id/config.xml";
-		$destinoConfig = "pf.xml";
-	   	if (!copy($archivoConfig, $destinoConfig)) 
-	   	{
-		    echo "Error al copiar $archivoConfig...\n";
-		}
-
-		$archivoipGrupos = "Groups/$id/ipGrupos.txt";
-		$destinoipGrupos = "ipGrupos.txt";
-	   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
-	   	{
-		    echo "Error al copiar $archivoipGrupos...\n";
-		}*/
-		exec("python apply.py");
-		return $this->redirectToRoute("listGroup");
 	}
 }

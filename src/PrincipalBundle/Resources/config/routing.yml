@@ -36,9 +36,15 @@ txtIp:
     defaults: { _controller: PrincipalBundle:Group:txtIp }
 
 #Lista las ip del grupo el cual fue seleccionado controlador: GrupoController funcion: listaGrupoIpAction # 
+listGroupIpSuperUser:
+    path:     /listGroupIpSuperUser/{id}
+    defaults: { _controller: PrincipalBundle:Group:listGroupIpSuperUser }
+
+#Lista las ip del grupo el cual fue seleccionado controlador: GrupoController funcion: listaGrupoIpAction # 
 listGroupIp:
-    path:     /listGroupIp/{id}
+    path:     /listGroupIp
     defaults: { _controller: PrincipalBundle:Group:listGroupIp }
+
 
 #Guardar las ip del grupo el cual fue seleccionado controlador: GrupoController funcion: guardarListaIp #
 saveListIp:
@@ -109,8 +115,12 @@ registerUser:
 
 #Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
 listTarget:
-    path:     /listTarget/{id}
+    path:     /listTarget
     defaults: { _controller: PrincipalBundle:Target:listTarget }
+
+listTargetSuperUser:
+    path:     /listTargetSuperUser/{id}
+    defaults: { _controller: PrincipalBundle:Target:listTargetSuperUser }
 
 #Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
 listGroupTarget:
@@ -128,8 +138,13 @@ editTarget:
     defaults: { _controller: PrincipalBundle:Target:editTarget }
 
 #Registro de un nuevo target categories controlador:TargetcategoriesController funcion registroTargetcategoriesr#
+registerTargetSuperUser:
+    path:     /registerTargetSuperUser/{id}
+    defaults: { _controller: PrincipalBundle:Target:registerTargetSuperUser }
+
+#Registro de un nuevo target categories controlador:TargetcategoriesController funcion registroTargetcategoriesr#
 registerTarget:
-    path:     /registerTarget/{id}
+    path:     /registerTarget
     defaults: { _controller: PrincipalBundle:Target:registerTarget }
 
 #Edita el acl el cual fue seleccionado controlador: AclgroupsController funcion editarAclgroups#
@@ -153,8 +168,13 @@ aplicateXMLTarget:
 
 #Registro de un nuevo acl groups controlador:AclgroupsController funcion registroAclgroups#
 registerAcl:
-    path:     /registerAcl/{id}
+    path:     /registerAcl
     defaults: { _controller: PrincipalBundle:Acl:registerAcl }
+
+#Registro de un nuevo acl groups controlador:AclgroupsController funcion registroAclgroups#
+registerAclSuperUser:
+    path:     /registerAclSuperUser/{id}
+    defaults: { _controller: PrincipalBundle:Acl:registerAclSuperUser }
 
 #Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
 listGroupAcl:
@@ -163,8 +183,13 @@ listGroupAcl:
 
 #Listado de las acl groups controlador: AclgroupsController funcion: listaAclgroupsAction #  
 listAcl:
-    path:     /listAcl/{id}
+    path:     /listAcl
     defaults: { _controller: PrincipalBundle:Acl:listAcl }
+
+#Listado de las acl groups controlador: AclgroupsController funcion: listaAclgroupsAction #  
+listAclSuperUser:
+    path:     /listAclSuperUser/{id}
+    defaults: { _controller: PrincipalBundle:Acl:listAclSuperUser }
 
 deleteAcl:
     path:     /deleteAcl/{id}
