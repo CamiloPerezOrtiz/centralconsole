@@ -44,7 +44,7 @@
                                             <div class="form-group">   
                                                 <div  class="card-body">
                                                     <label for="exampleInputEmail1">Disabled:</label>
-                                                    <select class="form-control">
+                                                    <select class="form-control" name="disabled">
                                                         <option value="no" >Off</option>
                                                         <option value="yes">On</option>
                                                      </select>
@@ -59,7 +59,7 @@
                                                     <footer class="blockquote-footer">
                                                         This option is rarely needed. Don't use this without thorough knowledge of the implications.
                                                     </footer>
-                                                    <select class="form-control" onChange="pagoOnChange(this)">
+                                                    <select class="form-control" onChange="pagoOnChange(this)" name="nordr">
                                                         <option value="no">Off</option>
                                                         <option value="yes">On</option> 
                                                      </select>
@@ -89,7 +89,7 @@
                                                     <footer class="blockquote-footer">
                                                         Choose which protocol this rule should match. In most cases "TCP" is specified.
                                                     </footer>
-                                                    <select class="form-control" onChange="protocolOnChange(this)">
+                                                    <select class="form-control" onChange="protocolOnChange(this)" name="proto">
                                                         <option value="tcp">TCP</option>
                                                         <option value="udp">UDP</option>
                                                         <option value="tcp/udp">TCP/UDP</option>
@@ -120,14 +120,14 @@
                                                         <div class="form-row">
                                                             <div class="col-md-2">
                                                                 <label for="exampleInputEmail1">Invert match:</label>
-                                                                <select class="form-control">
+                                                                <select class="form-control"  name="invert">
                                                                     <option value="no" >Off</option>
                                                                     <option value="yes">On</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="exampleInputPassword1">Type</label>
-                                                                <select class="form-control" id="status" onChange="mostrar(this.value);">
+                                                                <select class="form-control" id="status" onChange="mostrar(this.value);" name="type">
                                                                     <option value="any" selected>Any</option>
                                                                     <option value="single">Single host or alias</option>
                                                                     <option value="network">Network</option>
@@ -142,11 +142,11 @@
                                                             <div class="col-md-6">
                                                                 <label for="exampleInputPassword1">Address/mask</label>
                                                                 <div class="input-group mb-3">
-                                                                    <input type="text" class="form-control col-sm-8" id="id_input" disabled>
+                                                                    <input type="text" class="form-control col-sm-8" id="id_input" disabled name="address">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">/</span>
                                                                     </div>
-                                                                    <select class="form-control col-sm-3" id="number" disabled>
+                                                                    <select class="form-control col-sm-3" id="number" disabled name="mask"> 
                                                                         <option></option><option value="128">128</option><option value="127">127</option><option value="126">126</option><option value="125">125</option><option value="124">124</option><option value="123">123</option><option value="122">122</option><option value="121">121</option><option value="120">120</option><option value="119">119</option><option value="118">118</option><option value="117">117</option><option value="116">116</option><option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option><option value="104">104</option><option value="103">103</option><option value="102">102</option><option value="101">101</option><option value="100">100</option><option value="99">99</option><option value="98">98</option><option value="97">97</option><option value="96">96</option><option value="95">95</option><option value="94">94</option><option value="93">93</option><option value="92">92</option><option value="91">91</option><option value="90">90</option><option value="89">89</option><option value="88">88</option><option value="87">87</option><option value="86">86</option><option value="85">85</option><option value="84">84</option><option value="83">83</option><option value="82">82</option><option value="81">81</option><option value="80">80</option><option value="79">79</option><option value="78">78</option><option value="77">77</option><option value="76">76</option><option value="75">75</option><option value="74">74</option><option value="73">73</option><option value="72">72</option><option value="71">71</option><option value="70">70</option><option value="69">69</option><option value="68">68</option><option value="67">67</option><option value="66">66</option><option value="65">65</option><option value="64">64</option><option value="63">63</option><option value="62">62</option><option value="61">61</option><option value="60">60</option><option value="59">59</option><option value="58">58</option><option value="57">57</option><option value="56">56</option><option value="55">55</option><option value="54">54</option><option value="53">53</option><option value="52">52</option><option value="51">51</option><option value="50">50</option><option value="49">49</option><option value="48">48</option><option value="47">47</option><option value="46">46</option><option value="45">45</option><option value="44">44</option><option value="43">43</option><option value="42">42</option><option value="41">41</option><option value="40">40</option><option value="39">39</option><option value="38">38</option><option value="37">37</option><option value="36">36</option><option value="35">35</option><option value="34">34</option><option value="33">33</option><option value="32">32</option><option value="31">31</option><option value="30">30</option><option value="29">29</option><option value="28">28</option><option value="27">27</option><option value="26">26</option><option value="25">25</option><option value="24">24</option><option value="23">23</option><option value="22">22</option><option value="21">21</option><option value="20">20</option><option value="19">19</option><option value="18">18</option><option value="17">17</option><option value="16">16</option><option value="15">15</option><option value="14">14</option><option value="13">13</option><option value="12">12</option><option value="11">11</option><option value="10">10</option><option value="9">9</option><option value="8">8</option><option value="7">7</option><option value="6">6</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
                                                                     </select>
                                                                 </div>  
@@ -165,7 +165,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-2">
                                                                 <label for="exampleInputEmail1">From port:</label>
-                                                                    <select class="form-control" id="s1" onChange="sou1(this.value);">
+                                                                    <select class="form-control" id="s1" onChange="sou1(this.value);" name="sourceport">
                                                                         <option value="1">Other</option>
                                                                         <option value="any" selected>Any</option>
                                                                         <option value="5999">CVSup</option>
@@ -216,11 +216,11 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="exampleInputPassword1">Custom</label>
-                                                                <input type="text" name="" class="form-control" id="c1" disabled="">
+                                                                <input type="text" name="custom" class="form-control" id="c1" disabled="">
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label for="exampleInputEmail1">To port</label>
-                                                                <select class="form-control" id="s2" onChange="sou2(this.value);">
+                                                                <select class="form-control" id="s2" onChange="sou2(this.value);" name="toport">
                                                                     <option value="1">Other</option>
                                                                     <option value="any" selected>Any</option>
                                                                     <option value="5999">CVSup</option>
@@ -271,7 +271,7 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="exampleInputPassword1">Custom</label>
-                                                                <input type="text" name="" class="form-control" id="c2" disabled>
+                                                                <input type="text" name="custom2" class="form-control" id="c2" disabled>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -289,14 +289,14 @@
                                                         <div class="form-row">
                                                             <div class="col-md-2">
                                                                 <label for="exampleInputEmail1">Invert match:</label>
-                                                                <select class="form-control">
+                                                                <select class="form-control" name="invert2">
                                                                     <option value="1" >On</option>
                                                                     <option value="host">Off</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="exampleInputPassword1">Type</label>
-                                                                <select class="form-control" id="statusDestination" onChange="mostrarDestination(this.value);">
+                                                                <select class="form-control" id="statusDestination" onChange="mostrarDestination(this.value);" name="type2">
                                                                     <option value="any">Any</option>
                                                                     <option value="single">Single host or alias</option>
                                                                     <option value="network" selected>Network</option>
@@ -312,11 +312,11 @@
                                                             <div class="col-md-6">
                                                                 <label for="exampleInputPassword1">Address/mask</label>
                                                                 <div class="input-group mb-3">
-                                                                    <input type="text" class="form-control col-sm-8" id="id_inputDestination">
+                                                                    <input type="text" class="form-control col-sm-8" id="id_inputDestination" name="address2">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">/</span>
                                                                     </div>
-                                                                    <select class="form-control col-sm-3" id="numberDestination">
+                                                                    <select class="form-control col-sm-3" id="numberDestination" name="mask2">
                                                                         <option></option><option value="128">128</option><option value="127">127</option><option value="126">126</option><option value="125">125</option><option value="124">124</option><option value="123">123</option><option value="122">122</option><option value="121">121</option><option value="120">120</option><option value="119">119</option><option value="118">118</option><option value="117">117</option><option value="116">116</option><option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option><option value="104">104</option><option value="103">103</option><option value="102">102</option><option value="101">101</option><option value="100">100</option><option value="99">99</option><option value="98">98</option><option value="97">97</option><option value="96">96</option><option value="95">95</option><option value="94">94</option><option value="93">93</option><option value="92">92</option><option value="91">91</option><option value="90">90</option><option value="89">89</option><option value="88">88</option><option value="87">87</option><option value="86">86</option><option value="85">85</option><option value="84">84</option><option value="83">83</option><option value="82">82</option><option value="81">81</option><option value="80">80</option><option value="79">79</option><option value="78">78</option><option value="77">77</option><option value="76">76</option><option value="75">75</option><option value="74">74</option><option value="73">73</option><option value="72">72</option><option value="71">71</option><option value="70">70</option><option value="69">69</option><option value="68">68</option><option value="67">67</option><option value="66">66</option><option value="65">65</option><option value="64">64</option><option value="63">63</option><option value="62">62</option><option value="61">61</option><option value="60">60</option><option value="59">59</option><option value="58">58</option><option value="57">57</option><option value="56">56</option><option value="55">55</option><option value="54">54</option><option value="53">53</option><option value="52">52</option><option value="51">51</option><option value="50">50</option><option value="49">49</option><option value="48">48</option><option value="47">47</option><option value="46">46</option><option value="45">45</option><option value="44">44</option><option value="43">43</option><option value="42">42</option><option value="41">41</option><option value="40">40</option><option value="39">39</option><option value="38">38</option><option value="37">37</option><option value="36">36</option><option value="35">35</option><option value="34">34</option><option value="33">33</option><option value="32">32</option><option value="31">31</option><option value="30">30</option><option value="29">29</option><option value="28">28</option><option value="27">27</option><option value="26">26</option><option value="25">25</option><option value="24">24</option><option value="23">23</option><option value="22">22</option><option value="21">21</option><option value="20">20</option><option value="19">19</option><option value="18">18</option><option value="17">17</option><option value="16">16</option><option value="15">15</option><option value="14">14</option><option value="13">13</option><option value="12">12</option><option value="11">11</option><option value="10">10</option><option value="9">9</option><option value="8">8</option><option value="7">7</option><option value="6">6</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
                                                                     </select>
                                                                 </div>  
@@ -341,7 +341,7 @@
                                                         <div class="form-row">
                                                             <div class="col-md-2">
                                                                 <label for="exampleInputEmail1">From port:</label>
-                                                                <select class="form-control" id="destinationPort" onChange="sou3(this.value);">
+                                                                <select class="form-control" id="destinationPort" onChange="sou3(this.value);" name="port">
                                                                     <option value="1">Other</option>
                                                                     <option value="any" selected>Any</option>
                                                                     <option value="5999">CVSup</option>
@@ -392,11 +392,11 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="exampleInputPassword1">Custom</label>
-                                                                <input type="text" name="" class="form-control" id="destinationPortInput1" disabled="">
+                                                                <input type="text" name="custom3" class="form-control" id="destinationPortInput1" disabled="">
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <label for="exampleInputEmail1">To port</label>
-                                                                <select class="form-control" id="destinationPort2" onChange="sou4(this.value);">
+                                                                <select class="form-control" id="destinationPort2" onChange="sou4(this.value);" name="toport2">
                                                                     <option value="1">Other</option>
                                                                     <option value="any" selected>Any</option>
                                                                     <option value="5999">CVSup</option>
@@ -447,7 +447,7 @@
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="exampleInputPassword1">Custom</label>
-                                                                <input type="text" name="" class="form-control" id="destinationPortInput2" disabled="">
+                                                                <input type="text" name="custom4" class="form-control" id="destinationPortInput2" disabled="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -465,7 +465,7 @@
                                                     <footer class="blockquote-footer">
                                                         e.g.: 192.168.1.12
                                                     </footer>
-                                                    <input type="text" name="" class="form-control">
+                                                    <input type="text" name="redirect" class="form-control">
                                                 </div>
                                                 <hr>
                                             </div>
@@ -490,7 +490,7 @@
                                                                 <footer class="blockquote-footer">
                                                                     Redirect target port
                                                                 </footer>
-                                                                <select class="form-control" id="redirectTargetPort">
+                                                                <select class="form-control" id="redirectTargetPort" name="targetport">
                                                                     <option value="1">Other</option>
                                                                     <option value="5999" selected>CVSup</option>
                                                                     <option value="53">DNS</option>
@@ -543,7 +543,7 @@
                                                                 <footer class="blockquote-footer">
                                                                     Custom
                                                                 </footer>
-                                                                <input type="" name="" class="form-control" id="redirectTargetPortInput" disabled="">
+                                                                <input type="" name="toport3" class="form-control" id="redirectTargetPortInput" disabled="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -558,7 +558,7 @@
                                                     <footer class="blockquote-footer">
                                                         A description may be entered here for administrative reference (not parsed).
                                                     </footer>
-                                                    <input type="text" name="" class="form-control">
+                                                    <input type="text" name="description" class="form-control">
                                                 </div>
                                                 <hr>
                                             </div>
@@ -573,7 +573,7 @@
                                                     <footer class="blockquote-footer">
                                                         This does NOT prevent the rule from being overwritten on Slave.
                                                     </footer>
-                                                    <select class="form-control">
+                                                    <select class="form-control" name="sync">
                                                         <option value="1" >On</option>
                                                         <option value="host">Off</option>
                                                      </select>
@@ -585,7 +585,7 @@
                                             <div class="form-group">   
                                                 <div  class="card-body">
                                                     <label for="exampleInputEmail1">NAT reflection:</label>
-                                                    <select class="form-control">
+                                                    <select class="form-control" name="nat">
                                                         <option value="default">Use system default</option>
                                                         <option value="enable">Enable (NAT + Proxy)</option>
                                                         <option value="purenat">Enable (Pure NAT)</option>
@@ -599,7 +599,7 @@
                                             <div class="form-group">   
                                                 <div  class="card-body">
                                                     <label for="exampleInputEmail1">Filter rule association:</label>
-                                                    <select class="form-control" name="filter-rule-association" id="filter-rule-association">
+                                                    <select class="form-control" name="filter" id="filter-rule-association">
                                                         <option value="">None</option>
                                                         <option value="add-associated" selected>Add associated filter rule</option>
                                                         <option value="add-unassociated">Add unassociated filter rule</option>
@@ -611,7 +611,7 @@
                                         {# Fin Filter rule association #}
                                         {# Inicio de Botones guardar y limpiar #}
                                             <div class="form-group">
-                                                <button type="reset" class="btn btn-primary btn-block">Save</button>
+                                                <button type="reset" class="btn btn-primary btn-block" name="enviar">Save</button>
                                             </div>
                                             <div class="text-center">
                                                 <button type="reset" class="btn btn-danger btn-block">Clean Form</button>

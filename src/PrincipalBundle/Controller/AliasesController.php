@@ -302,29 +302,14 @@ class AliasesController extends Controller
 		fwrite($archivo, $contenido);
 		// Se cierra el archivo 
 		fclose($archivo); 
-		# Copiar el archivo original del config #
-		$archivo = 'configOriginal.xml';
-		$destino = "config.xml";
-	   	if (!copy($archivo, $destino)) 
-	   	{
-		    echo "Error al copiar $archivo...\n";
-		}
-		# Ejecutar python target # 
-		$process = new Process('python aliases.py');
-		$process->run();
-		// executes after the command finishes
-		if (!$process->isSuccessful()) {
-		    throw new ProcessFailedException($process);
-		}
-		echo $process->getOutput();
 		# Mover el archivo a la carpeta #
-		$archivoConfig = 'config.xml';
-		$destinoConfig = "Groups/$id/config.xml";
+		$archivoConfig = 'conf.xml';
+		$destinoConfig = "Groups/$id/conf.xml";
 	   	if (!copy($archivoConfig, $destinoConfig)) 
 	   	{
 		    echo "Error al copiar $archivoConfig...\n";
 		}
-		unlink("config.xml");
+		unlink("conf.xml");
 		$estatus="The configuration has been saved";
 		$this->session->getFlashBag()->add("estatus",$estatus);
 		return $this->redirectToRoute("listGroupAliases");

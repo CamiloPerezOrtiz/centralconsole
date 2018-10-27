@@ -44,32 +44,18 @@ class NatController extends Controller
 	        }
 	        if($role == "ROLE_ADMIN")
 	        {
-	        	$grupo=$u->getNameGroup();
-	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$querySelect = "SELECT DISTINCT cliente FROM txtip WHERE cliente = '$grupo' ORDER BY cliente ASC";
-				$stmtSelect = $db->prepare($querySelect);
-				$paramsSelect =array();
-				$stmtSelect->execute($paramsSelect);
-				$listaGrupo=$stmtSelect->fetchAll();
-				return $this->render("@Principal/nat/listGroup.html.twig", array("grupo"=>$listaGrupo));
+	        	return $this->redirectToRoute("listNat");
 	        }
 	        if($role == "ROLE_USER")
 	        {
-	        	$grupo=$u->getNameGroup();
-	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$querySelect = "SELECT DISTINCT cliente FROM txtip WHERE cliente = '$grupo' ORDER BY cliente ASC";
-				$stmtSelect = $db->prepare($querySelect);
-				$paramsSelect =array();
-				$stmtSelect->execute($paramsSelect);
-				$listaGrupo=$stmtSelect->fetchAll();
-				return $this->render("@Principal/nat/listGroup.html.twig", array("grupo"=>$listaGrupo));
+	        	return $this->redirectToRoute("listNat");
 	        }
 	    }
 		return $this->redirectToRoute("dashboard");
 	}
 
 	// Funcion para listar las acl groups del sistema 
-    public function listNatAction($id)
+    public function listNatSuperUserAction($id)
     {
     	$authenticationUtils = $this->get("security.authentication_utils");
 		$error = $authenticationUtils->getLastAuthenticationError();
@@ -92,6 +78,25 @@ class NatController extends Controller
 				$acl=$stmt->fetchAll();
 				return $this->render("@Principal/nat/listNat.html.twig", array("acls"=>$acl));
 	        }
+	    }
+		// Regresa un arreglo con la informacion obtendia de la base de datos
+	    return $this->redirectToRoute("dashboard");
+    }
+
+    // Funcion para listar las acl groups del sistema 
+    public function listNatAction()
+    {
+    	$authenticationUtils = $this->get("security.authentication_utils");
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		$u = $this->getUser();
+		if($u != null)
+		{
+			//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+			$em = $this->getDoctrine()->getEntityManager();
+	        $db = $em->getConnection();
+
+	        $role=$u->getRole();
 	        if($role == "ROLE_ADMIN")
 	        {
 	        	$grupo=$u->getNameGroup();

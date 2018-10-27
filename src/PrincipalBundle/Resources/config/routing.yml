@@ -272,8 +272,13 @@ listGroupNat:
 
 #Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
 listNat:
-    path:     /listNat/{id}
+    path:     /listNat
     defaults: { _controller: PrincipalBundle:Nat:listNat }
+
+#Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
+listNatSuperUser:
+    path:     /listNatSuperUser/{id}
+    defaults: { _controller: PrincipalBundle:Nat:listNatSuperUser }
 
 #Elimina el target categories seleccionado controlador: AliasesController funcion eliminarAliases#
 deleteNat:
