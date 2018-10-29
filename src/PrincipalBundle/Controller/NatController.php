@@ -71,7 +71,7 @@ class NatController extends Controller
 	        if($role == "ROLE_SUPERUSER")
 	        {
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM acl WHERE namegroup = '$id'";
+				$query = "SELECT * FROM nat";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
@@ -130,15 +130,39 @@ class NatController extends Controller
 		{
 			$em = $this->getDoctrine()->getEntityManager();
 			$db = $em->getConnection();
-			$name = $_POST['name'];
+			$disabled = $_POST['disabled'];
+			$nordr = $_POST['nordr'];
+			$interface = $_POST['interface'];
+			$proto = $_POST['proto'];
+			$invert = $_POST['invert'];
+			$type = $_POST['type'];
+			$address = $_POST['addressmask'];
+			$mask = $_POST['mask'];
+			$sourceport = $_POST['sourceport'];
+			$custom = $_POST['custom'];
+			$toport = $_POST['toport'];
+			$custom2 = $_POST['custom2'];
+			$invert2 = $_POST['invert2'];
+			$type2 = $_POST['type2'];
+			$address2 = $_POST['address2'];
+			$mask2 = $_POST['mask2'];
+			$port = $_POST['port'];
+			$custom3 = $_POST['custom3'];
+			$toport2 = $_POST['toport2'];
+			$custom4 = $_POST['custom4'];
+			$redirect = $_POST['redirect'];
+			$targetport = $_POST['targetport'];
+			$toport3 = $_POST['toport3'];
+			$type2 = $_POST['type2'];
 			$description = $_POST['description'];
-			$status = $_POST['status'];
-			$value1 = $_POST['input'];
-			$value2 = $_POST['input2'];
-			$res1 = implode(" ",$value1);
-			$res2 = implode(" ||",$value2);
-			$query = "INSERT INTO nat(name, description, status, ip, descriptionhost, namegroup) 
-						VALUES ('$name','$description','$status','$res1','$res2', '$id')";
+			$sync = $_POST['sync'];
+			$nat = $_POST['nat'];
+			$filter = $_POST['filter'];
+			//$position_order = $_POST['position_order'];
+			$query = "INSERT INTO nat(disabled, nordr, interface, proto, invert, type, address, mask, sourceport, custom, toport, 
+			custom2,invert2, type2, address2, mask2, port, custom3, toport2,custom4, redirect, targetport, toport3, description, sync, nat,filter) 
+						VALUES ('$disabled','$nordr','$interface','$proto','$invert', '$type','$address','$mask','$sourceport','$custom','$toport', '$custom2','$invert2','$type2',
+						'$address2','$mask2','$port', '$custom3','$toport2','$custom4','$redirect', '$targetport','$toport3','$description','$sync', '$nat','$filter')";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
 			return $this->redirectToRoute("listGroupNat");

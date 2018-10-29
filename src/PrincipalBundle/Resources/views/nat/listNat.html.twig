@@ -49,9 +49,15 @@
                                         <thead class="bg-dark text-white">
                                             <tr>
                                                 <th>Disabled</th>                         
-                                                <th>Name</th>
+                                                <th>Interface</th>
+                                                <th>Protocol</th>
+                                                <th>Source Address</th>
+                                                <th>Source Ports</th>
+                                                <th>Dest. Address</th>
+                                                <th>Dest. Ports</th>
+                                                <th>NAT IP</th>
+                                                <th>NAT Ports</th>
                                                 <th>Description</th>
-                                                <th>Group</th>
                                                 {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
                                                     <th>Edit</th>
                                                     <th>Delete</th>
@@ -62,9 +68,15 @@
                                             {% for acl in acls %}
                                                 <tr>
                                                     <td>{{ acl.disabled }}</td>
-                                                    <td>{{ acl.name }}</td>
+                                                    <td>{{ acl.interface }}</td>
+                                                    <td>{{ acl.proto }}</td>
+                                                    <td>*</td>
+                                                    <td>*</td>
+                                                    <td>WAN address</td>
+                                                    <td>{{ acl.custom4 }}</td>
+                                                    <td>{{ acl.redirect }}</td>
+                                                    <td>{{ acl.targetport }}</td>
                                                     <td>{{ acl.description }}</td>
-                                                    <td>{{ acl.namegroup }}</td>
                                                     {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
                                                     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
                                                         <td>
@@ -101,23 +113,7 @@
                                     When you do click on save button you are saving the acl list and if you do click on apply button, the process about new configuration changes will be starting. <br>
                                     <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
                                     <div class="form-group">
-                                        {% if acls == true %} 
-                                            <a href="{{path('createXMLAcl',{id:acls[0]['namegroup']})}}">
-                                                <button type="button" class="btn btn-primary">
-                                                    <b> 
-                                                        Save acl nats list <i class="fas fa-save"></i>
-                                                    </b>
-                                                </button>
-                                            </a>
-                                            <br><br>
-                                            <a href="{{path('aplicateXMLAcl',{id:acls[0]['namegroup']})}}">
-                                                <button type="" class="btn btn-success">
-                                                    <b> 
-                                                        Apply to nats list <i class="fas fa-caret-square-down"></i>
-                                                    </b>
-                                                </button>
-                                            </a>
-                                        {% endif %} 
+                                        
                                     </div>
                                 </div>
                             {% endif %}
