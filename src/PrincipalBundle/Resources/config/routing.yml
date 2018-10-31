@@ -21,6 +21,11 @@ login_check:
 logout:
     path:     /logout
 
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+refresh:
+    path:     /refresh
+    defaults: { _controller: PrincipalBundle:Nat:refresh }
+
 ###################################################
 #  Area para los archivos txt                     #
 ###################################################

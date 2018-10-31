@@ -45,9 +45,9 @@
                             </ul>
                             <div class="tab-content">
                                 <div id="home" class="container tab-pane active"><br>
-                                    <table class="table table-hover table-bordered table-sm text-center" id="dtBasicExample" width="100%" cellspacing="0">
+                                    <table class="table table-hover table-bordered table-sm text-center small" id="dtBasicExample" width="100%">
                                         <thead class="bg-dark text-white">
-                                            <tr>
+                                            <tr class="small">
                                                 <th>Disabled</th>                         
                                                 <th>Interface</th>
                                                 <th>Protocol</th>
@@ -64,19 +64,27 @@
                                                 {% endif %}                 
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody class="row_position">
                                             {% for acl in acls %}
-                                                <tr>
+                                                <tr id="{{ acl.id }}">
                                                     <td>{{ acl.disabled }}</td>
-                                                    <td>{{ acl.interface }}</td>
-                                                    <td>{{ acl.proto }}</td>
+                                                    <td>{{ acl.interface|upper }} </td>
+                                                    <td>{{ acl.proto|upper }}</td>
                                                     <td>*</td>
                                                     <td>*</td>
-                                                    <td>WAN address</td>
-                                                    <td>{{ acl.custom4 }}</td>
-                                                    <td>{{ acl.redirect }}</td>
-                                                    <td>{{ acl.targetport }}</td>
-                                                    <td>{{ acl.description }}</td>
+                                                    <td>{% if acl.dsttype == 'any' %}*{% endif %}
+                                                        {% if acl.dsttype == 'single' %} {{ acl.dst }} {% endif %}
+                                                        {% if acl.dsttype == 'network' %} {{ acl.dst }}/ {% endif %}
+                                                        {% if acl.dsttype == 'pppoe' %}PPPoE clients{% endif %}
+                                                        {% if acl.dsttype == 'l2tp' %}L2TP clients{% endif %}
+                                                        {% if acl.dsttype == 'wan' %}WAN net{% endif %}
+                                                        {% if acl.dsttype == 'wanip' %}WAN address{% endif %}
+                                                        {% if acl.dsttype == 'lan' %}LAN net{% endif %}
+                                                        {% if acl.dsttype == 'lanip' %}LAN address{% endif %}</td>
+                                                    <td>{{ acl.dstendport_cust2 }}</td>
+                                                    <td>{{ acl.localip  }}</td>
+                                                    <td>{{ acl.localbeginport }}</td>
+                                                    <td>{{ acl.descr }}</td>
                                                     {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
                                                     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
                                                         <td>
@@ -124,6 +132,7 @@
         </div>
     </div>
     {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script>
         $(document).ready(function () {
             $('#dtBasicExample').DataTable();
@@ -140,6 +149,27 @@
             }, 4000);
         </script>
     {% endif %}
+    <script type="text/javascript">
+        $( ".row_position" ).sortable({
+            delay: 150,
+            stop: function() {
+                var selectedData = new Array();
+                $('.row_position>tr').each(function() {
+                    selectedData.push($(this).attr("id"));
+                });
+                updateOrder(selectedData);
+            }
+        });
+
+
+        function updateOrder(data) {
+            $.ajax({
+                url:"{{path('refresh')}}",
+                type:'post',
+                data:{position:data}
+            })
+        }
+    </script>
     {% include '@Principal/templates/declaracionFin.html.twig' %}
 {% else %}
     <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">

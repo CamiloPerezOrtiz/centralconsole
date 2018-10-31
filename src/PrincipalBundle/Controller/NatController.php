@@ -134,40 +134,52 @@ class NatController extends Controller
 			$nordr = $_POST['nordr'];
 			$interface = $_POST['interface'];
 			$proto = $_POST['proto'];
-			$invert = $_POST['invert'];
-			$type = $_POST['type'];
-			$address = $_POST['addressmask'];
-			$mask = $_POST['mask'];
-			$sourceport = $_POST['sourceport'];
-			$custom = $_POST['custom'];
-			$toport = $_POST['toport'];
-			$custom2 = $_POST['custom2'];
-			$invert2 = $_POST['invert2'];
-			$type2 = $_POST['type2'];
-			$address2 = $_POST['address2'];
-			$mask2 = $_POST['mask2'];
-			$port = $_POST['port'];
-			$custom3 = $_POST['custom3'];
-			$toport2 = $_POST['toport2'];
-			$custom4 = $_POST['custom4'];
-			$redirect = $_POST['redirect'];
-			$targetport = $_POST['targetport'];
-			$toport3 = $_POST['toport3'];
-			$type2 = $_POST['type2'];
-			$description = $_POST['description'];
-			$sync = $_POST['sync'];
-			$nat = $_POST['nat'];
-			$filter = $_POST['filter'];
+			$srcnot = $_POST['srcnot'];
+			$srctype = $_POST['srctype'];
+			$src = $_POST['src'];
+			$srcmask = $_POST['srcmask'];
+			$srcbeginport = $_POST['srcbeginport'];
+			$dstbeginport_cust = $_POST['dstbeginport_cust'];
+			$srcendport = $_POST['srcendport'];
+
+			$dstendport_cust = $_POST['dstendport_cust'];
+			$dstnot = $_POST['dstnot'];
+			$dsttype = $_POST['dsttype'];
+			$dst = $_POST['dst'];
+			$dstmask = $_POST['dstmask'];
+			$dstendport = $_POST['dstendport'];
+			$dstbeginport_cust2 = $_POST['dstbeginport_cust2'];
+			$dstendport2 = $_POST['dstendport2'];
+			$dstendport_cust2 = $_POST['dstendport_cust2'];
+			$localip = $_POST['localip'];
+
+			$localbeginport = $_POST['localbeginport'];
+			$localbeginport_cust = $_POST['localbeginport_cust'];
+			$descr = $_POST['descr'];
+			$nosync = $_POST['nosync'];
+			$natreflection = $_POST['natreflection'];
+			$associated_rule_id = $_POST['associated_rule_id'];
 			//$position_order = $_POST['position_order'];
-			$query = "INSERT INTO nat(disabled, nordr, interface, proto, invert, type, address, mask, sourceport, custom, toport, 
-			custom2,invert2, type2, address2, mask2, port, custom3, toport2,custom4, redirect, targetport, toport3, description, sync, nat,filter) 
-						VALUES ('$disabled','$nordr','$interface','$proto','$invert', '$type','$address','$mask','$sourceport','$custom','$toport', '$custom2','$invert2','$type2',
-						'$address2','$mask2','$port', '$custom3','$toport2','$custom4','$redirect', '$targetport','$toport3','$description','$sync', '$nat','$filter')";
+			$query = "INSERT INTO nat(disabled, nordr, interface, proto, srcnot, srctype, src, srcmask, srcbeginport, dstbeginport_cust, srcendport, dstendport_cust, dstnot, dsttype, dst, dstmask, dstendport, dstbeginport_cust2, dstendport2, dstendport_cust2, localip, localbeginport, localbeginport_cust, descr, nosync, natreflection, associated_rule_id) VALUES ('$disabled','$nordr','$interface', '$proto', '$srcnot', '$srctype', '$src', '$srcmask', '$srcbeginport', '$dstbeginport_cust', '$srcendport', '$dstendport_cust','$dstnot','$dsttype', '$dst', '$dstmask', '$dstendport', '$dstbeginport_cust2', '$dstendport2', '$dstendport_cust2', '$localip', '$localbeginport', '$localbeginport_cust', '$descr', '$nosync', '$natreflection', '$associated_rule_id')";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
 			return $this->redirectToRoute("listGroupNat");
 		}
         // Se renderiza el formulario para que el actor lo llene los campos solicitados
         return $this->render("@Principal/nat/registerNat.html.twig");
+	}
+
+	public function refreshAction()
+	{
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		$position = $_POST['position'];
+		$i=1;
+		foreach($position as $k=>$v){
+		    $sql = "Update nat SET position_order=".$i." WHERE id=".$v;
+		    $stmt = $db->prepare($sql);
+			$stmt->execute(array());
+			$i++;
+		}
 	}
 }
