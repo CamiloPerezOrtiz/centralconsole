@@ -98,14 +98,14 @@
                                                         <div class="form-row">
                                                             <div class="col-md-6">
                                                                 <label>Type</label>
-                                                                <select class="form-control" name="srctype" id="srctype">
-                                                                    <option value="any" selected>Any</option>
+                                                                <select class="form-control" name="srctype" id='id_categoria'>
+                                                                    <option value="any">Any</option>
                                                                     <option value="single">Single host or alias</option>
                                                                     <option value="network">Network</option>
                                                                     <option value="pppoe">PPPoE clients</option>
                                                                     <option value="l2tp">L2TP clients</option>
                                                                     <option value="wan">WAN net</option>
-                                                                    <option value="wanip">WAN address</option>
+                                                                    <option value="wanip" selected="">WAN address</option>
                                                                     <option value="lan">LAN net</option>
                                                                     <option value="lanip">LAN address</option>
                                                                 </select>
@@ -113,7 +113,7 @@
                                                             <div class="col-md-6">
                                                                 <label>Address/mask</label>
                                                                 <div class="input-group mb-3">
-                                                                    <input type="text" class="form-control col-sm-8" name="src" id="src" title="An IPv4 address like 1.2.3.4 or an IPv6 address like 1:2a:3b:ffff::1 or an alias">
+                                                                    <input type="text" class="form-control col-sm-8" name="src" id="id_input" title="An IPv4 address like 1.2.3.4 or an IPv6 address like 1:2a:3b:ffff::1 or an alias">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">/</span>
                                                                     </div>
@@ -334,6 +334,17 @@
             window.onload = function(){
                 muestra_oculta("contenido");
             };
+        </script>
+        <script>
+            $( function() {
+                $("#id_categoria").change( function() {
+                    if ($(this).val() === "single" || $(this).val() === "network") {
+                        $("#id_input").prop("disabled", false);
+                    } else {
+                        $("#id_input").prop("disabled", true);
+                    }
+                });
+            });
         </script>
         {% include '@Principal/templates/declaracionFin.html.twig' %}
     {% else %}

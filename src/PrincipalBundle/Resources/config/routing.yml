@@ -300,6 +300,11 @@ registerNat:
     path:     /registerNat/{id} 
     defaults: { _controller: PrincipalBundle:Nat:registerNat }
 
+#Registro de un nuevo target categories controlador:NatController funcion registroNatr#
+registerNatOne:
+    path:     /registerNatOne/{id} 
+    defaults: { _controller: PrincipalBundle:Nat:registerNatOne }
+
 #Crear XML acl groups controlador:NatController funcion crearXMLNat #
 createXMLNat:
     path:     /createXMLNat/{id}

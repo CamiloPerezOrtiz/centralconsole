@@ -46,7 +46,13 @@
                                         </div>
                                         {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
                                             <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerNat',{id:listaGrupo.cliente})}}">
-                                                <span class="float-left">Register a new nat in this group</span>
+                                                <span class="float-left">Register a new nat port forward</span>
+                                                <span class="float-right">
+                                                    <i class="fa fa-angle-right"></i>
+                                                </span>
+                                            </a>
+                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerNatOne',{id:listaGrupo.cliente})}}">
+                                                <span class="float-left">Register a new nat 1:1</span>
                                                 <span class="float-right">
                                                     <i class="fa fa-angle-right"></i>
                                                 </span>

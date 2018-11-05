@@ -45,67 +45,69 @@
                             </ul>
                             <div class="tab-content">
                                 <div id="home" class="container tab-pane active"><br>
-                                    <table class="table table-hover table-bordered table-sm text-center small" id="dtBasicExample" width="100%">
-                                        <thead class="bg-dark text-white">
-                                            <tr class="small">
-                                                <th>Disabled</th>                         
-                                                <th>Interface</th>
-                                                <th>Protocol</th>
-                                                <th>Source Address</th>
-                                                <th>Source Ports</th>
-                                                <th>Dest. Address</th>
-                                                <th>Dest. Ports</th>
-                                                <th>NAT IP</th>
-                                                <th>NAT Ports</th>
-                                                <th>Description</th>
-                                                {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                                    <th>Edit</th>
-                                                    <th>Delete</th>
-                                                {% endif %}                 
-                                            </tr>
-                                        </thead>
-                                        <tbody class="row_position">
-                                            {% for acl in acls %}
-                                                <tr id="{{ acl.id }}">
-                                                    <td>{{ acl.disabled }}</td>
-                                                    <td>{{ acl.interface|upper }} </td>
-                                                    <td>{{ acl.proto|upper }}</td>
-                                                    <td>*</td>
-                                                    <td>*</td>
-                                                    <td>{% if acl.dsttype == 'any' %}*{% endif %}
-                                                        {% if acl.dsttype == 'single' %} {{ acl.dst }} {% endif %}
-                                                        {% if acl.dsttype == 'network' %} {{ acl.dst }}/ {% endif %}
-                                                        {% if acl.dsttype == 'pppoe' %}PPPoE clients{% endif %}
-                                                        {% if acl.dsttype == 'l2tp' %}L2TP clients{% endif %}
-                                                        {% if acl.dsttype == 'wan' %}WAN net{% endif %}
-                                                        {% if acl.dsttype == 'wanip' %}WAN address{% endif %}
-                                                        {% if acl.dsttype == 'lan' %}LAN net{% endif %}
-                                                        {% if acl.dsttype == 'lanip' %}LAN address{% endif %}</td>
-                                                    <td>{{ acl.dstendport_cust2 }}</td>
-                                                    <td>{{ acl.localip  }}</td>
-                                                    <td>{{ acl.localbeginport }}</td>
-                                                    <td>{{ acl.descr }}</td>
-                                                    {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered table-sm text-center small" id="dtBasicExample" width="100%">
+                                            <thead class="bg-dark text-white">
+                                                <tr class="small">
+                                                    <th>Disabled</th>                         
+                                                    <th>Interface</th>
+                                                    <th>Protocol</th>
+                                                    <th>Source Address</th>
+                                                    <th>Source Ports</th>
+                                                    <th>Dest. Address</th>
+                                                    <th>Dest. Ports</th>
+                                                    <th>NAT IP</th>
+                                                    <th>NAT Ports</th>
+                                                    <th>Description</th>
                                                     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                                        <td>
-                                                            <a href="{{path('editAcl',{id:acl.id})}}">
-                                                                <button class="btn btn-warning btn-sm" type="submit">
-                                                                    Edit <i class="far fa-edit"></i>
-                                                                </button>
-                                                            </a>
-                                                        </td>
-                                                        <td>
-                                                            <a href="{{path('deleteAcl',{id:acl.id})}}">
-                                                                <button class="btn btn-danger btn-sm" type="submit">
-                                                                    Delete <i class="fas fa-times-circle"></i>
-                                                                </button>
-                                                            </a>
-                                                        </td>
-                                                    {% endif %}
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                    {% endif %}                 
                                                 </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody class="row_position">
+                                                {% for acl in acls %}
+                                                    <tr id="{{ acl.id }}">
+                                                        <td>{{ acl.disabled }}</td>
+                                                        <td>{{ acl.interface|upper }} </td>
+                                                        <td>{{ acl.proto|upper }}</td>
+                                                        <td>*</td>
+                                                        <td>*</td>
+                                                        <td>{% if acl.dsttype == 'any' %}*{% endif %}
+                                                            {% if acl.dsttype == 'single' %} {{ acl.dst }} {% endif %}
+                                                            {% if acl.dsttype == 'network' %} {{ acl.dst }}/ {% endif %}
+                                                            {% if acl.dsttype == 'pppoe' %}PPPoE clients{% endif %}
+                                                            {% if acl.dsttype == 'l2tp' %}L2TP clients{% endif %}
+                                                            {% if acl.dsttype == 'wan' %}WAN net{% endif %}
+                                                            {% if acl.dsttype == 'wanip' %}WAN address{% endif %}
+                                                            {% if acl.dsttype == 'lan' %}LAN net{% endif %}
+                                                            {% if acl.dsttype == 'lanip' %}LAN address{% endif %}</td>
+                                                        <td>{{ acl.dstendport_cust2 }}</td>
+                                                        <td>{{ acl.localip  }}</td>
+                                                        <td>{{ acl.localbeginport }}</td>
+                                                        <td>{{ acl.descr }}</td>
+                                                        {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
+                                                        {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                                            <td>
+                                                                <a href="{{path('editAcl',{id:acl.id})}}">
+                                                                    <button class="btn btn-warning btn-sm" type="submit">
+                                                                        Edit <i class="far fa-edit"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{path('deleteAcl',{id:acl.id})}}">
+                                                                    <button class="btn btn-danger btn-sm" type="submit">
+                                                                        Delete <i class="fas fa-times-circle"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </td>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <div id="menu1" class="container tab-pane fade"><br>
                                     <h3>Menu 1</h3>

@@ -105,7 +105,6 @@ CREATE TABLE nat(
 	localip VARCHAR(15) NOT NULL,
 	localbeginport VARCHAR(40) NOT NULL,
 	localbeginport_cust VARCHAR(40) NOT NULL,
-
 	descr VARCHAR(40) NOT NULL,
 	nosync VARCHAR(40) DEFAULT NULL,
 	natreflection VARCHAR(40) NOT NULL,

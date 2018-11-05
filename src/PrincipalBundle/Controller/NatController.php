@@ -169,6 +169,16 @@ class NatController extends Controller
         return $this->render("@Principal/nat/registerNat.html.twig");
 	}
 
+	public function registerNatOneAction(Request $request, $id)
+	{
+        if(isset($_POST['enviar']))
+		{
+			return $this->redirectToRoute("listGroupNat");
+		}
+        // Se renderiza el formulario para que el actor lo llene los campos solicitados
+        return $this->render("@Principal/nat/registerNatOne.html.twig");
+	}
+
 	public function refreshAction()
 	{
 		$em = $this->getDoctrine()->getEntityManager();
