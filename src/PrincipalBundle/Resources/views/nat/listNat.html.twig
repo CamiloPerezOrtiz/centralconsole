@@ -10,16 +10,16 @@
                         <a href="{{path('dashboard')}}">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        <a href="{{path('listGroupAcl')}}">List acl groups</a>
+                        <a href="{{path('listGroupNat')}}">List nat groups</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        Acl groups
+                        Nat
                     </li>
                 </ol>
                 <div class="card mb-3">
                     <div class="card-header">
                         <i class="fas fa-table"></i>
-                        Table acl groups
+                        Table nat
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -71,17 +71,75 @@
                                                         <td>{{ acl.disabled }}</td>
                                                         <td>{{ acl.interface|upper }} </td>
                                                         <td>{{ acl.proto|upper }}</td>
+                                                        <td>
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'any' %}
+                                                                !*
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'any' %}
+                                                                *
+                                                            {% endif %}
+
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'single' %}
+                                                                !{{ acl.src }}
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'single' %}
+                                                                {{ acl.src }}
+                                                            {% endif %}
+
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'network' %}
+                                                                !{{ acl.src }}/{{ acl.srcmask }}
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'network' %}
+                                                                {{ acl.src }}/{{ acl.srcmask }}
+                                                            {% endif %}
+
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'pppoe' %}
+                                                                !PPPoE clients
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'pppoe' %}
+                                                                PPPoE clients
+                                                            {% endif %}
+
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'l2tp' %}
+                                                                !L2TP clients
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'l2tp' %}
+                                                                L2TP clients
+                                                            {% endif %}
+
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'wan' %}
+                                                                !WAN net
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'wan' %}
+                                                                WAN net
+                                                            {% endif %}
+
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'wanip' %}
+                                                                !WAN address
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'wanip' %}
+                                                                WAN address
+                                                            {% endif %}
+
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'lan' %}
+                                                                !LAN net
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'lan' %}
+                                                                LAN net
+                                                            {% endif %}
+
+                                                            {% if acl.srcnot == 'yes' and acl.srctype == 'lanip' %}
+                                                                !LAN address
+                                                            {% endif %}
+                                                            {% if acl.srcnot == 'no' and acl.srctype == 'lanip' %}
+                                                                LAN address
+                                                            {% endif %}
+                                                        </td>
                                                         <td>*</td>
-                                                        <td>*</td>
-                                                        <td>{% if acl.dsttype == 'any' %}*{% endif %}
-                                                            {% if acl.dsttype == 'single' %} {{ acl.dst }} {% endif %}
-                                                            {% if acl.dsttype == 'network' %} {{ acl.dst }}/ {% endif %}
-                                                            {% if acl.dsttype == 'pppoe' %}PPPoE clients{% endif %}
-                                                            {% if acl.dsttype == 'l2tp' %}L2TP clients{% endif %}
-                                                            {% if acl.dsttype == 'wan' %}WAN net{% endif %}
-                                                            {% if acl.dsttype == 'wanip' %}WAN address{% endif %}
-                                                            {% if acl.dsttype == 'lan' %}LAN net{% endif %}
-                                                            {% if acl.dsttype == 'lanip' %}LAN address{% endif %}</td>
+                                                        {# Dest adress #}
+                                                        <td>
+                                                        </td>
+
                                                         <td>{{ acl.dstendport_cust2 }}</td>
                                                         <td>{{ acl.localip  }}</td>
                                                         <td>{{ acl.localbeginport }}</td>
@@ -89,7 +147,7 @@
                                                         {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
                                                         {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
                                                             <td>
-                                                                <a href="{{path('editAcl',{id:acl.id})}}">
+                                                                <a href="{{path('editNat',{id:acl.id})}}">
                                                                     <button class="btn btn-warning btn-sm" type="submit">
                                                                         Edit <i class="far fa-edit"></i>
                                                                     </button>
@@ -123,7 +181,23 @@
                                     When you do click on save button you are saving the acl list and if you do click on apply button, the process about new configuration changes will be starting. <br>
                                     <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
                                     <div class="form-group">
-                                        
+                                        {% if acls == true %} 
+                                            <a href="{{path('createXMLNat',{id:acls[0]['namegroup']})}}">
+                                                <button type="button" class="btn btn-primary">
+                                                    <b>  
+                                                        Save nat list <i class="fas fa-save"></i>
+                                                    </b>
+                                                </button>
+                                            </a>
+                                            <br><br>
+                                            <a href="{{path('aplicateXMLAcl',{id:acls[0]['namegroup']})}}">
+                                                <button type="" class="btn btn-success">
+                                                    <b>
+                                                        Apply to nat list <i class="fas fa-caret-square-down"></i>
+                                                    </b>
+                                                </button>
+                                            </a>
+                                        {% endif %} 
                                     </div>
                                 </div>
                             {% endif %}

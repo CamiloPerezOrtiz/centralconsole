@@ -109,5 +109,6 @@ CREATE TABLE nat(
 	nosync VARCHAR(40) DEFAULT NULL,
 	natreflection VARCHAR(40) NOT NULL,
 	associated_rule_id VARCHAR(40) NOT NULL,
+	namegroup VARCHAR(50) NOT NULL,
 	position_order SERIAL NOT NULL 
 );

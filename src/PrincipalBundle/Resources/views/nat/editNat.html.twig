@@ -1,0 +1,347 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
+    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/declaracionCabezera.html.twig' %}
+        {% include '@Principal/templates/base.html.twig' %}
+        <div class="container">
+            <div id="content-wrapper">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{path('dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{path('listGroupNat')}}">List nats</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Nats
+                        </li>
+                    </ol>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fas fa-table"></i>
+                            Register a new nat
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                {# Mensaje a pantalla de notificacion de algun error #}
+                                    <div class="container">
+                                        <div class="col-md-11">
+                                            {% for msg in app.session.flashbag().get('estatus') %}
+                                                <div class="alert alert-info" aria-label="Close">
+                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                    <strong>Info!</strong> {{ msg }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {# Fin de Mensaje #}
+                                <div class="card mx-auto card-register">
+                                    <div class="card-header bg-dark text-white">Properties</div>
+                                    
+                                        <form method="post">
+                                            {# Inicio #}
+                                                <div class="form-group">   
+                                                    <div  class="card-body">
+                                                        {% for listaGrupo in value %}
+                                                        <label>Disabled:</label>
+                                                        <input type="checkbox" name="disabled" value="{{ listaGrupo.disabled }}">
+                                                        <hr>
+                                                        <label>No RDR (NOT):</label>
+                                                        <input type="hidden" name="nordr" value="no">
+                                                        <input type="checkbox" name="nordr" id="nordr" onchange="javascript:showContent()" value="yes">
+                                                        <label>Disable redirection for traffic matching this rule.</label>
+                                                        <hr>
+                                                        <label>Interface:</label>
+                                                        <footer class="blockquote-footer">
+                                                            Choose which interface this rule applies to. In most cases "WAN" is specified.
+                                                        </footer>
+                                                        <select class="form-control" name="interface" id="interface">
+                                                            <option value="{{ listaGrupo.interface }}">{{ listaGrupo.interface|upper }}</option>
+                                                            <option value="wan" selected>WAN</option>
+                                                            <option value="lan">LAN</option>
+                                                        </select>
+                                                        <hr>
+                                                        <label for="exampleInputEmail1">Protocol:</label>
+                                                        <footer class="blockquote-footer">
+                                                            Choose which protocol this rule should match. In most cases "TCP" is specified.
+                                                        </footer>
+                                                        <select class="form-control" name="proto" id="proto">
+                                                            <option value="tcp" selected>TCP</option>
+                                                            <option value="udp">UDP</option>
+                                                            <option value="tcp/udp">TCP/UDP</option>
+                                                            <option value="icmp">ICMP</option>
+                                                            <option value="esp">ESP</option>
+                                                            <option value="ah">AH</option>
+                                                            <option value="gre">GRE</option>
+                                                            <option value="ipv6">IPV6</option>
+                                                            <option value="igmp">IGMP</option>
+                                                            <option value="pim">PIM</option>
+                                                            <option value="ospf">OSPF</option>
+                                                        </select>    
+                                                    </div>
+                                                </div>
+                                            {# Fin #}
+                                            <div class="card-header bg-dark text-white">
+                                                <a style='cursor: pointer;' onClick="muestra_oculta('contenido')" title="" class="boton_mostrar">
+                                                    Hide advanced <i class="fas fa-angle-double-down"></i>
+                                                </a>
+                                            </div>
+                                            <div id="contenido">
+                                            {# Inicio Source #}
+                                                <div class="form-group">   
+                                                    <div  class="card-body">
+                                                        <label>Source</label>
+                                                        <input type="hidden" name="srcnot" value="no">
+                                                        <input type="checkbox" name="srcnot" id="srcnot" value="yes">
+                                                        <label>Invert match.</label>
+                                                        <div class="form-group">
+                                                            <div class="form-row">
+                                                                <div class="col-md-6">
+                                                                    <label>Type</label>
+                                                                    <select class="form-control" name="srctype" id='id_categoria'>
+                                                                        <option value="any">Any</option>
+                                                                        <option value="single">Single host or alias</option>
+                                                                        <option value="network">Network</option>
+                                                                        <option value="pppoe">PPPoE clients</option>
+                                                                        <option value="l2tp">L2TP clients</option>
+                                                                        <option value="wan">WAN net</option>
+                                                                        <option value="wanip" selected="">WAN address</option>
+                                                                        <option value="lan">LAN net</option>
+                                                                        <option value="lanip">LAN address</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>Address/mask</label>
+                                                                    <div class="input-group mb-3">
+                                                                        <input type="text" class="form-control col-sm-8" name="src" id="id_input" title="An IPv4 address like 1.2.3.4 or an IPv6 address like 1:2a:3b:ffff::1 or an alias">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">/</span>
+                                                                        </div>
+                                                                        <select class="form-control col-sm-3 pfIpMask" name="srcmask" id="srcmask"> 
+                                                                            <option value="32">32</option><option value="31">31</option><option value="30">30</option><option value="29">29</option><option value="28">28</option><option value="27">27</option><option value="26">26</option><option value="25">25</option><option value="24">24</option><option value="23">23</option><option value="22">22</option><option value="21">21</option><option value="20">20</option><option value="19">19</option><option value="18">18</option><option value="17">17</option><option value="16">16</option><option value="15">15</option><option value="14">14</option><option value="13">13</option><option value="12">12</option><option value="11">11</option><option value="10">10</option><option value="9">9</option><option value="8">8</option><option value="7">7</option><option value="6">6</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+                                                                        </select>
+                                                                    </div>  
+                                                                </div>
+                                                            </div>
+                                                            <label>Source port range</label>
+                                                            <br>
+                                                            <div class="form-group">
+                                                                <div class="form-row">
+                                                                    <div class="col-md-2">
+                                                                        <label>From port:</label>
+                                                                        <select class="form-control" name="srcbeginport" id="srcbeginport">
+                                                                            <option value="">Other</option><option value="any" selected>Any</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22">SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label>Custom</label>
+                                                                        <input type="text" class="form-control" name="dstbeginport_cust" id="dstbeginport_cust">
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <label>To port</label>
+                                                                        <select class="form-control" name="srcendport" id="srcendport">
+                                                                            <option value="">Other</option><option value="any" selected>Any</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22">SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label>Custom</label>
+                                                                        <input type="text" class="form-control" name="dstendport_cust" id="dstendport_cust">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="card-header bg-dark text-white">Properties</div>
+                                            {# Inicio Destination #}
+                                                <div class="form-group">   
+                                                    <div  class="card-body">
+                                                        <label>Destination</label>
+                                                        <input type="hidden" name="dstnot" value="no">
+                                                        <input type="checkbox" name="dstnot" id="dstnot" value="yes"><label> Invert match:</label>
+                                                        <br>
+                                                        <div class="form-group">
+                                                            <div class="form-row">
+                                                                <div class="col-md-6">
+                                                                    <label>Type</label>
+                                                                    <select class="form-control" onChange="mostrarDestination(this.value);" name="dsttype" id="dsttype">
+                                                                        <option value="any">Any</option>
+                                                                        <option value="single">Single host or alias</option>
+                                                                        <option value="network" selected>Network</option>
+                                                                        <option value="(self)">This Firewall (self)</option>
+                                                                        <option value="pppoe">PPPoE clients</option>
+                                                                        <option value="l2tp">L2TP clients</option>
+                                                                        <option value="wan">WAN net</option>
+                                                                        <option value="wanip">WAN address</option>
+                                                                        <option value="lan">LAN net</option>
+                                                                        <option value="lanip">LAN address</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label>Address/mask</label>
+                                                                    <div class="input-group mb-3">
+                                                                        <input type="text" class="form-control col-sm-8" name="dst" id="dst">
+                                                                        <div class="input-group-prepend">
+                                                                            <span class="input-group-text">/</span>
+                                                                        </div>
+                                                                        <select class="form-control col-sm-3" name="dstmask" id="dstmask">
+                                                                            <option></option><option value="128">128</option><option value="127">127</option><option value="126">126</option><option value="125">125</option><option value="124">124</option><option value="123">123</option><option value="122">122</option><option value="121">121</option><option value="120">120</option><option value="119">119</option><option value="118">118</option><option value="117">117</option><option value="116">116</option><option value="115">115</option><option value="114">114</option><option value="113">113</option><option value="112">112</option><option value="111">111</option><option value="110">110</option><option value="109">109</option><option value="108">108</option><option value="107">107</option><option value="106">106</option><option value="105">105</option><option value="104">104</option><option value="103">103</option><option value="102">102</option><option value="101">101</option><option value="100">100</option><option value="99">99</option><option value="98">98</option><option value="97">97</option><option value="96">96</option><option value="95">95</option><option value="94">94</option><option value="93">93</option><option value="92">92</option><option value="91">91</option><option value="90">90</option><option value="89">89</option><option value="88">88</option><option value="87">87</option><option value="86">86</option><option value="85">85</option><option value="84">84</option><option value="83">83</option><option value="82">82</option><option value="81">81</option><option value="80">80</option><option value="79">79</option><option value="78">78</option><option value="77">77</option><option value="76">76</option><option value="75">75</option><option value="74">74</option><option value="73">73</option><option value="72">72</option><option value="71">71</option><option value="70">70</option><option value="69">69</option><option value="68">68</option><option value="67">67</option><option value="66">66</option><option value="65">65</option><option value="64">64</option><option value="63">63</option><option value="62">62</option><option value="61">61</option><option value="60">60</option><option value="59">59</option><option value="58">58</option><option value="57">57</option><option value="56">56</option><option value="55">55</option><option value="54">54</option><option value="53">53</option><option value="52">52</option><option value="51">51</option><option value="50">50</option><option value="49">49</option><option value="48">48</option><option value="47">47</option><option value="46">46</option><option value="45">45</option><option value="44">44</option><option value="43">43</option><option value="42">42</option><option value="41">41</option><option value="40">40</option><option value="39">39</option><option value="38">38</option><option value="37">37</option><option value="36">36</option><option value="35">35</option><option value="34">34</option><option value="33">33</option><option value="32">32</option><option value="31">31</option><option value="30">30</option><option value="29">29</option><option value="28">28</option><option value="27">27</option><option value="26">26</option><option value="25">25</option><option value="24">24</option><option value="23">23</option><option value="22">22</option><option value="21">21</option><option value="20">20</option><option value="19">19</option><option value="18">18</option><option value="17">17</option><option value="16">16</option><option value="15">15</option><option value="14">14</option><option value="13">13</option><option value="12">12</option><option value="11">11</option><option value="10">10</option><option value="9">9</option><option value="8">8</option><option value="7">7</option><option value="6">6</option><option value="5">5</option><option value="4">4</option><option value="3">3</option><option value="2">2</option><option value="1">1</option>
+                                                                        </select>
+                                                                    </div>  
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <label>Destination port range</label>
+                                                        <footer class="blockquote-footer">
+                                                            Specify the port or port range for the destination of the packet for this mapping. 
+                                                        </footer>
+                                                        <footer class="blockquote-footer">
+                                                            The 'to' field may be left empty if only mapping a single port.
+                                                        </footer>
+                                                        <div class="form-group">
+                                                            <div class="form-row">
+                                                                <div class="col-md-2">
+                                                                    <label>From port:</label>
+                                                                    <select class="form-control" name="dstendport" id="dstendport">
+                                                                        <option value="">Other</option><option value="any">Any</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22">SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label>Custom</label>
+                                                                    <input name="dstbeginport_cust2" class="form-control" id="dstbeginport_cust2" type="text" pattern="[a-zA-Z0-9_]+">
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label>To port</label>
+                                                                    <select class="form-control" name="dstendport2" id="dstendport2">
+                                                                        <option value="">Other</option><option value="any">Any</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22">SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label>Custom</label>
+                                                                    <input type="text"class="form-control" name="dstendport_cust2" id="dstendport_cust2">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <div id="divocultar">
+                                                            <label>Redirect target IP:</label>
+                                                            <footer class="blockquote-footer">
+                                                                Enter the internal IP address of the server on which to map the ports.
+                                                            </footer>
+                                                            <footer class="blockquote-footer">
+                                                                e.g.: 192.168.1.12
+                                                            </footer>
+                                                            <input type="text" class="form-control" name="localip" id="localip" title="An IPv4 address like 1.2.3.4 or an IPv6 address like 1:2a:3b:ffff::1 or an alias">
+                                                            <hr>
+                                                            <label>Redirect target port:</label>
+                                                            <footer class="blockquote-footer">
+                                                                Specify the port on the machine with the IP address entered above.
+                                                            </footer>
+                                                            <footer class="blockquote-footer">
+                                                                In case of a port range, specify the beginning port of the range (the end port will be calculated automatically).
+                                                            </footer>
+                                                            <footer class="blockquote-footer">
+                                                                This is usually identical to the "From port" above.
+                                                            </footer>
+                                                            <div class="form-group">
+                                                                <div class="form-row">
+                                                                    <div class="col-md-4">
+                                                                        <label>From port:</label>
+                                                                        <footer class="blockquote-footer">
+                                                                            Redirect target port
+                                                                        </footer>
+                                                                        <select class="form-control" name="localbeginport" id="localbeginport">
+                                                                            <option value="">Other</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22" selected>SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <label>To port</label>
+                                                                        <footer class="blockquote-footer">
+                                                                            Custom
+                                                                        </footer>
+                                                                        <input class="form-control" name="localbeginport_cust" id="localbeginport_cust" type="text">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                        </div>
+                                                        <label>Description</label>
+                                                        <footer class="blockquote-footer">
+                                                            A description may be entered here for administrative reference (not parsed).
+                                                        </footer>
+                                                        <input type="text" class="form-control" name="descr" id="descr">
+                                                        <hr>
+                                                        <label for="exampleInputEmail1">No XMLRPC Sync:</label> 
+                                                        <input type="hidden" name="nosync" value="no">
+                                                        <input type="checkbox" name="nosync" id="nosync" value="yes"> <label>Do not automatically sync to other CARP members</label>
+                                                        <footer class="blockquote-footer">
+                                                            This prevents the rule on Master from automatically syncing to other CARP members.
+                                                        </footer>
+                                                        <footer class="blockquote-footer">
+                                                            This does NOT prevent the rule from being overwritten on Slave.
+                                                        </footer>
+                                                        <hr>
+                                                        <label>NAT reflection:</label>
+                                                        <select class="form-control" name="natreflection" id="natreflection">
+                                                            <option value="default">Use system default</option><option value="enable">Enable (NAT + Proxy)</option><option value="purenat">Enable (Pure NAT)</option><option value="disable">Disable</option>
+                                                        </select>
+                                                        <hr>
+                                                        <label>Filter rule association:</label>
+                                                        <select class="form-control" name="associated_rule_id" id="associated-rule-id">
+                                                            <option value="" selected>None</option><option value="pass">Pass</option><option value="nat_5b2198d35ebcb7.59322711">Rule NAT </option><option value="new">Create new associated filter rule</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                    {% endfor %}
+                                            {# Fin Destination #}
+                                            {# Inicio de Botones guardar y limpiar #}
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-block" name="enviar">Save</button>
+                                                </div>
+                                                <div class="text-center">
+                                                    <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
+                                                </div>
+                                            {# fin de botones #}
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+        <script>
+            function showContent() {
+                element = document.getElementById("divocultar");
+                check = document.getElementById("nordr");
+                if (check.checked) {
+                    element.style.display='none';
+                }
+                else {
+                    element.style.display='block';
+                }
+            }
+
+            function muestra_oculta(id){
+                if (document.getElementById){
+                    var el = document.getElementById(id);
+                    el.style.display = (el.style.display == "none") ? "block" : "none";
+                }
+            }
+            window.onload = function(){
+                muestra_oculta("contenido");
+            };
+        </script>
+        {% include '@Principal/templates/declaracionFin.html.twig' %}
+    {% else %}
+        <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
+    {% endif %}
+{% else %}
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
+{% endif %}
