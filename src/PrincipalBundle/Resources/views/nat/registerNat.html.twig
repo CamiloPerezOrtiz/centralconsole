@@ -39,7 +39,7 @@
                                 {# Fin de Mensaje #}
                                 <div class="card mx-auto card-register">
                                     <div class="card-header bg-dark text-white">Properties</div>
-                                    <form method="post">
+                                    <form method="post" onsubmit="return validarNatPort();">
                                         {# Inicio #}
                                             <div class="form-group">   
                                                 <div  class="card-body">
@@ -65,7 +65,7 @@
                                                     <footer class="blockquote-footer">
                                                         Choose which protocol this rule should match. In most cases "TCP" is specified.
                                                     </footer>
-                                                    <select class="form-control" name="proto" id="proto">
+                                                    <select class="form-control" onChange="protocolOnChange(this)" name="proto" id="proto">
                                                         <option value="tcp" selected>TCP</option>
                                                         <option value="udp">UDP</option>
                                                         <option value="tcp/udp">TCP/UDP</option>
@@ -169,11 +169,11 @@
                                                                 <select class="form-control" onChange="mostrarDestination(this.value);" name="dsttype" id="dsttype">
                                                                     <option value="any">Any</option>
                                                                     <option value="single">Single host or alias</option>
-                                                                    <option value="network" selected>Network</option>
+                                                                    <option value="network">Network</option>
                                                                     <option value="(self)">This Firewall (self)</option>
                                                                     <option value="pppoe">PPPoE clients</option>
                                                                     <option value="l2tp">L2TP clients</option>
-                                                                    <option value="wan">WAN net</option>
+                                                                    <option value="wan" selected>WAN net</option>
                                                                     <option value="wanip">WAN address</option>
                                                                     <option value="lan">LAN net</option>
                                                                     <option value="lanip">LAN address</option>
@@ -194,6 +194,7 @@
                                                         </div>
                                                     </div>
                                                     <hr>
+                                                <div id="portRange">
                                                     <label>Destination port range</label>
                                                     <footer class="blockquote-footer">
                                                         Specify the port or port range for the destination of the packet for this mapping. 
@@ -206,7 +207,7 @@
                                                             <div class="col-md-2">
                                                                 <label>From port:</label>
                                                                 <select class="form-control" name="dstendport" id="dstendport">
-                                                                    <option value="">Other</option><option value="any">Any</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22">SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
+                                                                    <option value="">Other</option><option value="any" selected>Any</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22">SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-4">
@@ -216,7 +217,7 @@
                                                             <div class="col-md-2">
                                                                 <label>To port</label>
                                                                 <select class="form-control" name="dstendport2" id="dstendport2">
-                                                                    <option value="">Other</option><option value="any">Any</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22">SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
+                                                                    <option value="">Other</option><option value="any" selected>Any</option><option value="5999">CVSup</option><option value="53">DNS</option><option value="21">FTP</option><option value="3000">HBCI</option><option value="80">HTTP</option><option value="443">HTTPS</option><option value="5190">ICQ</option><option value="113">IDENT/AUTH</option><option value="143">IMAP</option><option value="993">IMAP/S</option><option value="4500">IPsec NAT-T</option><option value="500">ISAKMP</option><option value="1701">L2TP</option><option value="389">LDAP</option><option value="1755">MMS/TCP</option><option value="7000">MMS/UDP</option><option value="445">MS DS</option><option value="3389">MS RDP</option><option value="1512">MS WINS</option><option value="1863">MSN</option><option value="119">NNTP</option><option value="123">NTP</option><option value="138">NetBIOS-DGM</option><option value="137">NetBIOS-NS</option><option value="139">NetBIOS-SSN</option><option value="1194">OpenVPN</option><option value="110">POP3</option><option value="995">POP3/S</option><option value="1723">PPTP</option><option value="1812">RADIUS</option><option value="1813">RADIUS accounting</option><option value="5004">RTP</option><option value="5060">SIP</option><option value="25">SMTP</option><option value="465">SMTP/S</option><option value="161">SNMP</option><option value="162">SNMP-Trap</option><option value="22">SSH</option><option value="3478">STUN</option><option value="587">SUBMISSION</option><option value="3544">Teredo</option><option value="23">Telnet</option><option value="69">TFTP</option><option value="5900">VNC</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-4">
@@ -226,6 +227,7 @@
                                                         </div>
                                                     </div>
                                                     <hr>
+                                                </div>
                                                     <div id="divocultar">
                                                         <label>Redirect target IP:</label>
                                                         <footer class="blockquote-footer">
@@ -291,7 +293,8 @@
                                                     <hr>
                                                     <label>Filter rule association:</label>
                                                     <select class="form-control" name="associated_rule_id" id="associated-rule-id">
-                                                        <option value="" selected>None</option><option value="pass">Pass</option><option value="nat_5b2198d35ebcb7.59322711">Rule NAT </option><option value="new">Create new associated filter rule</option>
+                                                        <option value="" selected>None</option>
+                                                        <option value="pass">Pass</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -313,28 +316,24 @@
             </div>
         </div>
         {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
-        <script>
-            function showContent() {
-                element = document.getElementById("divocultar");
-                check = document.getElementById("nordr");
-                if (check.checked) {
-                    element.style.display='none';
-                }
-                else {
-                    element.style.display='block';
-                }
-            }
-
-            function muestra_oculta(id){
-                if (document.getElementById){
-                    var el = document.getElementById(id);
-                    el.style.display = (el.style.display == "none") ? "block" : "none";
-                }
-            }
-            window.onload = function(){
-                muestra_oculta("contenido");
-            };
-        </script>
+        {# Script para activar el checkbox no rdr #}
+        <script src="{{ asset ('js/jsPagina/rdr.js') }}"></script>
+        {# Script para activar el campo type de Hide advance  #}
+        <script src="{{ asset ('js/jsPagina/typeHide.js') }}"></script>
+        {# Script para activar Source port range de Hide advance #}
+        <script src="{{ asset ('js/jsPagina/sourceHide.js') }}"></script>
+        {# Script para activar Destination port range #}
+        <script src="{{ asset ('js/jsPagina/destinationPortRange.js') }}"></script>
+        {# Script para activar Redirect target port #}
+        <script src="{{ asset ('js/jsPagina/redirectTargetPort.js') }}"></script>
+        {# Script para activar Interface #}
+        <script src="{{ asset ('js/jsPagina/interface.js') }}"></script>
+        {# Script para activar Protocol #}
+        <script src="{{ asset ('js/jsPagina/protocol.js') }}"></script>
+        {# Script para activar destination #}
+        <script src="{{ asset ('js/jsPagina/destination.js') }}"></script>
+        {# Script para evaluar el formulario #}
+        <script src="{{ asset ('js/jsPagina/validarNatPort.js') }}"></script>
         {% include '@Principal/templates/declaracionFin.html.twig' %}
     {% else %}
         <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
