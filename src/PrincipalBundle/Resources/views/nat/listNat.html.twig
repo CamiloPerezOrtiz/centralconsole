@@ -67,7 +67,7 @@
                                             </thead>
                                             <tbody class="row_position">
                                                 {% for acl in acls %}
-                                                    <tr id="{{ acl.id }}">
+                                                    <tr id="{{ acl.id }}" style="cursor: all-scroll;">
                                                         <td>{{ acl.disabled }}</td>
                                                         <td>{{ acl.interface|upper }} </td>
                                                         <td>{{ acl.proto|upper }}</td>
@@ -135,14 +135,368 @@
                                                                 LAN address
                                                             {% endif %}
                                                         </td>
-                                                        <td>*</td>
+                                                        <td>
+                                                            {% if acl.srcbeginport == 'any' %}
+                                                                *
+                                                            {% elseif acl.srcbeginport == '5999' %}
+                                                                5999 (CVSup)  
+                                                            {% elseif acl.srcbeginport == '53' %}
+                                                                53 (DNS)  
+                                                            {% elseif acl.srcbeginport == '21' %}
+                                                                21 (FTP)  
+                                                            {% elseif acl.srcbeginport == '3000' %}
+                                                                3000 (HBCI)  
+                                                            {% elseif acl.srcbeginport == '80' %}
+                                                                80 (HTTP) 
+                                                            {% elseif acl.srcbeginport == '443' %}
+                                                                443 (HTTPS)  
+                                                            {% elseif acl.srcbeginport == '143' %}
+                                                                143 (ICQ)  
+                                                            {% elseif acl.srcbeginport == '113' %}
+                                                                113 (IMAP)  
+                                                            {% elseif acl.srcbeginport == '993' %}
+                                                                993 (IMAP/S)  
+                                                            {% elseif acl.srcbeginport == '4500' %}
+                                                                4500 (IPsec NAT-T)
+                                                            {% elseif acl.srcbeginport == '500' %}
+                                                                500 (ISAKMP)  
+                                                            {% elseif acl.srcbeginport == '1701' %}
+                                                                1701 (L2TP)  
+                                                            {% elseif acl.srcbeginport == '389' %}
+                                                                389 (LDAP)  
+                                                            {% elseif acl.srcbeginport == '1755' %}
+                                                                1755 (MMS/TCP)  
+                                                            {% elseif acl.srcbeginport == '7000' %}
+                                                                7000 (MMS/UDP)  
+                                                            {% elseif acl.srcbeginport == '445' %}
+                                                                445 (MS DS)  
+                                                            {% elseif acl.srcbeginport == '3389' %}
+                                                                3389 (MS RDP)  
+                                                            {% elseif acl.srcbeginport == '1512' %}
+                                                                1512 (MS WINS) 
+                                                            {% elseif acl.srcbeginport == '1863' %}
+                                                                1863 (MSN)  
+                                                            {% elseif acl.srcbeginport == '119' %}
+                                                                119 (NNTP)  
+                                                            {% elseif acl.srcbeginport == '123' %}
+                                                                123 (NTP)  
+                                                            {% elseif acl.srcbeginport == '138' %}
+                                                                138 (NetBIOS-DGM)  
+                                                            {% elseif acl.srcbeginport == '137' %}
+                                                                137 (NetBIOS-NS)
+                                                            {% elseif acl.srcbeginport == '139' %}
+                                                                139 (NetBIOS-SSN)  
+                                                            {% elseif acl.srcbeginport == '1194' %}
+                                                                1194 (OpenVPN)  
+                                                            {% elseif acl.srcbeginport == '110' %}
+                                                                110 (POP3)
+                                                            {% elseif acl.srcbeginport == '995' %}
+                                                                995 (POP3/S)  
+                                                            {% elseif acl.srcbeginport == '1723' %}
+                                                                1723 (PPTP)  
+                                                            {% elseif acl.srcbeginport == '1812' %}
+                                                                1812 (RADIUS)  
+                                                            {% elseif acl.srcbeginport == '1813' %}
+                                                                1813 (RADIUS accounting)  
+                                                            {% elseif acl.srcbeginport == '5004' %}
+                                                                5004 (RTP) 
+                                                            {% elseif acl.srcbeginport == '5060' %}
+                                                                5060 (SIP)  
+                                                            {% elseif acl.srcbeginport == '25' %}
+                                                                25 (SMTP)  
+                                                            {% elseif acl.srcbeginport == '465' %}
+                                                                465 (SMTP/S)  
+                                                            {% elseif acl.srcbeginport == '161' %}
+                                                                161 (SNMP)  
+                                                            {% elseif acl.srcbeginport == '162' %}
+                                                                162 (SNMP-Trap)
+                                                            {% elseif acl.srcbeginport == '22' %}
+                                                                22 (SSH)  
+                                                            {% elseif acl.srcbeginport == '3478' %}
+                                                                3478 (STUN)  
+                                                            {% elseif acl.srcbeginport == '587' %}
+                                                                587 (SUBMISSION)  
+                                                            {% elseif acl.srcbeginport == '3544' %}
+                                                                3544 (Teredo)
+                                                            {% elseif acl.srcbeginport == '23' %}
+                                                                23 (Telnet)  
+                                                            {% elseif acl.srcbeginport == '69' %}
+                                                                69 (TFTP)  
+                                                            {% elseif acl.srcbeginport == '5900' %}
+                                                                5900 (VNC)  
+                                                            {% else %}
+                                                                {% if acl.dstbeginport_cust == acl.dstendport_cust %}
+                                                                    {{ acl.dstbeginport_cust }}
+                                                                {% else %}
+                                                                    {{ acl.dstbeginport_cust }} - {{ acl.dstendport_cust }}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </td>
                                                         {# Dest adress #}
                                                         <td>
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'any' %}
+                                                                !*
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'any' %}
+                                                                *
+                                                            {% endif %}
+
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'single' %}
+                                                                !{{ acl.dst }}
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'single' %}
+                                                                {{ acl.dst }}
+                                                            {% endif %}
+
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'network' %}
+                                                                !{{ acl.dst }}/{{ acl.dstmask }}
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'network' %}
+                                                                {{ acl.dst }}/{{ acl.dstmask }}
+                                                            {% endif %}
+                                                            
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == '(self)' %}
+                                                                !This Firewall
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == '(self)' %}
+                                                                This Firewall
+                                                            {% endif %}
+
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'pppoe' %}
+                                                                !PPPoE clients
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'pppoe' %}
+                                                                PPPoE clients
+                                                            {% endif %}
+
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'l2tp' %}
+                                                                !L2TP clients
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'l2tp' %}
+                                                                L2TP clients
+                                                            {% endif %}
+
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'wan' %}
+                                                                !WAN net
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'wan' %}
+                                                                WAN net
+                                                            {% endif %}
+
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'wanip' %}
+                                                                !WAN address
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'wanip' %}
+                                                                WAN address
+                                                            {% endif %}
+
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'lan' %}
+                                                                !LAN net
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'lan' %}
+                                                                LAN net
+                                                            {% endif %}
+
+                                                            {% if acl.dstnot == 'yes' and acl.dsttype == 'lanip' %}
+                                                                !LAN address
+                                                            {% endif %}
+                                                            {% if acl.dstnot == 'no' and acl.dsttype == 'lanip' %}
+                                                                LAN address
+                                                            {% endif %}
                                                         </td>
 
-                                                        <td>{{ acl.dstendport_cust2 }}</td>
+                                                        <td>
+                                                            {% if acl.dstendport == 'any' %}
+                                                                *
+                                                            {% elseif acl.dstendport == '5999' %}
+                                                                5999 (CVSup)  
+                                                            {% elseif acl.dstendport == '53' %}
+                                                                53 (DNS)  
+                                                            {% elseif acl.dstendport == '21' %}
+                                                                21 (FTP)  
+                                                            {% elseif acl.dstendport == '3000' %}
+                                                                3000 (HBCI)  
+                                                            {% elseif acl.dstendport == '80' %}
+                                                                80 (HTTP) 
+                                                            {% elseif acl.dstendport == '443' %}
+                                                                443 (HTTPS)  
+                                                            {% elseif acl.dstendport == '143' %}
+                                                                143 (ICQ)  
+                                                            {% elseif acl.dstendport == '113' %}
+                                                                113 (IMAP)  
+                                                            {% elseif acl.dstendport == '993' %}
+                                                                993 (IMAP/S)  
+                                                            {% elseif acl.dstendport == '4500' %}
+                                                                4500 (IPsec NAT-T)
+                                                            {% elseif acl.dstendport == '500' %}
+                                                                500 (ISAKMP)  
+                                                            {% elseif acl.dstendport == '1701' %}
+                                                                1701 (L2TP)  
+                                                            {% elseif acl.dstendport == '389' %}
+                                                                389 (LDAP)  
+                                                            {% elseif acl.dstendport == '1755' %}
+                                                                1755 (MMS/TCP)  
+                                                            {% elseif acl.dstendport == '7000' %}
+                                                                7000 (MMS/UDP)  
+                                                            {% elseif acl.dstendport == '445' %}
+                                                                445 (MS DS)  
+                                                            {% elseif acl.dstendport == '3389' %}
+                                                                3389 (MS RDP)  
+                                                            {% elseif acl.dstendport == '1512' %}
+                                                                1512 (MS WINS) 
+                                                            {% elseif acl.dstendport == '1863' %}
+                                                                1863 (MSN)  
+                                                            {% elseif acl.dstendport == '119' %}
+                                                                119 (NNTP)  
+                                                            {% elseif acl.dstendport == '123' %}
+                                                                123 (NTP)  
+                                                            {% elseif acl.dstendport == '138' %}
+                                                                138 (NetBIOS-DGM)  
+                                                            {% elseif acl.dstendport == '137' %}
+                                                                137 (NetBIOS-NS)
+                                                            {% elseif acl.dstendport == '139' %}
+                                                                139 (NetBIOS-SSN)  
+                                                            {% elseif acl.dstendport == '1194' %}
+                                                                1194 (OpenVPN)  
+                                                            {% elseif acl.dstendport == '110' %}
+                                                                110 (POP3)
+                                                            {% elseif acl.dstendport == '995' %}
+                                                                995 (POP3/S)  
+                                                            {% elseif acl.dstendport == '1723' %}
+                                                                1723 (PPTP)  
+                                                            {% elseif acl.dstendport == '1812' %}
+                                                                1812 (RADIUS)  
+                                                            {% elseif acl.dstendport == '1813' %}
+                                                                1813 (RADIUS accounting)  
+                                                            {% elseif acl.dstendport == '5004' %}
+                                                                5004 (RTP) 
+                                                            {% elseif acl.dstendport == '5060' %}
+                                                                5060 (SIP)  
+                                                            {% elseif acl.dstendport == '25' %}
+                                                                25 (SMTP)  
+                                                            {% elseif acl.dstendport == '465' %}
+                                                                465 (SMTP/S)  
+                                                            {% elseif acl.dstendport == '161' %}
+                                                                161 (SNMP)  
+                                                            {% elseif acl.dstendport == '162' %}
+                                                                162 (SNMP-Trap)
+                                                            {% elseif acl.dstendport == '22' %}
+                                                                22 (SSH)  
+                                                            {% elseif acl.dstendport == '3478' %}
+                                                                3478 (STUN)  
+                                                            {% elseif acl.dstendport == '587' %}
+                                                                587 (SUBMISSION)  
+                                                            {% elseif acl.dstendport == '3544' %}
+                                                                3544 (Teredo)
+                                                            {% elseif acl.dstendport == '23' %}
+                                                                23 (Telnet)  
+                                                            {% elseif acl.dstendport == '69' %}
+                                                                69 (TFTP)  
+                                                            {% elseif acl.dstendport == '5900' %}
+                                                                5900 (VNC)  
+                                                            {% else %}
+                                                                {% if acl.dstbeginport_cust2 == acl.dstendport_cust2 %}
+                                                                    {{ acl.dstbeginport_cust2 }}
+                                                                {% else %}
+                                                                    {{ acl.dstbeginport_cust2 }} - {{ acl.dstendport_cust2 }}
+                                                                {% endif %}
+                                                            {% endif %}
+                                                        </td>
                                                         <td>{{ acl.localip  }}</td>
-                                                        <td>{{ acl.localbeginport }}</td>
+                                                        <td>
+                                                            {% if acl.localbeginport == 'any' %}
+                                                                *
+                                                            {% elseif acl.localbeginport == '5999' %}
+                                                                5999 (CVSup)  
+                                                            {% elseif acl.localbeginport == '53' %}
+                                                                53 (DNS)  
+                                                            {% elseif acl.localbeginport == '21' %}
+                                                                21 (FTP)  
+                                                            {% elseif acl.localbeginport == '3000' %}
+                                                                3000 (HBCI)  
+                                                            {% elseif acl.localbeginport == '80' %}
+                                                                80 (HTTP) 
+                                                            {% elseif acl.localbeginport == '443' %}
+                                                                443 (HTTPS)  
+                                                            {% elseif acl.localbeginport == '143' %}
+                                                                143 (ICQ)  
+                                                            {% elseif acl.localbeginport == '113' %}
+                                                                113 (IMAP)  
+                                                            {% elseif acl.localbeginport == '993' %}
+                                                                993 (IMAP/S)  
+                                                            {% elseif acl.localbeginport == '4500' %}
+                                                                4500 (IPsec NAT-T)
+                                                            {% elseif acl.localbeginport == '500' %}
+                                                                500 (ISAKMP)  
+                                                            {% elseif acl.localbeginport == '1701' %}
+                                                                1701 (L2TP)  
+                                                            {% elseif acl.localbeginport == '389' %}
+                                                                389 (LDAP)  
+                                                            {% elseif acl.localbeginport == '1755' %}
+                                                                1755 (MMS/TCP)  
+                                                            {% elseif acl.localbeginport == '7000' %}
+                                                                7000 (MMS/UDP)  
+                                                            {% elseif acl.localbeginport == '445' %}
+                                                                445 (MS DS)  
+                                                            {% elseif acl.localbeginport == '3389' %}
+                                                                3389 (MS RDP)  
+                                                            {% elseif acl.localbeginport == '1512' %}
+                                                                1512 (MS WINS) 
+                                                            {% elseif acl.localbeginport == '1863' %}
+                                                                1863 (MSN)  
+                                                            {% elseif acl.localbeginport == '119' %}
+                                                                119 (NNTP)  
+                                                            {% elseif acl.localbeginport == '123' %}
+                                                                123 (NTP)  
+                                                            {% elseif acl.localbeginport == '138' %}
+                                                                138 (NetBIOS-DGM)  
+                                                            {% elseif acl.localbeginport == '137' %}
+                                                                137 (NetBIOS-NS)
+                                                            {% elseif acl.localbeginport == '139' %}
+                                                                139 (NetBIOS-SSN)  
+                                                            {% elseif acl.localbeginport == '1194' %}
+                                                                1194 (OpenVPN)  
+                                                            {% elseif acl.localbeginport == '110' %}
+                                                                110 (POP3)
+                                                            {% elseif acl.localbeginport == '995' %}
+                                                                995 (POP3/S)  
+                                                            {% elseif acl.localbeginport == '1723' %}
+                                                                1723 (PPTP)  
+                                                            {% elseif acl.localbeginport == '1812' %}
+                                                                1812 (RADIUS)  
+                                                            {% elseif acl.localbeginport == '1813' %}
+                                                                1813 (RADIUS accounting)  
+                                                            {% elseif acl.localbeginport == '5004' %}
+                                                                5004 (RTP) 
+                                                            {% elseif acl.localbeginport == '5060' %}
+                                                                5060 (SIP)  
+                                                            {% elseif acl.localbeginport == '25' %}
+                                                                25 (SMTP)  
+                                                            {% elseif acl.localbeginport == '465' %}
+                                                                465 (SMTP/S)  
+                                                            {% elseif acl.localbeginport == '161' %}
+                                                                161 (SNMP)  
+                                                            {% elseif acl.localbeginport == '162' %}
+                                                                162 (SNMP-Trap)
+                                                            {% elseif acl.localbeginport == '22' %}
+                                                                22 (SSH)  
+                                                            {% elseif acl.localbeginport == '3478' %}
+                                                                3478 (STUN)  
+                                                            {% elseif acl.localbeginport == '587' %}
+                                                                587 (SUBMISSION)  
+                                                            {% elseif acl.localbeginport == '3544' %}
+                                                                3544 (Teredo)
+                                                            {% elseif acl.localbeginport == '23' %}
+                                                                23 (Telnet)  
+                                                            {% elseif acl.localbeginport == '69' %}
+                                                                69 (TFTP)  
+                                                            {% elseif acl.localbeginport == '5900' %}
+                                                                5900 (VNC)  
+                                                            {% else %}
+                                                                {{ acl.localbeginport_cust }}
+                                                            {% endif %}
+
+                                                        </td>
                                                         <td>{{ acl.descr }}</td>
                                                         {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
                                                         {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
@@ -154,7 +508,7 @@
                                                                 </a>
                                                             </td>
                                                             <td>
-                                                                <a href="{{path('deleteAcl',{id:acl.id})}}">
+                                                                <a href="{{path('deleteNat',{id:acl.id})}}">
                                                                     <button class="btn btn-danger btn-sm" type="submit">
                                                                         Delete <i class="fas fa-times-circle"></i>
                                                                     </button>

@@ -40,6 +40,30 @@ function validarNatPort()
 			});
 		return false;
 	}
+	if($("#id_categoria option:selected").val() === "single" || $("#id_categoria option:selected").val() === "network")
+	{
+		if($("#id_input").val() === "")
+		{
+			swal({
+	  				icon: "error",
+	  				title: "Field Source target port ",
+	  				text: "The field Source address is required."
+				});
+			return false;
+		}
+	}
+	if($("#dsttype option:selected").val() === "single" || $("#dsttype option:selected").val() === "network")
+	{
+		if($("#dst").val() === "")
+		{
+			swal({
+	  				icon: "error",
+	  				title: "Field target port ",
+	  				text: "The field address is required."
+				});
+			return false;
+		}
+	}
 	/*else if(name.length>30)
 	{
 		swal({

@@ -124,7 +124,7 @@ class NatController extends Controller
 	    return $this->redirectToRoute("dashboard");
     }
 
-    public function registerNatAction(Request $request, $id)
+    public function registerNatAction(Request $request)
 	{
         if(isset($_POST['enviar']))
 		{
@@ -223,6 +223,31 @@ class NatController extends Controller
 		return $this->render("@Principal/nat/editNat.html.twig", array("value"=>$listaGrupo));
 	}
 
+	public function deleteNatAction($id)
+	{
+		// Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		$query = "DELETE FROM nat WHERE id = '$id'";
+		$stmt = $db->prepare($query);
+		$stmt->execute(array());
+		// Se validad si la accion de borrar se cumplio
+		if($stmt == null)
+		{
+			// Se notifica al actor que la eliminacion fue correcta 
+			$estatus="Problems with the server try later.";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+		}
+		// De lo contrario se notifica al actor
+		else
+		{
+			$estatus="Registry successfully deleted";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+		}
+		// Se redirecciona al listado
+		return $this->redirectToRoute("listGroupNat");
+	}
+
 	public function registerNatOneAction(Request $request, $id)
 	{
         if(isset($_POST['enviar']))
@@ -245,6 +270,30 @@ class NatController extends Controller
 			$stmt->execute(array());
 			$i++;
 		}
+	}
+
+	public function autoAction()
+	{
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		/*$name = $_GET['term'];
+		$sql = "SELECT name FROM aliases WHERE name LIKE '%$name%' order by name asc";
+		$stmt = $db->prepare($sql);
+		$stmt->execute(array());
+		foreach($stmt as $row)
+		{
+    		$data[]=$row['name'];
+		}
+		echo json_encode($data);*/
+	    $keyword = strval($_POST['query']);
+		$sql = $conn->prepare("SELECT name FROM aliases WHERE name LIKE '%$keyword%'");
+		$stmt = $db->prepare($sql);
+		$stmt->execute(array());
+		foreach($stmt as $row)
+		{
+    		$data[]=$row['name'];
+		}
+		echo json_encode($data);
 	}
 
 	public function createXMLNatAction($id)

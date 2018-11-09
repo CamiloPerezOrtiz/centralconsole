@@ -314,3 +314,8 @@ createXMLNat:
 aplicateXMLNat:
     path:     /aplicateXMLNat/{id}
     defaults: { _controller: PrincipalBundle:Nat:aplicateXMLNat }
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+auto:
+    path:     /auto
+    defaults: { _controller: PrincipalBundle:Nat:auto }
