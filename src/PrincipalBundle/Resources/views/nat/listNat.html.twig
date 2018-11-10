@@ -521,9 +521,185 @@
                                         </table>
                                     </div>
                                 </div>
+                                {# One to one  #}
                                 <div id="menu1" class="container tab-pane fade"><br>
-                                    <h3>Menu 1</h3>
-                                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-bordered table-sm text-center small" width="100%">
+                                            <thead class="bg-dark text-white">
+                                                <tr class="small">
+                                                    <th>Disabled</th>                         
+                                                    <th>Interface</th>
+                                                    <th>External IP</th>
+                                                    <th>Internal IP</th>
+                                                    <th>Destination IP</th>
+                                                    <th>Description</th>
+                                                    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                                        <th>Edit</th>
+                                                        <th>Delete</th>
+                                                    {% endif %}                 
+                                                </tr>
+                                            </thead>
+                                            <tbody class="row_position_one">
+                                                {% for aclOne in aclsOne %}
+                                                    <tr id="{{ aclOne.id }}" style="cursor: all-scroll;">
+                                                        <td>{{ aclOne.disabled }}</td>
+                                                        <td>{{ aclOne.interface|upper }} </td>
+                                                        <td>
+                                                            {{ aclOne.external }}
+                                                        </td>
+                                                        <td>
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'any' %}
+                                                                !*
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'any' %}
+                                                                *
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'single' %}
+                                                                !{{ aclOne.dst }}
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'single' %}
+                                                                {{ aclOne.dst }}
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'network' %}
+                                                                !{{ aclOne.dst }}/{{ aclOne.dstmask }}
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'network' %}
+                                                                {{ aclOne.dst }}/{{ aclOne.dstmask }}
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'pppoe' %}
+                                                                !PPPoE clients
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'pppoe' %}
+                                                                PPPoE clients
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'l2tp' %}
+                                                                !L2TP clients
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'l2tp' %}
+                                                                L2TP clients
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'wan' %}
+                                                                !WAN net
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'wan' %}
+                                                                WAN net
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'wanip' %}
+                                                                !WAN address
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'wanip' %}
+                                                                WAN address
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'lan' %}
+                                                                !LAN net
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'lan' %}
+                                                                LAN net
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'lanip' %}
+                                                                !LAN address
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'lanip' %}
+                                                                LAN address
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'any' %}
+                                                                !*
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'any' %}
+                                                                *
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'single' %}
+                                                                !{{ aclOne.dst }}
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'single' %}
+                                                                {{ aclOne.dst }}
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'network' %}
+                                                                !{{ aclOne.dst }}/{{ aclOne.dstmask }}
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'network' %}
+                                                                {{ aclOne.dst }}/{{ aclOne.dstmask }}
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'pppoe' %}
+                                                                !PPPoE clients
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'pppoe' %}
+                                                                PPPoE clients
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'l2tp' %}
+                                                                !L2TP clients
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'l2tp' %}
+                                                                L2TP clients
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'wan' %}
+                                                                !WAN net
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'wan' %}
+                                                                WAN net
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'wanip' %}
+                                                                !WAN address
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'wanip' %}
+                                                                WAN address
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'lan' %}
+                                                                !LAN net
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'lan' %}
+                                                                LAN net
+                                                            {% endif %}
+
+                                                            {% if aclOne.srcnot == 'yes' and aclOne.srctype == 'lanip' %}
+                                                                !LAN address
+                                                            {% endif %}
+                                                            {% if aclOne.srcnot == 'no' and aclOne.srctype == 'lanip' %}
+                                                                LAN address
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {{ aclOne.descr }}
+                                                        </td>
+                                                        {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
+                                                        {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                                            <td>
+                                                                <a href="{{path('editNatOne',{id:aclOne.id})}}">
+                                                                    <button class="btn btn-warning btn-sm" type="submit">
+                                                                        Edit <i class="far fa-edit"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{path('deleteNatOne',{id:aclOne.id})}}">
+                                                                    <button class="btn btn-danger btn-sm" type="submit">
+                                                                        Delete <i class="fas fa-times-circle"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </td>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
@@ -595,6 +771,27 @@
         function updateOrder(data) {
             $.ajax({
                 url:"{{path('refresh')}}",
+                type:'post',
+                data:{position:data}
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        $( ".row_position_one" ).sortable({
+            delay: 150,
+            stop: function() {
+                var selectedDataOne = new Array();
+                $('.row_position_one>tr').each(function() {
+                    selectedDataOne.push($(this).attr("id"));
+                });
+                updateOrderOne(selectedDataOne);
+            }
+        });
+
+
+        function updateOrderOne(data) {
+            $.ajax({
+                url:"{{path('refreshOne')}}",
                 type:'post',
                 data:{position:data}
             })

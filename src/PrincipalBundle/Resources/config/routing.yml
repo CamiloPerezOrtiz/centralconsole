@@ -21,11 +21,6 @@ login_check:
 logout:
     path:     /logout
 
-#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
-refresh:
-    path:     /refresh
-    defaults: { _controller: PrincipalBundle:Nat:refresh }
-
 ###################################################
 #  Area para los archivos txt                     #
 ###################################################
@@ -295,6 +290,16 @@ editNat:
     path:     /editNat/{id}
     defaults: { _controller: PrincipalBundle:Nat:editNat }
 
+#Elimina el target categories seleccionado controlador: AliasesController funcion eliminarAliases#
+deleteNatOne:
+    path:     /deleteNatOne/{id}
+    defaults: { _controller: PrincipalBundle:Nat:deleteNatOne }
+
+#Edita el usuario el cual fue seleccionado controlador: NatController funcion editarNat#
+editNatOne:
+    path:     /editNatOne/{id}
+    defaults: { _controller: PrincipalBundle:Nat:editNatOne }
+
 #Registro de un nuevo target categories controlador:NatController funcion registroNatr#
 registerNat:
     path:     /registerNat/{id} 
@@ -319,3 +324,13 @@ aplicateXMLNat:
 auto:
     path:     /auto
     defaults: { _controller: PrincipalBundle:Nat:auto }
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+refresh:
+    path:     /refresh
+    defaults: { _controller: PrincipalBundle:Nat:refresh }
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+refreshOne:
+    path:     /refreshOne
+    defaults: { _controller: PrincipalBundle:Nat:refreshOne }

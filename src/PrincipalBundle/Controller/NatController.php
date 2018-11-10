@@ -76,7 +76,13 @@ class NatController extends Controller
 				$params =array();
 				$stmt->execute($params);
 				$acl=$stmt->fetchAll();
-				return $this->render("@Principal/nat/listNat.html.twig", array("acls"=>$acl));
+				//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$queryOne = "SELECT * FROM natone ORDER BY position_order";
+				$stmtOne = $db->prepare($queryOne);
+				$paramsOne =array();
+				$stmtOne->execute($paramsOne);
+				$aclOne=$stmtOne->fetchAll();
+				return $this->render("@Principal/nat/listNat.html.twig", array("acls"=>$acl,"aclsOne"=>$aclOne));
 	        }
 	    }
 		// Regresa un arreglo con la informacion obtendia de la base de datos
@@ -124,7 +130,7 @@ class NatController extends Controller
 	    return $this->redirectToRoute("dashboard");
     }
 
-    public function registerNatAction(Request $request)
+    public function registerNatAction(Request $request,$id)
 	{
         if(isset($_POST['enviar']))
 		{
@@ -252,10 +258,64 @@ class NatController extends Controller
 	{
         if(isset($_POST['enviar']))
 		{
+			$em = $this->getDoctrine()->getEntityManager();
+			$db = $em->getConnection();
+			$disabled = $_POST['disabled'];
+			$nobinat = $_POST['nobinat'];
+			$interface = $_POST['interface'];
+			$external = $_POST['external'];
+			$srcnot = $_POST['srcnot'];
+			$srctype = $_POST['srctype'];
+			$src = $_POST['src'];
+			$srcmask = $_POST['srcmask'];
+			$dstnot = $_POST['dstnot'];
+			$dsttype = $_POST['dsttype'];
+			$dst = $_POST['dst'];
+			$dstmask = $_POST['dstmask'];
+			$descr = $_POST['descr'];
+			$natreflection = $_POST['natreflection'];
+			$query = "INSERT INTO natone(disabled, nobinat, interface, external, srcnot, srctype, src, srcmask, dstnot, dsttype, dst, dstmask, descr, natreflection, namegroup) VALUES ('$disabled','$nobinat','$interface', '$external', '$srcnot', '$srctype', '$src', '$srcmask', '$dstnot', '$dsttype', '$dst', '$dstmask', '$descr', '$natreflection', '$id')";
+			$stmt = $db->prepare($query);
+			$stmt->execute(array());
 			return $this->redirectToRoute("listGroupNat");
 		}
         // Se renderiza el formulario para que el actor lo llene los campos solicitados
         return $this->render("@Principal/nat/registerNatOne.html.twig");
+	}
+
+	public function editNatOneAction($id)
+	{
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		$querySelect = "SELECT * FROM natone WHERE id = '$id'";
+		$stmtSelect = $db->prepare($querySelect);
+		$paramsSelect =array();
+		$stmtSelect->execute($paramsSelect);
+		$natone=$stmtSelect->fetchAll();
+		if(isset($_POST['enviar']))
+		{
+			$disabled = $_POST['disabled'];
+			$nobinat = $_POST['nobinat'];
+			$interface = $_POST['interface'];
+			$external = $_POST['external'];
+			$srcnot = $_POST['srcnot'];
+			$srctype = $_POST['srctype'];
+			$src = $_POST['src'];
+			$srcmask = $_POST['srcmask'];
+			$dstnot = $_POST['dstnot'];
+			$dsttype = $_POST['dsttype'];
+			$dst = $_POST['dst'];
+			$dstmask = $_POST['dstmask'];
+			$descr = $_POST['descr'];
+
+			$query = "UPDATE natone SET disabled = '$disabled', nobinat = '$nobinat', interface = '$interface', external = '$external', srcnot = '$srcnot', 
+				srctype = '$srctype', src = '$src', srcmask = '$srcmask', dstnot = '$dstnot', dsttype = '$dsttype', dst = '$dst',
+				dstmask = '$dstmask', descr = '$descr' WHERE id = '$id'";
+			$stmt = $db->prepare($query);
+			$stmt->execute(array());
+			return $this->redirectToRoute("listGroupNat");
+		}
+		return $this->render("@Principal/nat/editNatOne.html.twig", array("natones"=>$natone));
 	}
 
 	public function refreshAction()
@@ -270,30 +330,47 @@ class NatController extends Controller
 			$stmt->execute(array());
 			$i++;
 		}
+		exit();
 	}
 
-	public function autoAction()
+	public function refreshOneAction()
 	{
 		$em = $this->getDoctrine()->getEntityManager();
 		$db = $em->getConnection();
-		/*$name = $_GET['term'];
-		$sql = "SELECT name FROM aliases WHERE name LIKE '%$name%' order by name asc";
-		$stmt = $db->prepare($sql);
-		$stmt->execute(array());
-		foreach($stmt as $row)
-		{
-    		$data[]=$row['name'];
+		$position = $_POST['position'];
+		$i=1;
+		foreach($position as $k=>$v){
+		    $sql = "Update natone SET position_order=".$i." WHERE id=".$v;
+		    $stmt = $db->prepare($sql);
+			$stmt->execute(array());
+			$i++;
 		}
-		echo json_encode($data);*/
-	    $keyword = strval($_POST['query']);
-		$sql = $conn->prepare("SELECT name FROM aliases WHERE name LIKE '%$keyword%'");
-		$stmt = $db->prepare($sql);
+		exit();
+	}
+
+	public function deleteNatOneAction($id)
+	{
+		// Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		$query = "DELETE FROM natone WHERE id = '$id'";
+		$stmt = $db->prepare($query);
 		$stmt->execute(array());
-		foreach($stmt as $row)
+		// Se validad si la accion de borrar se cumplio
+		if($stmt == null)
 		{
-    		$data[]=$row['name'];
+			// Se notifica al actor que la eliminacion fue correcta 
+			$estatus="Problems with the server try later.";
+			$this->session->getFlashBag()->add("estatus",$estatus);
 		}
-		echo json_encode($data);
+		// De lo contrario se notifica al actor
+		else
+		{
+			$estatus="Registry successfully deleted";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+		}
+		// Se redirecciona al listado
+		return $this->redirectToRoute("listGroupNat");
 	}
 
 	public function createXMLNatAction($id)
@@ -301,7 +378,7 @@ class NatController extends Controller
 		$em = $this->getDoctrine()->getEntityManager();
         $db = $em->getConnection();
     	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-		$query = "SELECT * FROM nat WHERE namegroup = '$id'";
+		$query = "SELECT * FROM nat WHERE namegroup = '$id' ORDER BY position_order";
 		$stmt = $db->prepare($query);
 		$params =array();
 		$stmt->execute($params);
@@ -315,54 +392,58 @@ class NatController extends Controller
 		foreach ($formato as $formatos) 
 		{
 			$contenido .= "\t\t\t<rule>\n";
+			if($formatos['disabled'] === "yes")
+			{
+				$contenido .= "\t\t\t\t<disabled></disabled>\n";
+			}
+
+			if($formatos['nordr'] === "yes")
+			{
+				$contenido .= "\t\t\t\t<nordr></nordr>\n";
+			}
+
 			$contenido .= "\t\t\t\t<source>\n";
-			# Campo type source #
+			# Campo Source type #
 			if($formatos['srctype'] === "any")
 			{
 				$contenido .= "\t\t\t\t\t<any></any>\n";
 			}
-			if($formatos['srctype'] === "single")
-			{
-				$contenido .= "\t\t\t\t\t<address>" . $formatos['src'] . "</address>\n";
-			}
-			if($formatos['srctype'] === "network")
-			{
-				$contenido .= "\t\t\t\t\t<address>" . $formatos['src'] . "/" . $formatos['srcmask'] . "</address>\n";
-			}
-			if($formatos['srctype'] === "pppoe")
-			{
-				$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
-			}
-			if($formatos['srctype'] === "l2tp")
-			{
-				$contenido .= "\t\t\t\t\t<network>l2tp</network>\n";
-			}
-			if($formatos['srctype'] === "wan")
-			{
-				$contenido .= "\t\t\t\t\t<network>wan</network>\n";
-			}
-			if($formatos['srctype'] === "wanip")
-			{
-				$contenido .= "\t\t\t\t\t<network>wanip</network>\n";
-			}
-			if($formatos['srctype'] === "lan")
-			{
-				$contenido .= "\t\t\t\t\t<network>lan</network>\n";
-			}
-			if($formatos['srctype'] === "lanip")
-			{
-				$contenido .= "\t\t\t\t\t<network>lanip</network>\n";
-			}
-			# Campo invert match #
-			if($formatos['srcnot'] === "no")
-			{
-				# No se coloca nada #
-			}
-			else
+			# Campo Source Invert match. #
+			if($formatos['srcnot'] === "yes")
 			{
 				$contenido .= "\t\t\t\t\t<not></not>\n";
 			}
+			# Campo Source port range cuando los dos campos Custom son iguales. #
+			if($formatos['srcbeginport'] === "")
+			{
+				if($formatos['dstbeginport_cust'] === $formatos['dstendport_cust'])
+				{
+					$contenido .= "\t\t\t\t\t<port>" . $formatos['dstbeginport_cust'] . "</port>\n";
+				}
+			}
 			$contenido .= "\t\t\t\t</source>\n";
+
+			$contenido .= "\t\t\t\t<destination>\n";
+			# Campo destination type #
+			if($formatos['dsttype'] === "any")
+			{
+				$contenido .= "\t\t\t\t\t<any></any>\n";
+			}
+			# Campo destination Invert match. #
+			if($formatos['dstnot'] === "yes")
+			{
+				$contenido .= "\t\t\t\t\t<not></not>\n";
+			}
+			# Campo destination port range cuando los dos campos Custom son iguales. #
+			if($formatos['dstendport'] === "")
+			{
+				if($formatos['dstbeginport_cust2'] === $formatos['dstendport_cust2'])
+				{
+					$contenido .= "\t\t\t\t\t<port>" . $formatos['dstbeginport_cust2'] . "</port>\n";
+				}
+			}
+			$contenido .= "\t\t\t\t</destination>\n";
+
 		    $contenido .= "\t\t\t\t<protocol>" . $formatos['proto'] . "</protocol>\n";
 		    $contenido .= "\t\t\t\t<target>" . $formatos['localip'] . "</target>\n";
 		    $contenido .= "\t\t\t\t<interface>" . $formatos['interface'] . "</interface>\n";

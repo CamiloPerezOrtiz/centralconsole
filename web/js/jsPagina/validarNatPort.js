@@ -64,20 +64,4 @@ function validarNatPort()
 			return false;
 		}
 	}
-	/*else if(name.length>30)
-	{
-		swal({
-  				icon: "error",
-  				title: "The name can not be longer than 30 characters."
-			});
-		return false;
-	}
-	else if(description.length>50)
-	{
-		swal({
-  				icon: "error",
-  				title: "The description can not be longer than 50 characters."
-			});
-		return false;
-	}*/
 }

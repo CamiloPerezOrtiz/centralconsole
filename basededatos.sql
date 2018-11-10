@@ -112,3 +112,23 @@ CREATE TABLE nat(
 	namegroup VARCHAR(50) NOT NULL,
 	position_order SERIAL NOT NULL 
 );
+
+CREATE TABLE natone(
+	id SERIAL PRIMARY KEY,
+	disabled VARCHAR(45) NOT NULL,
+	nobinat VARCHAR(40) NOT NULL,
+	interface VARCHAR(40) NOT NULL,
+	external VARCHAR(40) NOT NULL,
+	srcnot VARCHAR(40) DEFAULT NULL,
+	srctype VARCHAR(40) NOT NULL,
+	src VARCHAR(40) NOT NULL,
+	srcmask VARCHAR(15) NOT NULL,
+	dstnot VARCHAR(40) NOT NULL,
+	dsttype VARCHAR(40) NOT NULL,
+	dst VARCHAR(40) DEFAULT NULL,
+	dstmask VARCHAR(40) NOT NULL,
+	descr VARCHAR(40) NOT NULL,
+	natreflection VARCHAR(15) NOT NULL,
+	namegroup VARCHAR(50) NOT NULL,
+	position_order SERIAL NOT NULL 
+);

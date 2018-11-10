@@ -41,16 +41,29 @@
                                     <div class="card-header bg-dark text-white">Properties</div>
                                     <form method="post" onsubmit="return validarNatOne();">
                                         {# Inicio #}
+                                        {% for natone in natones %}
                                             <div class="form-group">   
                                                 <div  class="card-body">
                                                     <label>Disabled:</label>
+                                                    {% if natone.disabled == "yes" %}
+                                                        {% set selected = true %}
+                                                    {% endif %}
+                                                    {% if natone.disabled == "no" %}
+                                                        {% set selected = false %}
+                                                    {% endif %}
                                                     <input type="hidden" name="disabled" value="no">
-                                                    <input type="checkbox" name="disabled" value="yes">
+                                                    <input type="checkbox" name="disabled" value="yes" {% if selected %}checked{% endif %}>
                                                     <label>When disabled, the rule will not have any effect.</label>
                                                     <hr>
                                                     <label>No BINAT (NOT):</label>
+                                                    {% if natone.nobinat == "yes" %}
+                                                        {% set selected = true %}
+                                                    {% endif %}
+                                                    {% if natone.nobinat == "no" %}
+                                                        {% set selected = false %}
+                                                    {% endif %}
                                                     <input type="hidden" name="nobinat" value="no">
-                                                    <input type="checkbox" name="nobinat" id="nordr" value="yes">
+                                                    <input type="checkbox" name="nobinat" id="nordr" value="yes" {% if selected %}checked{% endif %}>
                                                     <label>Do not perform binat for the specified address.</label>
                                                     <label>Excludes the address from a later, more general, rule.</label>
                                                     <hr>
@@ -59,8 +72,8 @@
                                                         Choose which interface this rule applies to. In most cases "WAN" is specified.
                                                     </footer>
                                                     <select class="form-control" name="interface" id="interface">
-                                                        <option value="wan" selected>WAN</option>
-                                                        <option value="lan">LAN</option>
+                                                        <option value="wan" {% if natone.interface == "wan" %}selected{% endif %}>WAN</option>
+                                                        <option value="lan" {% if natone.interface == "lan" %}selected{% endif %}>LAN</option>
                                                     </select>
                                                     <hr>
                                                     <label>External subneb IP</label>
@@ -70,11 +83,17 @@
                                                     <footer class="blockquote-footer">
                                                         The subnet mask from the internal address below will be applied to this IP address.
                                                     </footer>
-                                                    <input type="text" class="form-control" name="external" id="external">
+                                                    <input type="text" class="form-control" name="external" id="external" value="{{ natone.external }}">
                                                     <hr>
                                                     <label>Internal IP</label>
+                                                    {% if natone.srcnot == "yes" %}
+                                                        {% set selected = true %}
+                                                    {% endif %}
+                                                    {% if natone.srcnot == "no" %}
+                                                        {% set selected = false %}
+                                                    {% endif %}
                                                     <input type="hidden" name="srcnot" value="no">
-                                                    <input type="checkbox" name="srcnot" id="srcnot" value="yes"> <label> Invert the sense of the match.</label>
+                                                    <input type="checkbox" name="srcnot" id="srcnot" value="yes" {% if selected %}checked{% endif %}> <label> Invert the sense of the match.</label>
                                                     <br>
                                                     <footer class="blockquote-footer">
                                                         Enter the internal (LAN) subnet for the 1:1 mapping. 
@@ -88,27 +107,27 @@
                                                             <div class="col-md-6">
                                                                 <label>Type</label>
                                                                 <select class="form-control" name="srctype" id="srctype">
-                                                                    <option value="any" selected>Any</option>
-                                                                    <option value="single">Single host</option>
-                                                                    <option value="network">Network</option>
-                                                                    <option value="pppoe">PPPoE clients</option>
-                                                                    <option value="l2tp">L2TP clients</option>
-                                                                    <option value="wan">WAN net</option>
-                                                                    <option value="wanip">WAN address</option>
-                                                                    <option value="lan">LAN net</option>
-                                                                    <option value="lanip">LAN address</option>
+                                                                    <option value="any"{% if natone.srctype == "any" %}selected{% endif %}>Any</option>
+                                                                    <option value="single"{% if natone.srctype == "single" %}selected{% endif %}>Single host</option>
+                                                                    <option value="network"{% if natone.srctype == "network" %}selected{% endif %}>Network</option>
+                                                                    <option value="pppoe"{% if natone.srctype == "pppoe" %}selected{% endif %}>PPPoE clients</option>
+                                                                    <option value="l2tp"{% if natone.srctype == "l2tp" %}selected{% endif %}>L2TP clients</option>
+                                                                    <option value="wan"{% if natone.srctype == "wan" %}selected{% endif %}>WAN net</option>
+                                                                    <option value="wanip"{% if natone.srctype == "wanip" %}selected{% endif %}>WAN address</option>
+                                                                    <option value="lan"{% if natone.srctype == "lan" %}selected{% endif %}>LAN net</option>
+                                                                    <option value="lanip"{% if natone.srctype == "lanip" %}selected{% endif %}>LAN address</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Address/mask</label>
                                                                 <div class="input-group mb-3">
-                                                                    <input type="text" class="form-control col-sm-8" name="src" id="src">
+                                                                    <input type="text" class="form-control col-sm-8" name="src" id="src" value="{{ natone.src }}">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">/</span>
                                                                     </div>
                                                                     <select class="form-control col-sm-3" name="srcmask" id="srcmask">
                                                                         {% for i in 32..1 %}
-                                                                            <option value="{{ i }}">{{ i }}</option>
+                                                                            <option value="{{ i }}" {% if natone.srcmask == i %}selected{% endif %}>{{ i }}</option>
                                                                         {% endfor %}
                                                                     </select>
                                                                 </div>  
@@ -117,8 +136,14 @@
                                                     </div>
                                                     <hr>
                                                     <label>Destination</label>
+                                                    {% if natone.dstnot == "yes" %}
+                                                        {% set selected = true %}
+                                                    {% endif %}
+                                                    {% if natone.dstnot == "no" %}
+                                                        {% set selected = false %}
+                                                    {% endif %}
                                                     <input type="hidden" name="dstnot" value="no">
-                                                    <input type="checkbox" name="dstnot" id="dstnot" value="yes"> <label>Invert the sense of the match.</label>
+                                                    <input type="checkbox" name="dstnot" id="dstnot" value="yes" {% if selected %}checked{% endif %}> <label>Invert the sense of the match.</label>
                                                     <br>
                                                     <footer class="blockquote-footer">
                                                         The 1:1 mapping will only be used for connections to or from the specified destination.  
@@ -132,27 +157,27 @@
                                                             <div class="col-md-6">
                                                                 <label>Type</label>
                                                                 <select class="form-control" name="dsttype" id="dsttype">
-                                                                    <option value="any" selected>Any</option>
-                                                                    <option value="single">Single host or alias</option>
-                                                                    <option value="network">Network</option>
-                                                                    <option value="pppoe">PPPoE clients</option>
-                                                                    <option value="l2tp">L2TP clients</option>
-                                                                    <option value="wan">WAN net</option>
-                                                                    <option value="wanip">WAN address</option>
-                                                                    <option value="lan">LAN net</option>
-                                                                    <option value="lanip">LAN address</option>
+                                                                    <option value="any" {% if natone.dsttype == "any" %}selected{% endif %}>Any</option>
+                                                                    <option value="single" {% if natone.dsttype == "single" %}selected{% endif %}>Single host or alias</option>
+                                                                    <option value="network" {% if natone.dsttype == "network" %}selected{% endif %}>Network</option>
+                                                                    <option value="pppoe" {% if natone.dsttype == "pppoe" %}selected{% endif %}>PPPoE clients</option>
+                                                                    <option value="l2tp" {% if natone.dsttype == "l2tp" %}selected{% endif %}>L2TP clients</option>
+                                                                    <option value="wan" {% if natone.dsttype == "wan" %}selected{% endif %}>WAN net</option>
+                                                                    <option value="wanip" {% if natone.dsttype == "wanip" %}selected{% endif %}>WAN address</option>
+                                                                    <option value="lan" {% if natone.dsttype == "lan" %}selected{% endif %}>LAN net</option>
+                                                                    <option value="lanip" {% if natone.dsttype == "lanip" %}selected{% endif %}>LAN address</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Address/mask</label>
                                                                 <div class="input-group mb-3">
-                                                                    <input type="text" class="form-control col-sm-8" name="dst" id="dst">
+                                                                    <input type="text" class="form-control col-sm-8" name="dst" id="dst" value="{{ natone.dst }}">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text">/</span>
                                                                     </div>
                                                                     <select class="form-control col-sm-3" name="dstmask" id="dstmask">
                                                                         {% for i in 32..1 %}
-                                                                            <option value="{{ i }}">{{ i }}</option>
+                                                                            <option value="{{ i }}" {% if natone.dstmask == i %}selected{% endif %}>{{ i }}</option>
                                                                         {% endfor %}
                                                                     </select>
                                                                 </div>  
@@ -161,13 +186,13 @@
                                                     </div>
                                                     <hr>
                                                     <label>Description</label>
-                                                    <input type="text" class="form-control" name="descr" id="descr">
+                                                    <input type="text" class="form-control" name="descr" id="descr" value="{{ natone.descr }}">
                                                     <hr>
                                                     <label>Type</label>
                                                     <select class="form-control" name="natreflection" id="natreflection">
-                                                        <option value="default">Use system default</option>
-                                                        <option value="enable">Enable</option>
-                                                        <option value="disable">Disable</option>
+                                                        <option value="default" {% if natone.natreflection == "default" %}selected{% endif %}>Use system default</option>
+                                                        <option value="enable" {% if natone.natreflection == "enable" %}selected{% endif %}>Enable</option>
+                                                        <option value="disable" {% if natone.natreflection == "disable" %}selected{% endif %}>Disable</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -181,6 +206,7 @@
                                                 </div>
                                             </div>
                                         {# fin de botones #}
+                                        {% endfor %}
                                     </form>
                                 </div>
                             </div>
@@ -191,11 +217,14 @@
         </div>
         {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
         {# Script para activar internal Ip type #}
-        <script src="{{ asset ('js/jsPagina/internalIpOne.js') }}"></script>
+        <script src="{{ asset ('js/jsPagina/internalIpOneEdit.js') }}"></script>
         {# Script para activar Destination type #}
-        <script src="{{ asset ('js/jsPagina/destinationOne.js') }}"></script>
+        <script src="{{ asset ('js/jsPagina/destinationOneEdit.js') }}"></script>
         {# Script para evaluar el formulario #}
         <script src="{{ asset ('js/jsPagina/validarNatOne.js') }}"></script>
+        <script>
+            
+        </script>
         {% include '@Principal/templates/declaracionFin.html.twig' %}
     {% else %}
         <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">

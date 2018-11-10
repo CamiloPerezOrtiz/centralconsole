@@ -1,60 +1,49 @@
 <?xml version='1.0'?>
 <nat>
 			<rule>
+				<disabled></disabled>
+				<nordr></nordr>
 				<source>
-					<network>wanip</network>
+					<any></any>
+					<not></not>
+					<port>1234</port>
 				</source>
+				<destination>
+					<not></not>
+					<port>22022</port>
+				</destination>
 				<protocol>tcp</protocol>
-				<target>192.168.100.20</target>
+				<target>58.69.52.98</target>
+				<interface>wan</interface>
+			</rule>
+			<rule>
+				<disabled></disabled>
+				<source>
+				</source>
+				<destination>
+				</destination>
+				<protocol>icmp</protocol>
+				<target>192.168.100.21</target>
+				<interface>wan</interface>
+			</rule>
+			<rule>
+				<nordr></nordr>
+				<source>
+				</source>
+				<destination>
+				</destination>
+				<protocol>tcp</protocol>
+				<target>192.168.100.21</target>
 				<interface>wan</interface>
 			</rule>
 			<rule>
 				<source>
-					<network>wanip</network>
 					<not></not>
 				</source>
+				<destination>
+				</destination>
 				<protocol>tcp</protocol>
-				<target></target>
-				<interface>wan</interface>
-			</rule>
-			<rule>
-				<source>
-					<address>192.168.12.6</address>
-				</source>
-				<protocol>tcp</protocol>
-				<target></target>
-				<interface>wan</interface>
-			</rule>
-			<rule>
-				<source>
-					<address>192.168.12.6/14</address>
-				</source>
-				<protocol>tcp</protocol>
-				<target></target>
-				<interface>wan</interface>
-			</rule>
-			<rule>
-				<source>
-					<network>pppoe</network>
-				</source>
-				<protocol>tcp</protocol>
-				<target></target>
-				<interface>wan</interface>
-			</rule>
-			<rule>
-				<source>
-					<network>wanip</network>
-				</source>
-				<protocol>tcp</protocol>
-				<target></target>
-				<interface>wan</interface>
-			</rule>
-			<rule>
-				<source>
-					<network>lanip</network>
-				</source>
-				<protocol>tcp</protocol>
-				<target></target>
+				<target>192.168.100.21</target>
 				<interface>wan</interface>
 			</rule>
 </nat>

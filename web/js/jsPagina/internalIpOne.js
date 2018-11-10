@@ -1,17 +1,17 @@
 $( function() 
 {
-    $("#id_categoria").change( function() 
+    $("#srctype").change( function() 
     {
         if ($(this).val() === "single" || $(this).val() === "network") 
         {
-            $("#id_input").prop("readonly", false);
-            $('#id_input[type="text"]').val('');
+            $("#src").prop("readonly", false);
+            $('#src[type="text"]').val('');
             $("#srcmask").prop("hidden", true);
         } 
         else 
         {
-            $("#id_input").prop("readonly", true);
-            $('#id_input[type="text"]').val('');
+            $("#src").prop("readonly", true);
+            $('#src[type="text"]').val('');
             $("#srcmask").prop("hidden", false);
         }
         if ($(this).val() === "network") 
@@ -25,8 +25,8 @@ $( function()
     });
 });
 
-if($("#id_categoria option:selected").val() !== "") 
+if($("#srctype option:selected").val() !== "") 
 {
-   $("#id_input").prop("readonly", true);
+   $("#src").prop("readonly", true);
    $("#srcmask").prop("hidden", true);
 }

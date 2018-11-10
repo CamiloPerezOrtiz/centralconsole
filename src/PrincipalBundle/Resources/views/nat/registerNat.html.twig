@@ -340,25 +340,6 @@
         <script src="{{ asset ('js/jsPagina/destination.js') }}"></script>
         {# Script para evaluar el formulario #}
         <script src="{{ asset ('js/jsPagina/validarNatPort.js') }}"></script>
-        <script>
-            $(document).ready(function () {
-                $('#localbeginport_cust').typeahead({
-                    source: function (query, result) {
-                        $.ajax({
-                            url: "{{path('auto')}}",
-                            data: 'query=' + query,            
-                            dataType: "json",
-                            type: "POST",
-                            success: function (data) {
-                                result($.map(data, function (item) {
-                                    return item;
-                                }));
-                            }
-                        });
-                    }
-                });
-            });
-        </script>
         {% include '@Principal/templates/declaracionFin.html.twig' %}
     {% else %}
         <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
