@@ -2,48 +2,47 @@
 <nat>
 			<rule>
 				<disabled></disabled>
-				<nordr></nordr>
 				<source>
-					<any></any>
+					<network>lanip</network>
 					<not></not>
-					<port>1234</port>
+					<port>5999</port>
 				</source>
 				<destination>
 					<not></not>
-					<port>22022</port>
+					<port>80</port>
 				</destination>
 				<protocol>tcp</protocol>
 				<target>58.69.52.98</target>
+				<local-port>78</local-port>
 				<interface>wan</interface>
+				<descr>ejemplo 1 con check box marcado</descr>
+				<associated-rule-id></associated-rule-id>
+				<associated-rule-id>pass</associated-rule-id>
+				<nosync></nosync>
 			</rule>
 			<rule>
+				<source>
+					<network>192.168.12.6/32</network>
+				</source>
+				<destination>
+					<any></any>
+				</destination>
+				<protocol>igmp</protocol>
+				<target>192.168.100.21</target>
+				<local-port>78</local-port>
+				<interface>wan</interface>
+				<descr>ejemplo 1 sin check box marcado</descr>
+				<associated-rule-id></associated-rule-id>
+				<associated-rule-id>pass</associated-rule-id>
+			</rule>
+			<onetoone>
+			</onetoone>
+			<onetoone>
+			</onetoone>
+			<onetoone>
+			</onetoone>
+			<onetoone>
+				<nobinat></nobinat>
 				<disabled></disabled>
-				<source>
-				</source>
-				<destination>
-				</destination>
-				<protocol>icmp</protocol>
-				<target>192.168.100.21</target>
-				<interface>wan</interface>
-			</rule>
-			<rule>
-				<nordr></nordr>
-				<source>
-				</source>
-				<destination>
-				</destination>
-				<protocol>tcp</protocol>
-				<target>192.168.100.21</target>
-				<interface>wan</interface>
-			</rule>
-			<rule>
-				<source>
-					<not></not>
-				</source>
-				<destination>
-				</destination>
-				<protocol>tcp</protocol>
-				<target>192.168.100.21</target>
-				<interface>wan</interface>
-			</rule>
+			</onetoone>
 </nat>

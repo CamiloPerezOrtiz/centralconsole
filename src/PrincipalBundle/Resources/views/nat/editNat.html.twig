@@ -137,7 +137,7 @@
                                                                             <span class="input-group-text">/</span> 
                                                                         </div>
                                                                         <select class="form-control col-sm-3 pfIpMask" name="srcmask" id="srcmask" {% if listaGrupo.srctype == 'any' or listaGrupo.srctype == 'single' or listaGrupo.srctype == 'pppoe' or listaGrupo.srctype == 'l2tp' or listaGrupo.srctype == 'wan' or listaGrupo.srctype == 'wanip' or listaGrupo.srctype == 'lan' or listaGrupo.srctype == 'lanip' %} hidden {% endif %}> 
-                                                                            {% for i in 128..1 %}
+                                                                            {% for i in 32..1 %}
                                                                                 <option value="{{ i }}"{% if listaGrupo.srcmask == i %}selected{% endif %}>{{ i }}</option>
                                                                             {% endfor %}
                                                                         </select>
