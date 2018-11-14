@@ -71,13 +71,13 @@ class NatController extends Controller
 	        if($role == "ROLE_SUPERUSER")
 	        {
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM nat ORDER BY position_order";
+				$query = "SELECT * FROM nat WHERE namegroup = '$id' ORDER BY position_order";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
 				$acl=$stmt->fetchAll();
 				//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$queryOne = "SELECT * FROM natone ORDER BY position_order";
+				$queryOne = "SELECT * FROM natone WHERE namegroup = '$id' ORDER BY position_order";
 				$stmtOne = $db->prepare($queryOne);
 				$paramsOne =array();
 				$stmtOne->execute($paramsOne);
@@ -107,30 +107,85 @@ class NatController extends Controller
 	        {
 	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM acl where namegroup ='$grupo'";
+				$query = "SELECT * FROM nat where namegroup ='$grupo' ORDER BY position_order";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
 				$acl=$stmt->fetchAll();
-				return $this->render("@Principal/nat/listNat.html.twig", array("acls"=>$acl));
+				//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$queryOne = "SELECT * FROM natone where namegroup ='$grupo' ORDER BY position_order";
+				$stmtOne = $db->prepare($queryOne);
+				$paramsOne =array();
+				$stmtOne->execute($paramsOne);
+				$aclOne=$stmtOne->fetchAll();
+				return $this->render("@Principal/nat/listNat.html.twig", array("acls"=>$acl,"aclsOne"=>$aclOne));
 	        }
 	        if($role == "ROLE_USER")
 	        {
 	        	$grupo=$u->getNameGroup();
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM acl where namegroup ='$grupo'";
+				$query = "SELECT * FROM nat where namegroup ='$grupo' ORDER BY position_order";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
 				$acl=$stmt->fetchAll();
-				return $this->render("@Principal/nat/listNat.html.twig", array("acls"=>$acl));
+				//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
+				$queryOne = "SELECT * FROM natone where namegroup ='$grupo' ORDER BY position_order";
+				$stmtOne = $db->prepare($queryOne);
+				$paramsOne =array();
+				$stmtOne->execute($paramsOne);
+				$aclOne=$stmtOne->fetchAll();
+				return $this->render("@Principal/nat/listNat.html.twig", array("acls"=>$acl,"aclsOne"=>$aclOne));
 	        }
 	    }
 		// Regresa un arreglo con la informacion obtendia de la base de datos
 	    return $this->redirectToRoute("dashboard");
     }
 
-    public function registerNatAction(Request $request,$id)
+    public function registerNatSuperUserAction(Request $request,$id)
+	{
+        if(isset($_POST['enviar']))
+		{
+			$em = $this->getDoctrine()->getEntityManager();
+			$db = $em->getConnection();
+			$disabled = $_POST['disabled'];
+			$nordr = $_POST['nordr'];
+			$interface = $_POST['interface'];
+			$proto = $_POST['proto'];
+			$srcnot = $_POST['srcnot'];
+			$srctype = $_POST['srctype'];
+			$src = $_POST['src'];
+			$srcmask = $_POST['srcmask'];
+			$srcbeginport = $_POST['srcbeginport'];
+			$dstbeginport_cust = $_POST['dstbeginport_cust'];
+			$srcendport = $_POST['srcendport'];
+			$dstendport_cust = $_POST['dstendport_cust'];
+			$dstnot = $_POST['dstnot'];
+			$dsttype = $_POST['dsttype'];
+			$dst = $_POST['dst'];
+			$dstmask = $_POST['dstmask'];
+			$dstendport = $_POST['dstendport'];
+			$dstbeginport_cust2 = $_POST['dstbeginport_cust2'];
+			$dstendport2 = $_POST['dstendport2'];
+			$dstendport_cust2 = $_POST['dstendport_cust2'];
+			$localip = $_POST['localip'];
+			$localbeginport = $_POST['localbeginport'];
+			$localbeginport_cust = $_POST['localbeginport_cust'];
+			$descr = $_POST['descr'];
+			$nosync = $_POST['nosync'];
+			$natreflection = $_POST['natreflection'];
+			$associated_rule_id = $_POST['associated_rule_id'];
+			//$position_order = $_POST['position_order'];
+			$query = "INSERT INTO nat(disabled, nordr, interface, proto, srcnot, srctype, src, srcmask, srcbeginport, dstbeginport_cust, srcendport, dstendport_cust, dstnot, dsttype, dst, dstmask, dstendport, dstbeginport_cust2, dstendport2, dstendport_cust2, localip, localbeginport, localbeginport_cust, descr, nosync, natreflection, associated_rule_id, namegroup) VALUES ('$disabled','$nordr','$interface', '$proto', '$srcnot', '$srctype', '$src', '$srcmask', '$srcbeginport', '$dstbeginport_cust', '$srcendport', '$dstendport_cust','$dstnot','$dsttype', '$dst', '$dstmask', '$dstendport', '$dstbeginport_cust2', '$dstendport2', '$dstendport_cust2', '$localip', '$localbeginport', '$localbeginport_cust', '$descr', '$nosync', '$natreflection', '$associated_rule_id','$id')";
+			$stmt = $db->prepare($query);
+			$stmt->execute(array());
+			return $this->redirectToRoute("listGroupNat");
+		}
+        // Se renderiza el formulario para que el actor lo llene los campos solicitados
+        return $this->render("@Principal/nat/registerNat.html.twig");
+	}
+
+	public function registerNatAction()
 	{
         if(isset($_POST['enviar']))
 		{
@@ -197,7 +252,6 @@ class NatController extends Controller
 			$srcbeginport = $_POST['srcbeginport'];
 			$dstbeginport_cust = $_POST['dstbeginport_cust'];
 			$srcendport = $_POST['srcendport'];
-
 			$dstendport_cust = $_POST['dstendport_cust'];
 			$dstnot = $_POST['dstnot'];
 			$dsttype = $_POST['dsttype'];
@@ -208,14 +262,12 @@ class NatController extends Controller
 			$dstendport2 = $_POST['dstendport2'];
 			$dstendport_cust2 = $_POST['dstendport_cust2'];
 			$localip = $_POST['localip'];
-
 			$localbeginport = $_POST['localbeginport'];
 			$localbeginport_cust = $_POST['localbeginport_cust'];
 			$descr = $_POST['descr'];
 			$nosync = $_POST['nosync'];
 			$natreflection = $_POST['natreflection'];
 			$associated_rule_id = $_POST['associated_rule_id'];
-
 			$query = "UPDATE nat SET disabled = '$disabled', nordr = '$nordr', interface = '$interface', proto = '$proto', srcnot = '$srcnot', 
 				srctype = '$srctype', src = '$src', srcmask = '$srcmask', srcbeginport = '$srcbeginport', dstbeginport_cust = '$dstbeginport_cust',
 				srcendport = '$srcendport', dstendport_cust = '$dstendport_cust', dstnot = '$dstnot', dsttype = '$dsttype', dst = '$dst',
@@ -254,7 +306,36 @@ class NatController extends Controller
 		return $this->redirectToRoute("listGroupNat");
 	}
 
-	public function registerNatOneAction(Request $request, $id)
+	public function registerNatOneSuperUserAction(Request $request, $id)
+	{
+        if(isset($_POST['enviar']))
+		{
+			$em = $this->getDoctrine()->getEntityManager();
+			$db = $em->getConnection();
+			$disabled = $_POST['disabled'];
+			$nobinat = $_POST['nobinat'];
+			$interface = $_POST['interface'];
+			$external = $_POST['external'];
+			$srcnot = $_POST['srcnot'];
+			$srctype = $_POST['srctype'];
+			$src = $_POST['src'];
+			$srcmask = $_POST['srcmask'];
+			$dstnot = $_POST['dstnot'];
+			$dsttype = $_POST['dsttype'];
+			$dst = $_POST['dst'];
+			$dstmask = $_POST['dstmask'];
+			$descr = $_POST['descr'];
+			$natreflection = $_POST['natreflection'];
+			$query = "INSERT INTO natone(disabled, nobinat, interface, external, srcnot, srctype, src, srcmask, dstnot, dsttype, dst, dstmask, descr, natreflection, namegroup) VALUES ('$disabled','$nobinat','$interface', '$external', '$srcnot', '$srctype', '$src', '$srcmask', '$dstnot', '$dsttype', '$dst', '$dstmask', '$descr', '$natreflection', '$id')";
+			$stmt = $db->prepare($query);
+			$stmt->execute(array());
+			return $this->redirectToRoute("listGroupNat");
+		}
+        // Se renderiza el formulario para que el actor lo llene los campos solicitados
+        return $this->render("@Principal/nat/registerNatOne.html.twig");
+	}
+
+	public function registerNatOneAction()
 	{
         if(isset($_POST['enviar']))
 		{
@@ -1261,6 +1342,102 @@ class NatController extends Controller
 			{
 				$contenido .= "\t\t\t\t<disabled></disabled>\n";
 			}
+			# External subnet IP #
+			$contenido .= "\t\t\t\t<external>" . $formatos['external'] . "</external>\n";
+			# Description #
+			$contenido .= "\t\t\t\t<descr>" . $formatos['descr'] . "</descr>\n";
+			# Interface #
+			$contenido .= "\t\t\t\t<interface>" . $formatos['interface'] . "</interface>\n";
+			# Internal IP #
+			$contenido .= "\t\t\t\t<source>\n";
+				# Type Address/mask #
+				if($formatos['srctype'] === "any")
+				{
+					$contenido .= "\t\t\t\t\t<any></any>\n";
+				}
+				if($formatos['srctype'] === "single")
+				{
+					$contenido .= "\t\t\t\t\t<address>" . $formatos['src'] . "</address>\n";
+				}
+				if($formatos['srctype'] === "network")
+				{
+					$contenido .= "\t\t\t\t\t<address>" . $formatos['src'] . "/" . $formatos['srcmask'] . "</address>\n";
+				}
+				if($formatos['srctype'] === "pppoe")
+				{
+					$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
+				}
+				if($formatos['srctype'] === "l2tp")
+				{
+					$contenido .= "\t\t\t\t\t<network>l2tp</network>\n";
+				}
+				if($formatos['srctype'] === "wan")
+				{
+					$contenido .= "\t\t\t\t\t<network>wan</network>\n";
+				}
+				if($formatos['srctype'] === "wanip")
+				{
+					$contenido .= "\t\t\t\t\t<network>wanip</network>\n";
+				}
+				if($formatos['srctype'] === "lan")
+				{
+					$contenido .= "\t\t\t\t\t<network>lan</network>\n";
+				}
+				if($formatos['srctype'] === "lanip")
+				{
+					$contenido .= "\t\t\t\t<network>lanip</network>\n";
+				}
+				# Not Invert the sense of the match #
+				if($formatos['srcnot'] === "yes")
+				{
+					$contenido .= "\t\t\t\t\t<not></not>\n";
+				}
+			$contenido .= "\t\t\t\t</source>\n";
+			# Destination #
+			$contenido .= "\t\t\t\t<source>\n";
+				# Type Address/mask #
+				if($formatos['dsttype'] === "any")
+				{
+					$contenido .= "\t\t\t\t\t<any></any>\n";
+				}
+				if($formatos['dsttype'] === "single")
+				{
+					$contenido .= "\t\t\t\t\t<address>" . $formatos['dst'] . "</address>\n";
+				}
+				if($formatos['dsttype'] === "network")
+				{
+					$contenido .= "\t\t\t\t\t<address>" . $formatos['dst'] . "/" . $formatos['dstmask'] . "</address>\n";
+				}
+				if($formatos['dsttype'] === "pppoe")
+				{
+					$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
+				}
+				if($formatos['dsttype'] === "l2tp")
+				{
+					$contenido .= "\t\t\t\t\t<network>l2tp</network>\n";
+				}
+				if($formatos['dsttype'] === "wan")
+				{
+					$contenido .= "\t\t\t\t\t<network>wan</network>\n";
+				}
+				if($formatos['dsttype'] === "wanip")
+				{
+					$contenido .= "\t\t\t\t\t<network>wanip</network>\n";
+				}
+				if($formatos['dsttype'] === "lan")
+				{
+					$contenido .= "\t\t\t\t\t<network>lan</network>\n";
+				}
+				if($formatos['dsttype'] === "lanip")
+				{
+					$contenido .= "\t\t\t\t<network>lanip</network>\n";
+				}
+				# Not Invert the sense of the match #
+				if($formatos['dstnot'] === "yes")
+				{
+					$contenido .= "\t\t\t\t\t<not></not>\n";
+				}
+			$contenido .= "\t\t\t\t</source>\n";
 			$contenido .= "\t\t\t</onetoone>\n";
 		}
 

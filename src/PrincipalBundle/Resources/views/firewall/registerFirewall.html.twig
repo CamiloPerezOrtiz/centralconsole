@@ -1,0 +1,257 @@
+{# Se evalua si existe un usuario que alla iniciado session, de lo contrario se redirecciona al login  #}
+{% if app.user != null %}
+    {# Se evalua que tipo de ussuario inicio sesion para cargar la plantilla correspondiente #}
+    {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+        {% include '@Principal/templates/declaracionCabezera.html.twig' %}
+        {% include '@Principal/templates/base.html.twig' %}
+        <div class="container">
+            <div id="content-wrapper">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="{{path('dashboard')}}">Dashboard</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{path('listGroupFirewall')}}">List firewall rules</a>
+                        </li>
+                        <li class="breadcrumb-item active">
+                            Firewall rules
+                        </li>
+                    </ol>
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <i class="fas fa-table"></i>
+                            Register a new rule
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                {# Mensaje a pantalla de notificacion de algun error #}
+                                    <div class="container">
+                                        <div class="col-md-11">
+                                            {% for msg in app.session.flashbag().get('estatus') %}
+                                                <div class="alert alert-info" aria-label="Close">
+                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                    <strong>Info!</strong> {{ msg }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {# Fin de Mensaje #}
+                                <div class="card mx-auto card-register">
+                                    <div class="card-header bg-dark text-white">Properties</div>
+                                    <form method="post" onsubmit="return validarNatPort();">
+                                        {# Inicio #}
+                                            <div class="form-group">   
+                                                <div  class="card-body">
+                                                    <label for="exampleInputEmail1">Action</label>
+                                                    <footer class="blockquote-footer">
+                                                        Choose what to do with packets that match the criteria specified below.
+                                                    </footer>
+                                                    <footer class="blockquote-footer">
+                                                        Hint: the difference between block and reject is that with reject, a packet (TCP RST or ICMP port unreachable for UDP) is returned to the sender, whereas with block the packet is dropped silently. In either case, the original packet is discarded.
+                                                    </footer>
+                                                    <select class="form-control" name="type" id="type">
+                                                        <option value="pass" selected>Pass</option>
+                                                        <option value="block">Block</option>
+                                                        <option value="reject">Reject</option>
+                                                    </select>    
+                                                    <hr>
+                                                    <label>Disabled</label>
+                                                    <input type="hidden" name="disabled" id="disabled" value="no">
+                                                    <input type="checkbox" name="disabled" id="disabled" value="yes">
+                                                    <label>Disable this rule.</label>
+                                                    <hr>
+                                                    <label for="exampleInputEmail1">Interface</label>
+                                                    <footer class="blockquote-footer">
+                                                        Choose the interface from which packets must come to match this rule.
+                                                    </footer>
+                                                    <select class="form-control" name="interface" id="interface">
+                                                        <option value="wan" selected>WAN</option>
+                                                        <option value="lan">LAN</option>
+                                                    </select>    
+                                                    <hr>
+                                                    <label for="exampleInputEmail1">Address Family</label>
+                                                    <footer class="blockquote-footer">
+                                                        Select the Internet Protocol version this rule applies to.
+                                                    </footer>
+                                                    <select class="form-control" name="ipprotocol" id="ipprotocol">
+                                                        <option value="inet">IPv4</option>
+                                                        <option value="inet6">IPv6</option>
+                                                        <option value="inet46">IPv4+IPv6</option>
+                                                    </select>    
+                                                    <hr>
+                                                    <label for="exampleInputEmail1">Address Family</label>
+                                                    <footer class="blockquote-footer">
+                                                        Select the Internet Protocol version this rule applies to.
+                                                    </footer>
+                                                    <select class="form-control" name="proto" id="proto">
+                                                        <option value="any">Any</option>
+                                                        <option value="tcp">TCP</option>
+                                                        <option value="udp">UDP</option>
+                                                        <option value="tcp/udp">TCP/UDP</option>
+                                                        <option value="icmp">ICMP</option>
+                                                    </select>     
+                                                </div>
+                                            </div>
+                                        {# Fin #}
+                                        <div class="card-header bg-dark text-white">Source</div>
+                                        <div class="form-group">   
+                                            <div  class="card-body">
+                                                <div class="form-group">
+                                                    <div class="form-row">
+                                                        <div class="col-md-2">
+                                                            <label>Source</label>
+                                                            <input type="hidden" name="srcnot" id="srcnot" value="no">
+                                                            <input type="checkbox" name="srcnot" id="srcnot" value="yes">
+                                                            <label>Invert match.</label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Type</label>
+                                                            <select class="form-control" name="srctype" id="srctype">
+                                                                <option value="any" selected>any</option>
+                                                                <option value="single">Single host or alias</option>
+                                                                <option value="network">Network</option>
+                                                                <option value="pppoe">PPPoE clients</option>
+                                                                <option value="l2tp">L2TP clients</option>
+                                                                <option value="wan">WAN net</option>
+                                                                <option value="wanip">WAN address</option>
+                                                                <option value="lan">LAN net</option>
+                                                                <option value="lanip">LAN address</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Address/mask</label>
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" class="form-control col-sm-8" name="src" id="src" title="An IPv4 address like 1.2.3.4 or an IPv6 address like 1:2a:3b:ffff::1 or an alias">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">/</span>
+                                                                </div>
+                                                                <select class="form-control col-sm-3 pfIpMask" name="srcmask" id="srcmask"> 
+                                                                    {% for i in 32..1 %}
+                                                                        <option value="{{ i }}">{{ i }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-header bg-dark text-white">Destination</div>
+                                        <div class="form-group">   
+                                            <div  class="card-body">
+                                                <div class="form-group">
+                                                    <div class="form-row">
+                                                        <div class="col-md-2">
+                                                            <label>Source</label>
+                                                            <input type="hidden" name="dstnot" id="dstnot" value="no">
+                                                            <input type="checkbox" name="dstnot" id="dstnot" value="yes">
+                                                            <label>Invert match.</label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <label>Type</label>
+                                                            <select class="form-control" name="dsttype" id="dsttype">
+                                                                <option value="any" selected>any</option>
+                                                                <option value="single">Single host or alias</option>
+                                                                <option value="network">Network</option>
+                                                                <option value="(self)">This firewall (self)</option>
+                                                                <option value="pppoe">PPPoE clients</option>
+                                                                <option value="l2tp">L2TP clients</option>
+                                                                <option value="wan">WAN net</option>
+                                                                <option value="wanip">WAN address</option>
+                                                                <option value="lan">LAN net</option>
+                                                                <option value="lanip">LAN address</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label>Address/mask</label>
+                                                            <div class="input-group mb-3">
+                                                                <input type="text" class="form-control col-sm-8" name="dst" id="dst" title="An IPv4 address like 1.2.3.4 or an IPv6 address like 1:2a:3b:ffff::1 or an alias">
+                                                                <div class="input-group-prepend">
+                                                                    <span class="input-group-text">/</span>
+                                                                </div>
+                                                                <select class="form-control col-sm-3 pfIpMask" name="dstmask" id="dstmask"> 
+                                                                    {% for i in 32..1 %}
+                                                                        <option value="{{ i }}">{{ i }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>  
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-header bg-dark text-white">Extra Options</div>
+                                        <div class="form-group">   
+                                            <div  class="card-body">
+                                                <label>Log</label>
+                                                <input type="hidden" name="log" id="log" value="no">
+                                                <input type="checkbox" name="log" id="log" value="yes">
+                                                <footer class="blockquote-footer">
+                                                    Hint: the firewall has limited local log space. Don't turn on logging for everything. If doing a lot of logging, consider using a remote syslog server (see the Status: System Logs: Settings page).
+                                                </footer>
+                                                <hr>
+                                                <label>Interface</label>
+                                                <footer class="blockquote-footer">
+                                                    A description may be entered here for administrative reference. A maximum of 52 characters will be used in the ruleset and displayed in the firewall log.
+                                                </footer>
+                                                <input class="form-control" name="descr" id="descr" type="text"> 
+                                                <hr>
+                                                <label for="exampleInputEmail1">Address Family</label>
+                                                <footer class="blockquote-footer">
+                                                    Select the Internet Protocol version this rule applies to.
+                                                </footer>
+                                                <select class="form-control" name="ipprotocol" id="ipprotocol">
+                                                    <option value="inet">IPv4</option>
+                                                    <option value="inet6">IPv6</option>
+                                                    <option value="inet46">IPv4+IPv6</option>
+                                                </select>    
+                                                <hr>
+                                                <label for="exampleInputEmail1">Address Family</label>
+                                                <footer class="blockquote-footer">
+                                                    Select the Internet Protocol version this rule applies to.
+                                                </footer>
+                                                <select class="form-control" name="proto" id="proto">
+                                                    <option value="any">Any</option>
+                                                    <option value="tcp">TCP</option>
+                                                    <option value="udp">UDP</option>
+                                                    <option value="tcp/udp">TCP/UDP</option>
+                                                    <option value="icmp">ICMP</option>
+                                                </select>     
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="card-header bg-dark text-white">
+                                            <a style='cursor: pointer;' onClick="muestra_oculta('contenido')" title="" class="boton_mostrar">
+                                                Hide advanced <i class="fas fa-angle-double-down"></i>
+                                            </a>
+                                        </div>
+                                        <div id="contenido">
+                                        {# Inicio Source #}
+                                        </div>
+                                        {# Inicio de Botones guardar y limpiar #}
+                                            <div class="form-group">
+                                                <button type="submit" class="btn btn-primary btn-block" name="enviar">Save</button>
+                                            </div>
+                                            <div class="text-center">
+                                                <button type="reset" class="btn btn-danger btn-block">Clean Form</button>
+                                            </div>
+                                        {# fin de botones #}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include '@Principal/templates/declaracionPiePagina.html.twig' %}
+        {% include '@Principal/templates/declaracionFin.html.twig' %}
+    {% else %}
+        <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
+    {% endif %}
+{% else %}
+    <META HTTP-EQUIV="Refresh" CONTENT="0; URL={{path('login')}}">
+{% endif %}

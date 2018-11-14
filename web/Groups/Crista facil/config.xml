@@ -1,7 +1,6 @@
 <?xml version='1.0'?>
 <nat>
 			<rule>
-				<disabled></disabled>
 				<source>
 					<network>lanip</network>
 					<not></not>
@@ -36,13 +35,53 @@
 				<associated-rule-id>pass</associated-rule-id>
 			</rule>
 			<onetoone>
+				<external>192.168.0.19</external>
+				<descr></descr>
+				<interface>wan</interface>
+				<source>
+					<any></any>
+				</source>
+				<source>
+					<any></any>
+				</source>
 			</onetoone>
 			<onetoone>
+				<external>123.3.3.3</external>
+				<descr>IVR4</descr>
+				<interface>wan</interface>
+				<source>
+					<address>192.168.12.25</address>
+				</source>
+				<source>
+					<address>192.168.1.8/18</address>
+				</source>
 			</onetoone>
 			<onetoone>
+				<external>123.3.3.3</external>
+				<descr>IVR2</descr>
+				<interface>lan</interface>
+				<source>
+					<address>192.168.12.6</address>
+					<not></not>
+				</source>
+				<source>
+					<address>192.168.1.8</address>
+					<not></not>
+				</source>
 			</onetoone>
 			<onetoone>
 				<nobinat></nobinat>
 				<disabled></disabled>
+				<external>192.168.0.19</external>
+				<descr>IVR3</descr>
+				<interface>wan</interface>
+				<source>
+					<address>192.168.12.78/32</address>
+					<not></not>
+				</source>
+				<source>
+					<address>192.168.1.8/32</address>
+					<not></not>
+				</source>
 			</onetoone>
 </nat>

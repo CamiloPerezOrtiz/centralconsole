@@ -302,13 +302,23 @@ editNatOne:
 
 #Registro de un nuevo target categories controlador:NatController funcion registroNatr#
 registerNat:
-    path:     /registerNat/{id} 
+    path:     /registerNat
     defaults: { _controller: PrincipalBundle:Nat:registerNat }
 
 #Registro de un nuevo target categories controlador:NatController funcion registroNatr#
+registerNatSuperUser:
+    path:     /registerNatSuperUser/{id} 
+    defaults: { _controller: PrincipalBundle:Nat:registerNatSuperUser }
+
+#Registro de un nuevo target categories controlador:NatController funcion registroNatr#
 registerNatOne:
-    path:     /registerNatOne/{id} 
+    path:     /registerNatOne
     defaults: { _controller: PrincipalBundle:Nat:registerNatOne }
+
+#Registro de un nuevo target categories controlador:NatController funcion registroNatr#
+registerNatOneSuperUser:
+    path:     /registerNatOneSuperUser/{id} 
+    defaults: { _controller: PrincipalBundle:Nat:registerNatOneSuperUser }
 
 #Crear XML acl groups controlador:NatController funcion crearXMLNat #
 createXMLNat:
@@ -334,3 +344,29 @@ refresh:
 refreshOne:
     path:     /refreshOne
     defaults: { _controller: PrincipalBundle:Nat:refreshOne }
+
+################################################################################
+#                                                                              #
+#            Firewall rules                                                    #
+#                                                                              #
+################################################################################
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+listGroupFirewall:
+    path:     /listGroupFirewall
+    defaults: { _controller: PrincipalBundle:Firewall:listGroupFirewall }
+
+#Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
+listFirewallSuperUser:
+    path:     /listFirewallSuperUser/{id}
+    defaults: { _controller: PrincipalBundle:Firewall:listFirewallSuperUser }
+
+#Listado de las target categories controlador: TargetcategoriesController funcion: listaTargetcategoriesAction #  
+listFirewall:
+    path:     /listFirewall
+    defaults: { _controller: PrincipalBundle:Firewall:listFirewall }
+
+#Registro de un nuevo target categories controlador:NatController funcion registroNatr#
+registerFirewallSuperUser:
+    path:     /registerFirewallSuperUser/{id} 
+    defaults: { _controller: PrincipalBundle:Firewall:registerFirewallSuperUser }

@@ -10,7 +10,7 @@
                         <a href="{{path('dashboard')}}">Dashboard</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        Groups nat
+                        Firewall rules
                     </li>
                 </ol>
                 <div class="card mb-3">
@@ -31,8 +31,8 @@
                                 </div>
                             </div>
                         {# Fin de Mensaje #}
-                        <h1>Nats</h1>
-                        <p>Choose a group to register a new nat or view the list.</p>
+                        <h1>Firewall</h1>
+                        <p>Choose a group to register a new rule or view the list.</p>
                         <hr>
                         <div class="row">
                             {% for listaGrupo in grupo %}
@@ -45,21 +45,21 @@
                                             <div class="mr-5">{{ listaGrupo.cliente }}</div>
                                         </div>
                                         {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
-                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerNatSuperUser',{id:listaGrupo.cliente})}}">
-                                                <span class="float-left">Register a new nat port forward</span>
+                                            <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerFirewallSuperUser',{id:listaGrupo.cliente})}}">
+                                                <span class="float-left">Register a new rule WAN</span>
                                                 <span class="float-right">
                                                     <i class="fa fa-angle-right"></i>
                                                 </span>
                                             </a>
                                             <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('registerNatOneSuperUser',{id:listaGrupo.cliente})}}">
-                                                <span class="float-left">Register a new nat 1:1</span>
+                                                <span class="float-left">Register a new rule LAN</span>
                                                 <span class="float-right">
                                                     <i class="fa fa-angle-right"></i>
                                                 </span>
                                             </a>
                                         {% endif %}
                                         <a class="card-footer text-white btn-outline-danger clearfix small z-1" href="{{path('listNatSuperUser',{id:listaGrupo.cliente})}}">
-                                            <span class="float-left">View list nats</span>
+                                            <span class="float-left">View list</span>
                                             <span class="float-right">
                                                 <i class="fa fa-angle-right"></i>
                                             </span>
