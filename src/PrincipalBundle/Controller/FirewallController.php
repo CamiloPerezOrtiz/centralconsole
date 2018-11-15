@@ -71,13 +71,13 @@ class FirewallController extends Controller
 	        if($role == "ROLE_SUPERUSER")
 	        {
 	        	//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$query = "SELECT * FROM nat WHERE namegroup = '$id' ORDER BY position_order";
+				$query = "SELECT * FROM firewallwan WHERE namegroup = '$id' ORDER BY position_order";
 				$stmt = $db->prepare($query);
 				$params =array();
 				$stmt->execute($params);
 				$acl=$stmt->fetchAll();
 				//Query para seleccionar los datos de id, ip, cliente de la tabla txtip solamente del cliente que fue seleccionado
-				$queryOne = "SELECT * FROM natone WHERE namegroup = '$id' ORDER BY position_order";
+				$queryOne = "SELECT * FROM firewallwan WHERE namegroup = '$id' ORDER BY position_order";
 				$stmtOne = $db->prepare($queryOne);
 				$paramsOne =array();
 				$stmtOne->execute($paramsOne);
@@ -148,40 +148,79 @@ class FirewallController extends Controller
 		{
 			$em = $this->getDoctrine()->getEntityManager();
 			$db = $em->getConnection();
+			$type = $_POST['type'];
 			$disabled = $_POST['disabled'];
-			$nordr = $_POST['nordr'];
 			$interface = $_POST['interface'];
+			$ipprotocol = $_POST['ipprotocol'];
 			$proto = $_POST['proto'];
+			$res = $_POST['icmptype'];
+			$icmptype = implode(",",$res);
 			$srcnot = $_POST['srcnot'];
 			$srctype = $_POST['srctype'];
 			$src = $_POST['src'];
 			$srcmask = $_POST['srcmask'];
 			$srcbeginport = $_POST['srcbeginport'];
-			$dstbeginport_cust = $_POST['dstbeginport_cust'];
+			$srcbeginport_cust = $_POST['srcbeginport_cust'];
 			$srcendport = $_POST['srcendport'];
-			$dstendport_cust = $_POST['dstendport_cust'];
+			$srcendport_cust = $_POST['srcendport_cust'];
 			$dstnot = $_POST['dstnot'];
 			$dsttype = $_POST['dsttype'];
 			$dst = $_POST['dst'];
 			$dstmask = $_POST['dstmask'];
+			$dstbeginport = $_POST['dstbeginport'];
+			$dstbeginport_cust = $_POST['dstbeginport_cust'];
 			$dstendport = $_POST['dstendport'];
-			$dstbeginport_cust2 = $_POST['dstbeginport_cust2'];
-			$dstendport2 = $_POST['dstendport2'];
-			$dstendport_cust2 = $_POST['dstendport_cust2'];
-			$localip = $_POST['localip'];
-			$localbeginport = $_POST['localbeginport'];
-			$localbeginport_cust = $_POST['localbeginport_cust'];
+			$dstendport_cust = $_POST['dstendport_cust'];
+			$log = $_POST['log'];
 			$descr = $_POST['descr'];
-			$nosync = $_POST['nosync'];
-			$natreflection = $_POST['natreflection'];
-			$associated_rule_id = $_POST['associated_rule_id'];
+			$gateway = $_POST['gateway'];
 			//$position_order = $_POST['position_order'];
-			$query = "INSERT INTO nat(disabled, nordr, interface, proto, srcnot, srctype, src, srcmask, srcbeginport, dstbeginport_cust, srcendport, dstendport_cust, dstnot, dsttype, dst, dstmask, dstendport, dstbeginport_cust2, dstendport2, dstendport_cust2, localip, localbeginport, localbeginport_cust, descr, nosync, natreflection, associated_rule_id, namegroup) VALUES ('$disabled','$nordr','$interface', '$proto', '$srcnot', '$srctype', '$src', '$srcmask', '$srcbeginport', '$dstbeginport_cust', '$srcendport', '$dstendport_cust','$dstnot','$dsttype', '$dst', '$dstmask', '$dstendport', '$dstbeginport_cust2', '$dstendport2', '$dstendport_cust2', '$localip', '$localbeginport', '$localbeginport_cust', '$descr', '$nosync', '$natreflection', '$associated_rule_id','$id')";
+			$query = "INSERT INTO firewallwan(type, disabled, interface, ipprotocol, proto, icmptype, srcnot, srctype, src, srcmask, srcbeginport, srcbeginport_cust, srcendport, srcendport_cust, dstnot, dsttype, dst, dstmask, dstbeginport, dstbeginport_cust, dstendport, dstendport_cust, log, descr, gateway, namegroup) VALUES ('$type','$disabled','$interface', '$ipprotocol', '$proto', '$icmptype', '$srcnot', '$srctype', '$src', '$srcmask', '$srcbeginport', '$srcbeginport_cust','$srcendport','$srcendport_cust', '$dstnot', '$dsttype', '$dst', '$dstmask', '$dstbeginport', '$dstbeginport_cust', '$dstendport', '$dstendport_cust', '$log', '$descr', '$gateway','$id')";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
-			return $this->redirectToRoute("listGroupNat");
+			return $this->redirectToRoute("listGroupFirewall");
 		}
         // Se renderiza el formulario para que el actor lo llene los campos solicitados
         return $this->render("@Principal/firewall/registerFirewall.html.twig");
+	}
+
+	public function refreshFirewallWanAction()
+	{
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		$position = $_POST['position'];
+		$i=1;
+		foreach($position as $k=>$v){
+		    $sql = "Update firewallwan SET position_order=".$i." WHERE id=".$v;
+		    $stmt = $db->prepare($sql);
+			$stmt->execute(array());
+			$i++;
+		}
+		exit();
+	}
+
+	public function deleteFirewallWanAction($id)
+	{
+		// Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		$query = "DELETE FROM firewallwan WHERE id = '$id'";
+		$stmt = $db->prepare($query);
+		$stmt->execute(array());
+		// Se validad si la accion de borrar se cumplio
+		if($stmt == null)
+		{
+			// Se notifica al actor que la eliminacion fue correcta 
+			$estatus="Problems with the server try later.";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+		}
+		// De lo contrario se notifica al actor
+		else
+		{
+			$estatus="Registry successfully deleted";
+			$this->session->getFlashBag()->add("estatus",$estatus);
+		}
+		// Se redirecciona al listado
+		return $this->redirectToRoute("listGroupFirewall");
 	}
 }

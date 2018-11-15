@@ -132,3 +132,34 @@ CREATE TABLE natone(
 	namegroup VARCHAR(50) NOT NULL,
 	position_order SERIAL NOT NULL 
 );
+
+CREATE TABLE firewallwan(
+	id SERIAL PRIMARY KEY,
+	type VARCHAR(45) NOT NULL,
+	disabled VARCHAR(40) NOT NULL,
+	interface VARCHAR(40) NOT NULL,
+	ipprotocol VARCHAR(40) NOT NULL,
+	proto VARCHAR(40) DEFAULT NULL,
+	icmptype VARCHAR(40) NOT NULL,
+	srcnot VARCHAR(40) NOT NULL,
+	srctype VARCHAR(15) NOT NULL,
+	src VARCHAR(40) NOT NULL,
+	srcmask VARCHAR(40) NOT NULL,
+	srcbeginport VARCHAR(40) DEFAULT NULL,
+	srcbeginport_cust VARCHAR(40) NOT NULL,
+	srcendport VARCHAR(40) NOT NULL,
+	srcendport_cust VARCHAR(15) NOT NULL,
+	dstnot VARCHAR(50) NOT NULL,
+	dsttype VARCHAR NOT NULL,
+	dst VARCHAR(40) DEFAULT NULL,
+	dstmask VARCHAR(40) NOT NULL,
+	dstbeginport VARCHAR(40) NOT NULL,
+	dstbeginport_cust VARCHAR(15) NOT NULL,
+	dstendport VARCHAR(40) NOT NULL,
+	dstendport_cust VARCHAR(40) NOT NULL,
+	log VARCHAR(40) DEFAULT NULL,
+	descr VARCHAR(40) NOT NULL,
+	gateway VARCHAR(40) NOT NULL,
+	namegroup VARCHAR(50) NOT NULL,
+	position_order SERIAL NOT NULL 
+);

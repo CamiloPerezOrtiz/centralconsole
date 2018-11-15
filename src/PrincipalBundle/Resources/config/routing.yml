@@ -370,3 +370,18 @@ listFirewall:
 registerFirewallSuperUser:
     path:     /registerFirewallSuperUser/{id} 
     defaults: { _controller: PrincipalBundle:Firewall:registerFirewallSuperUser }
+
+#Listado de grupos controlador: GrupoController funcion: listaGrupoAction #  
+refreshFirewallWan:
+    path:     /refreshFirewallWan
+    defaults: { _controller: PrincipalBundle:Firewall:refreshFirewallWan }
+
+#Elimina el target categories seleccionado controlador: AliasesController funcion eliminarAliases#
+deleteFirewallWan:
+    path:     /deleteFirewallWan/{id}
+    defaults: { _controller: PrincipalBundle:Firewall:deleteFirewallWan }
+
+#Edita el usuario el cual fue seleccionado controlador: FirewallWanController funcion editarFirewallWan#
+editFirewallWan:
+    path:     /editFirewallWan/{id}
+    defaults: { _controller: PrincipalBundle:Firewall:editFirewallWan }
