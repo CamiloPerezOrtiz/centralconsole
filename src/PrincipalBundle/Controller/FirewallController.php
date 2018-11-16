@@ -223,4 +223,58 @@ class FirewallController extends Controller
 		// Se redirecciona al listado
 		return $this->redirectToRoute("listGroupFirewall");
 	}
+
+	public function editFirewallWanAction($id)
+	{
+		$em = $this->getDoctrine()->getEntityManager();
+		$db = $em->getConnection();
+		$querySelect = "SELECT * FROM firewallwan WHERE id = '$id'";
+		$stmtSelect = $db->prepare($querySelect);
+		$paramsSelect =array();
+		$stmtSelect->execute($paramsSelect);
+		$listaGrupo=$stmtSelect->fetchAll();
+		foreach ($listaGrupo as $value) 
+		{
+			$array= explode(' ',$value['icmptype']);
+		}
+		if(isset($_POST['enviar']))
+		{
+			$type = $_POST['type'];
+			$disabled = $_POST['disabled'];
+			$interface = $_POST['interface'];
+			$ipprotocol = $_POST['ipprotocol'];
+			$proto = $_POST['proto'];
+			$res = $_POST['icmptype'];
+			$icmptype = implode(",",$res);
+			$srcnot = $_POST['srcnot'];
+			$srctype = $_POST['srctype'];
+			$src = $_POST['src'];
+			$srcmask = $_POST['srcmask'];
+			$srcbeginport = $_POST['srcbeginport'];
+			$srcbeginport_cust = $_POST['srcbeginport_cust'];
+			$srcendport = $_POST['srcendport'];
+			$srcendport_cust = $_POST['srcendport_cust'];
+			$dstnot = $_POST['dstnot'];
+			$dsttype = $_POST['dsttype'];
+			$dst = $_POST['dst'];
+			$dstmask = $_POST['dstmask'];
+			$dstbeginport = $_POST['dstbeginport'];
+			$dstbeginport_cust = $_POST['dstbeginport_cust'];
+			$dstendport = $_POST['dstendport'];
+			$dstendport_cust = $_POST['dstendport_cust'];
+			$log = $_POST['log'];
+			$descr = $_POST['descr'];
+			$gateway = $_POST['gateway'];
+			$query = "UPDATE nat SET disabled = '$disabled', nordr = '$nordr', interface = '$interface', proto = '$proto', srcnot = '$srcnot', 
+				srctype = '$srctype', src = '$src', srcmask = '$srcmask', srcbeginport = '$srcbeginport', dstbeginport_cust = '$dstbeginport_cust',
+				srcendport = '$srcendport', dstendport_cust = '$dstendport_cust', dstnot = '$dstnot', dsttype = '$dsttype', dst = '$dst',
+				dstmask = '$dstmask', dstendport = '$dstendport', dstbeginport_cust2 = '$dstbeginport_cust2', dstendport2 = '$dstendport2', 
+				dstendport_cust2 = '$dstendport_cust2', localip = '$localip', localbeginport = '$localbeginport', localbeginport_cust = '$localbeginport_cust',
+				descr = '$descr', nosync = '$nosync', natreflection = '$natreflection', associated_rule_id = '$associated_rule_id' WHERE id = '$id'";
+			$stmt = $db->prepare($query);
+			$stmt->execute(array());
+			return $this->redirectToRoute("listGroupNat");
+		}
+		return $this->render("@Principal/firewall/editFirewall.html.twig", array("value"=>$listaGrupo,"value2"=>$array));
+	}
 }

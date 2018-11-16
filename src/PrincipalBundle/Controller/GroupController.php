@@ -9,6 +9,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 class GroupController extends Controller
 {
 	public function txtIpAction()
@@ -44,7 +46,7 @@ class GroupController extends Controller
 			/*Crear carpetas para cada grupo o cliente
 			*Si la carpeta exite ya no la crear de lo contrario si no exite la carpeta lo crea 
 			*/
-			$serv = '/var/www/html/centralconsole/web/Groups/';
+			$serv = '/var/www/html/centralizedConsole/web/Groups/';
 			$ruta = $serv . $cliente;
 			if(!file_exists($ruta))
 			{
@@ -137,7 +139,7 @@ class GroupController extends Controller
 			}
 			fclose($file);
 			# Aplicar cambios en el sistema #
-			$archivoConfig = "Groups/$grupo/config.xml";
+			/*$archivoConfig = "Groups/$grupo/config.xml";
 			$destinoConfig = "pf.xml";
 		   	if (!copy($archivoConfig, $destinoConfig)) 
 		   	{
@@ -149,7 +151,14 @@ class GroupController extends Controller
 		   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
 		   	{
 			    echo "Error al copiar $archivoipGrupos...\n";
+			}*/
+			$archivoipGrupos = "Groups/$id/ipGrupos.txt";
+			$destinoipGrupos = "centralizedConsole/changes.txt";
+		   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
+		   	{
+			    echo "Error al copiar $archivoipGrupos...\n";
 			}
+			exec("python centralizedConsole/apply.py");
 			#exec("python apply.py");
 			# Ejecutar python aliases # 
 			/*$process = new Process('python apply.py');
@@ -193,28 +202,29 @@ class GroupController extends Controller
 			}
 			fclose($file);
 			# Aplicar cambios en el sistema #
-			$archivoConfig = "Groups/$id/config.xml";
-			$destinoConfig = "pf.xml";
+			/*$archivoConfig = "Groups/$id/conf.xml";
+			$destinoConfig = "centralizedConsole/conf.xml";
 		   	if (!copy($archivoConfig, $destinoConfig)) 
 		   	{
 			    echo "Error al copiar $archivoConfig...\n";
-			}
+			}*/
 
 			$archivoipGrupos = "Groups/$id/ipGrupos.txt";
-			$destinoipGrupos = "ipGrupos.txt";
+			$destinoipGrupos = "centralizedConsole/changes.txt";
 		   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
 		   	{
 			    echo "Error al copiar $archivoipGrupos...\n";
 			}
-			#exec("python apply.py");
+			exec("python centralizedConsole/apply.py");
 			# Ejecutar python aliases # 
-			/*$process = new Process('python apply.py');
+			/*$process = new Process('python centralizedConsole/apply.py');
 			$process->run();
 			// executes after the command finishes
 			if (!$process->isSuccessful()) {
 			    throw new ProcessFailedException($process);
 			}
 			echo $process->getOutput();*/
+
 			$authenticationUtils = $this->get("security.authentication_utils");
 			$error = $authenticationUtils->getLastAuthenticationError();
 			$lastUsername = $authenticationUtils->getLastUsername();

@@ -282,7 +282,7 @@ class AliasesController extends Controller
 		// Se crea un nuevo documento XML con la version 
 	    $contenido = "<?xml version='1.0'?>\n";
 	    // Se crear el nombre de la etiqueta
-		$contenido .= "<aliases>\n";
+		$contenido .= "\t<aliases>\n";
 		// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 		foreach ($formato as $formatos) 
 		{
@@ -291,11 +291,11 @@ class AliasesController extends Controller
 		    $contenido .= "\t\t\t<type>" . $formatos['status'] . "</type>\n";
 		    $contenido .= "\t\t\t<address>" . $formatos['ip'] . "</address>\n";
 		    $contenido .= "\t\t\t<descr>" . $formatos['description'] . "</descr>\n";
-		    $contenido .= "\t\t\t<destdetail>" . $formatos['descriptionhost'] . "</detail>\n";
+		    $contenido .= "\t\t\t<detail>" . $formatos['descriptionhost'] . "</detail>\n";
 		    $contenido .= "\t\t</alias>\n";
 		}
 		// Se termina el nombre de la etiqueta 
-		$contenido .= "</aliases>";
+		$contenido .= "\t</aliases>";
 		// Se crea o actualiza el archivo 
 		$archivo = fopen("conf.xml", 'w');
 		// Se abre el archivo y se ingresa la informacion almacenada en la variable 
@@ -331,11 +331,53 @@ class AliasesController extends Controller
 	        $role=$u->getRole();
 	        if($role == "ROLE_SUPERUSER")
 	        {
+	        	$archivo = fopen("change_to_do.txt", 'w');
+				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+				fwrite($archivo, "aliases.py");
+				fwrite ($archivo, "\n". PHP_EOL);
+				// Se cierra el archivo 
+				fclose($archivo); 
+				# Mover el archivo a la carpeta #
+				$archivoConfig = 'change_to_do.txt';
+				$destinoConfig = "centralizedConsole/change_to_do.txt";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+				   echo "Error al copiar $archivoConfig...\n";
+				}
+
+				$archivoConfig = "Groups/$id/conf.xml";
+				$destinoConfig = "centralizedConsole/conf.xml";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+				    echo "Error al copiar $archivoConfig...\n";
+				}
+
 	        	return $this->redirectToRoute('listGroup');
 	        }
 	        if($role == "ROLE_ADMIN")
-	        {	        	
-				return $this->redirectToRoute('listGroupIp');
+	        {	    
+	        	$archivo = fopen("change_to_do.txt", 'w');
+				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+				fwrite($archivo, "aliases.py");
+				fwrite ($archivo, "\n". PHP_EOL);
+				// Se cierra el archivo 
+				fclose($archivo); 
+				# Mover el archivo a la carpeta #
+				$archivoConfig = 'change_to_do.txt';
+				$destinoConfig = "centralizedConsole/change_to_do.txt";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+				   echo "Error al copiar $archivoConfig...\n";
+				}
+
+				$archivoConfig = "Groups/$id/conf.xml";
+				$destinoConfig = "centralizedConsole/conf.xml";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+				    echo "Error al copiar $archivoConfig...\n";
+				}
+
+	        	return $this->redirectToRoute('listGroupIp');
 			}
 		}
 		return $this->redirectToRoute('dashboard');

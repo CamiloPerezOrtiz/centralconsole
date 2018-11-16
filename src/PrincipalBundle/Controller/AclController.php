@@ -420,7 +420,7 @@ class AclController extends Controller
 		fclose($archivo); 
 		# Mover el archivo a la carpeta #
 		$archivoConfig = 'conf.xml';
-		$destinoConfig = "Groups/$id/config.xml";
+		$destinoConfig = "Groups/$id/conf.xml";
 	   	if (!copy($archivoConfig, $destinoConfig)) 
 	   	{
 		    echo "Error al copiar $archivoConfig...\n";
@@ -447,10 +447,52 @@ class AclController extends Controller
 	        $role=$u->getRole();
 	        if($role == "ROLE_SUPERUSER")
 	        {
+	        	$archivo = fopen("change_to_do.txt", 'w');
+				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+				fwrite($archivo, "aclgroups.py");
+				fwrite ($archivo, "\n". PHP_EOL);
+				// Se cierra el archivo 
+				fclose($archivo); 
+				# Mover el archivo a la carpeta #
+				$archivoConfig = 'change_to_do.txt';
+				$destinoConfig = "centralizedConsole/change_to_do.txt";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+				   echo "Error al copiar $archivoConfig...\n";
+				}
+
+				$archivoConfig = "Groups/$id/conf.xml";
+				$destinoConfig = "centralizedConsole/conf.xml";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+			   		echo "Error al copiar $archivoConfig...\n";
+				}
+				  
 	        	return $this->redirectToRoute('listGroup');
 	        }
 	        if($role == "ROLE_ADMIN")
-	        {	        	
+	        {	   
+	        	$archivo = fopen("change_to_do.txt", 'w');
+				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+				fwrite($archivo, "aclgroups.py");
+				fwrite ($archivo, "\n". PHP_EOL);
+				// Se cierra el archivo 
+				fclose($archivo); 
+				# Mover el archivo a la carpeta #
+				$archivoConfig = 'change_to_do.txt';
+				$destinoConfig = "centralizedConsole/change_to_do.txt";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+				   echo "Error al copiar $archivoConfig...\n";
+				}
+
+				$archivoConfig = "Groups/$id/conf.xml";
+				$destinoConfig = "centralizedConsole/conf.xml";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+			   		echo "Error al copiar $archivoConfig...\n";
+				}     	
+				
 				return $this->redirectToRoute('listGroupIp');
 			}
 		}
