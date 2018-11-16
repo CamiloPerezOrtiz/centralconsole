@@ -235,7 +235,7 @@ class FirewallController extends Controller
 		$listaGrupo=$stmtSelect->fetchAll();
 		foreach ($listaGrupo as $value) 
 		{
-			$array= explode(' ',$value['icmptype']);
+			$array= explode(',',$value['icmptype']);
 		}
 		if(isset($_POST['enviar']))
 		{
@@ -265,15 +265,10 @@ class FirewallController extends Controller
 			$log = $_POST['log'];
 			$descr = $_POST['descr'];
 			$gateway = $_POST['gateway'];
-			$query = "UPDATE nat SET disabled = '$disabled', nordr = '$nordr', interface = '$interface', proto = '$proto', srcnot = '$srcnot', 
-				srctype = '$srctype', src = '$src', srcmask = '$srcmask', srcbeginport = '$srcbeginport', dstbeginport_cust = '$dstbeginport_cust',
-				srcendport = '$srcendport', dstendport_cust = '$dstendport_cust', dstnot = '$dstnot', dsttype = '$dsttype', dst = '$dst',
-				dstmask = '$dstmask', dstendport = '$dstendport', dstbeginport_cust2 = '$dstbeginport_cust2', dstendport2 = '$dstendport2', 
-				dstendport_cust2 = '$dstendport_cust2', localip = '$localip', localbeginport = '$localbeginport', localbeginport_cust = '$localbeginport_cust',
-				descr = '$descr', nosync = '$nosync', natreflection = '$natreflection', associated_rule_id = '$associated_rule_id' WHERE id = '$id'";
+			$query = "UPDATE firewallwan SET type= '$type', disabled = '$disabled', interface = '$interface', ipprotocol = '$ipprotocol', proto = '$proto', icmptype = '$icmptype', srcnot = '$srcnot', srctype = '$srctype', src = '$src', srcmask = '$srcmask', srcbeginport = '$srcbeginport', srcbeginport_cust = '$srcbeginport_cust', srcendport = '$srcendport', srcendport_cust = '$srcendport_cust', dstnot = '$dstnot', dsttype = '$dstnot', dst = '$dst', dstmask = '$dstmask', dstbeginport = '$dstbeginport', dstbeginport_cust = '$dstbeginport_cust', dstendport = '$dstendport', dstendport_cust = '$dstendport_cust', log = '$log', descr = '$descr', gateway = '$gateway' WHERE id = '$id'";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
-			return $this->redirectToRoute("listGroupNat");
+			return $this->redirectToRoute("listGroupFirewall");
 		}
 		return $this->render("@Principal/firewall/editFirewall.html.twig", array("value"=>$listaGrupo,"value2"=>$array));
 	}

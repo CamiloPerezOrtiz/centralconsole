@@ -93,7 +93,7 @@
                                                     </select>     
                                                 </div>
                                             </div>
-                                            <div id="icmpSubtypes">
+                                            <div id="icmpSubtypes" style="block">
                                                 <div class="card-header bg-dark text-white">ICMP Subtypes</div>
                                                 <div class="form-group">   
                                                     <div  class="card-body">
@@ -103,32 +103,32 @@
                                                         </footer>
                                                         <br>
                                                         <select class="form-control" name="icmptype[]" id="icmptype[]" multiple="multiple">
-                                                            <option value="any" {% if listaGrupo.icmptype == "any" %}selected{% endif %}>any</option>
-                                                            <option value="althost" {% if listaGrupo.icmptype == "althost" %}selected{% endif %}>Alternate Host</option>
-                                                            <option value="dataconv" {% if listaGrupo.icmptype == "dataconv" %}selected{% endif %}>Datagram conversion error</option>
-                                                            <option value="echorep" {% if listaGrupo.icmptype == "echorep" %}selected{% endif %}>Echo reply</option>
-                                                            <option value="echoreq" {% if listaGrupo.icmptype == "echoreq" %}selected{% endif %}>Echo request</option>
-                                                            <option value="inforep" {% if listaGrupo.icmptype == "inforep" %}selected{% endif %}>Information reply</option>
-                                                            <option value="inforeq" {% if listaGrupo.icmptype == "inforeq" %}selected{% endif %}>Information request</option>
-                                                            <option value="ipv6-here" {% if listaGrupo.icmptype == "ipv6-here" %}selected{% endif %}>IPv6 I-am-here</option>
-                                                            <option value="ipv6-where" {% if listaGrupo.icmptype == "ipv6-where" %}selected{% endif %}>IPv6 where-are-you</option>
-                                                            <option value="maskrep" {% if listaGrupo.icmptype == "maskrep" %}selected{% endif %}>Address mask reply</option>
-                                                            <option value="maskreq" {% if listaGrupo.icmptype == "maskreq" %}selected{% endif %}>Address mask request</option>
-                                                            <option value="mobredir" {% if listaGrupo.icmptype == "mobredir" %}selected{% endif %}>Mobile host redirect</option>
-                                                            <option value="mobregrep" {% if listaGrupo.icmptype == "mobregrep" %}selected{% endif %}>Mobile registration reply</option>
-                                                            <option value="mobregreq" {% if listaGrupo.icmptype == "mobregreq" %}selected{% endif %}>Mobile registration request</option>
-                                                            <option value="paramprob" {% if listaGrupo.icmptype == "paramprob" %}selected{% endif %}>Parameter problem (invalid IP header)</option>
-                                                            <option value="photuris" {% if listaGrupo.icmptype == "photuris" %}selected{% endif %}>Photuris</option>
-                                                            <option value="redir" {% if listaGrupo.icmptype == "redir" %}selected{% endif %}>Redirect</option>
-                                                            <option value="routeradv" {% if listaGrupo.icmptype == "routeradv" %}selected{% endif %}>Router advertisement</option>
-                                                            <option value="routersol" {% if listaGrupo.icmptype == "routersol" %}selected{% endif %}>Router solicitation</option>
-                                                            <option value="skip" {% if listaGrupo.icmptype == "skip" %}selected{% endif %}>SKIP</option>
-                                                            <option value="squench" {% if listaGrupo.icmptype == "squench" %}selected{% endif %}>Source quench</option>
-                                                            <option value="timerep" {% if listaGrupo.icmptype == "timerep" %}selected{% endif %}>Timestamp reply</option>
-                                                            <option value="timereq" {% if listaGrupo.icmptype == "timereq" %}selected{% endif %}>Timestamp</option>
-                                                            <option value="timex" {% if listaGrupo.icmptype == "timex" %}selected{% endif %}>Time exceeded</option>
-                                                            <option value="trace" {% if listaGrupo.icmptype == "trace" %}selected{% endif %}>Traceroute</option>
-                                                            <option value="unreach" {% if listaGrupo.icmptype == "unreach" %}selected{% endif %}>Destination unreachable</option>
+                                                            <option value="any" selected>any</option>
+                                                            <option value="althost">Alternate Host</option>
+                                                            <option value="dataconv">Datagram conversion error</option>
+                                                            <option value="echorep">Echo reply</option>
+                                                            <option value="echoreq">Echo request</option>
+                                                            <option value="inforep">Information reply</option>
+                                                            <option value="inforeq">Information request</option>
+                                                            <option value="ipv6-here" >>IPv6 I-am-here</option>
+                                                            <option value="ipv6-where">IPv6 where-are-you</option>
+                                                            <option value="maskrep">Address mask reply</option>
+                                                            <option value="maskreq">Address mask request</option>
+                                                            <option value="mobredir">Mobile host redirect</option>
+                                                            <option value="mobregrep">Mobile registration reply</option>
+                                                            <option value="mobregreq">Mobile registration request</option>
+                                                            <option value="paramprob">Parameter problem (invalid IP header)</option>
+                                                            <option value="photuris">Photuris</option>
+                                                            <option value="redir">Redirect</option>
+                                                            <option value="routeradv">Router advertisement</option>
+                                                            <option value="routersol">Router solicitation</option>
+                                                            <option value="skip">SKIP</option>
+                                                            <option value="squench">Source quench</option>
+                                                            <option value="timerep">Timestamp reply</option>
+                                                            <option value="timereq">Timestamp</option>
+                                                            <option value="timex">Time exceeded</option>
+                                                            <option value="trace">Traceroute</option>
+                                                            <option value="unreach">Destination unreachable</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -304,28 +304,28 @@
                                                             <div class="col-md-4">
                                                                 <label>Type</label>
                                                                 <select class="form-control" name="dsttype" id="dsttype">
-                                                                    <option value="any" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>any</option>
-                                                                    <option value="single" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>Single host or alias</option>
-                                                                    <option value="network" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>Network</option>
-                                                                    <option value="(self)" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>This firewall (self)</option>
-                                                                    <option value="pppoe" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>PPPoE clients</option>
-                                                                    <option value="l2tp" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>L2TP clients</option>
-                                                                    <option value="wan" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>WAN net</option>
-                                                                    <option value="wanip"{% if listaGrupo.dstnot == "yes" %}checked{% endif %}>AN address</option>
-                                                                    <option value="lan" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>LAN net</option>
-                                                                    <option value="lanip" {% if listaGrupo.dstnot == "yes" %}checked{% endif %}>LAN address</option>
+                                                                    <option value="any" {% if listaGrupo.dsttype == "any" %}selected{% endif %}>any</option>
+                                                                    <option value="single" {% if listaGrupo.dsttype == "single" %}selected{% endif %}>Single host or alias</option>
+                                                                    <option value="network" {% if listaGrupo.dsttype == "network" %}selected{% endif %}>Network</option>
+                                                                    <option value="(self)" {% if listaGrupo.dsttype == "(self)" %}selected{% endif %}>This firewall (self)</option>
+                                                                    <option value="pppoe" {% if listaGrupo.dsttype == "pppoe" %}selected{% endif %}>PPPoE clients</option>
+                                                                    <option value="l2tp" {% if listaGrupo.dsttype == "l2tp" %}selected{% endif %}>L2TP clients</option>
+                                                                    <option value="wan" {% if listaGrupo.dsttype == "wan" %}selected{% endif %}>WAN net</option>
+                                                                    <option value="wanip"{% if listaGrupo.dsttype == "wanip" %}selected{% endif %}>AN address</option>
+                                                                    <option value="lan" {% if listaGrupo.dsttype == "lan" %}selected{% endif %}>LAN net</option>
+                                                                    <option value="lanip" {% if listaGrupo.dsttype == "lanip" %}selected{% endif %}>LAN address</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <label>Address/mask</label>
                                                                 <div class="input-group mb-3">
-                                                                    <input type="text" class="form-control col-sm-8" name="dst" id="dst" title="An IPv4 address like 1.2.3.4 or an IPv6 address like 1:2a:3b:ffff::1 or an alias">
+                                                                    <input type="text" class="form-control col-sm-8" name="dst" id="dst" title="An IPv4 address like 1.2.3.4 or an IPv6 address like 1:2a:3b:ffff::1 or an alias" value="{{ listaGrupo.dst }}">
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="mask2">/</span>
                                                                     </div>
                                                                     <select class="form-control col-sm-3 pfIpMask" name="dstmask" id="dstmask"> 
                                                                         {% for i in 32..1 %}
-                                                                            <option value="{{ i }}">{{ i }}</option>
+                                                                            <option value="{{ i }}" {% if listaGrupo.dstmask == "i" %}selected{% endif %}>{{ i }}</option>
                                                                         {% endfor %}
                                                                     </select>
                                                                 </div>  
@@ -336,112 +336,112 @@
                                                                 <div class="col-md-2">
                                                                     <label>From port:</label>
                                                                     <select class="form-control" name="dstbeginport" id="dstbeginport">
-                                                                        <option value="" selected>(other)</option>
-                                                                        <option value="any">any</option>
-                                                                        <option value="5999">CVSup (5999)</option>
-                                                                        <option value="53">DNS (53)</option>
-                                                                        <option value="21">FTP (21)</option>
-                                                                        <option value="3000">HBCI (3000)</option>
-                                                                        <option value="80">HTTP (80)</option>
-                                                                        <option value="443">HTTPS (443)</option>
-                                                                        <option value="5190">ICQ (5190)</option>
-                                                                        <option value="113">IDENT/AUTH (113)</option>
-                                                                        <option value="143">IMAP (143)</option>
-                                                                        <option value="993">IMAP/S (993)</option>
-                                                                        <option value="4500">IPsec NAT-T (4500)</option>
-                                                                        <option value="500">ISAKMP (500)</option>
-                                                                        <option value="1701">L2TP (1701)</option>
-                                                                        <option value="389">LDAP (389)</option>
-                                                                        <option value="1755">MMS/TCP (1755)</option>
-                                                                        <option value="7000">MMS/UDP (7000)</option>
-                                                                        <option value="445">MS DS (445)</option>
-                                                                        <option value="3389">MS RDP (3389)</option>
-                                                                        <option value="1512">MS WINS (1512)</option>
-                                                                        <option value="1863">MSN (1863)</option>
-                                                                        <option value="119">NNTP (119)</option>
-                                                                        <option value="123">NTP (123)</option>
-                                                                        <option value="138">NetBIOS-DGM (138)</option>
-                                                                        <option value="137">NetBIOS-NS (137)</option>
-                                                                        <option value="139">NetBIOS-SSN (139)</option>
-                                                                        <option value="1194">OpenVPN (1194)</option>
-                                                                        <option value="110">POP3 (110)</option>
-                                                                        <option value="995">POP3/S (995)</option>
-                                                                        <option value="1723">PPTP (1723)</option>
-                                                                        <option value="1812">RADIUS (1812)</option>
-                                                                        <option value="1813">RADIUS accounting (1813)</option>
-                                                                        <option value="5004">RTP (5004)</option>
-                                                                        <option value="5060">SIP (5060)</option>
-                                                                        <option value="25">SMTP (25)</option>
-                                                                        <option value="465">SMTP/S (465)</option>
-                                                                        <option value="161">SNMP (161)</option>
-                                                                        <option value="162">SNMP-Trap (162)</option>
-                                                                        <option value="22">SSH (22)</option>
-                                                                        <option value="3478">STUN (3478)</option>
-                                                                        <option value="587">SUBMISSION (587)</option>
-                                                                        <option value="3544">Teredo (3544)</option>
-                                                                        <option value="23">Telnet (23)</option>
-                                                                        <option value="69">TFTP (69)</option>
-                                                                        <option value="5900">VNC (5900)</option>
+                                                                        <option value="" {% if listaGrupo.dstbeginport == "" %}selected{% endif %}>(other)</option>
+                                                                        <option value="any" {% if listaGrupo.dstbeginport == "any" %}selected{% endif %}>any</option>
+                                                                        <option value="5999" {% if listaGrupo.dstbeginport == "5999" %}selected{% endif %}>CVSup (5999)</option>
+                                                                        <option value="53" {% if listaGrupo.dstbeginport == "53" %}selected{% endif %}>DNS (53)</option>
+                                                                        <option value="21" {% if listaGrupo.dstbeginport == "21" %}selected{% endif %}>FTP (21)</option>
+                                                                        <option value="3000" {% if listaGrupo.dstbeginport == "3000" %}selected{% endif %}>HBCI (3000)</option>
+                                                                        <option value="80" {% if listaGrupo.dstbeginport == "80" %}selected{% endif %}>HTTP (80)</option>
+                                                                        <option value="443" {% if listaGrupo.dstbeginport == "443" %}selected{% endif %}>HTTPS (443)</option>
+                                                                        <option value="5190" {% if listaGrupo.dstbeginport == "5190" %}selected{% endif %}>ICQ (5190)</option>
+                                                                        <option value="113" {% if listaGrupo.dstbeginport == "113" %}selected{% endif %}>IDENT/AUTH (113)</option>
+                                                                        <option value="143" {% if listaGrupo.dstbeginport == "143" %}selected{% endif %}>IMAP (143)</option>
+                                                                        <option value="993" {% if listaGrupo.dstbeginport == "993" %}selected{% endif %}>IMAP/S (993)</option>
+                                                                        <option value="4500" {% if listaGrupo.dstbeginport == "4500" %}selected{% endif %}>IPsec NAT-T (4500)</option>
+                                                                        <option value="500" {% if listaGrupo.dstbeginport == "500" %}selected{% endif %}>ISAKMP (500)</option>
+                                                                        <option value="1701" {% if listaGrupo.dstbeginport == "1701" %}selected{% endif %}>L2TP (1701)</option>
+                                                                        <option value="389" {% if listaGrupo.dstbeginport == "389" %}selected{% endif %}>LDAP (389)</option>
+                                                                        <option value="1755" {% if listaGrupo.dstbeginport == "1755" %}selected{% endif %}>MMS/TCP (1755)</option>
+                                                                        <option value="7000" {% if listaGrupo.dstbeginport == "7000" %}selected{% endif %}>MMS/UDP (7000)</option>
+                                                                        <option value="445" {% if listaGrupo.dstbeginport == "445" %}selected{% endif %}>MS DS (445)</option>
+                                                                        <option value="3389" {% if listaGrupo.dstbeginport == "3389" %}selected{% endif %}>MS RDP (3389)</option>
+                                                                        <option value="1512" {% if listaGrupo.dstbeginport == "1512" %}selected{% endif %}>MS WINS (1512)</option>
+                                                                        <option value="1863" {% if listaGrupo.dstbeginport == "1863" %}selected{% endif %}>MSN (1863)</option>
+                                                                        <option value="119" {% if listaGrupo.dstbeginport == "119" %}selected{% endif %}>NNTP (119)</option>
+                                                                        <option value="123" {% if listaGrupo.dstbeginport == "123" %}selected{% endif %}>NTP (123)</option>
+                                                                        <option value="138" {% if listaGrupo.dstbeginport == "138" %}selected{% endif %}>NetBIOS-DGM (138)</option>
+                                                                        <option value="137" {% if listaGrupo.dstbeginport == "137" %}selected{% endif %}>NetBIOS-NS (137)</option>
+                                                                        <option value="139" {% if listaGrupo.dstbeginport == "139" %}selected{% endif %}>NetBIOS-SSN (139)</option>
+                                                                        <option value="1194" {% if listaGrupo.dstbeginport == "1194" %}selected{% endif %}>OpenVPN (1194)</option>
+                                                                        <option value="110" {% if listaGrupo.dstbeginport == "110" %}selected{% endif %}>POP3 (110)</option>
+                                                                        <option value="995" {% if listaGrupo.dstbeginport == "995" %}selected{% endif %}>POP3/S (995)</option>
+                                                                        <option value="1723" {% if listaGrupo.dstbeginport == "1723" %}selected{% endif %}>PPTP (1723)</option>
+                                                                        <option value="1812" {% if listaGrupo.dstbeginport == "1812" %}selected{% endif %}>RADIUS (1812)</option>
+                                                                        <option value="1813" {% if listaGrupo.dstbeginport == "1813" %}selected{% endif %}>RADIUS accounting (1813)</option>
+                                                                        <option value="5004" {% if listaGrupo.dstbeginport == "5004" %}selected{% endif %}>RTP (5004)</option>
+                                                                        <option value="5060" {% if listaGrupo.dstbeginport == "5060" %}selected{% endif %}>SIP (5060)</option>
+                                                                        <option value="25" {% if listaGrupo.dstbeginport == "25" %}selected{% endif %}>SMTP (25)</option>
+                                                                        <option value="465" {% if listaGrupo.dstbeginport == "465" %}selected{% endif %}>SMTP/S (465)</option>
+                                                                        <option value="161" {% if listaGrupo.dstbeginport == "161" %}selected{% endif %}>SNMP (161)</option>
+                                                                        <option value="162" {% if listaGrupo.dstbeginport == "162" %}selected{% endif %}>SNMP-Trap (162)</option>
+                                                                        <option value="22" {% if listaGrupo.dstbeginport == "22" %}selected{% endif %}>SSH (22)</option>
+                                                                        <option value="3478" {% if listaGrupo.dstbeginport == "3478" %}selected{% endif %}>STUN (3478)</option>
+                                                                        <option value="587" {% if listaGrupo.dstbeginport == "587" %}selected{% endif %}>SUBMISSION (587)</option>
+                                                                        <option value="3544" {% if listaGrupo.dstbeginport == "3544" %}selected{% endif %}>Teredo (3544)</option>
+                                                                        <option value="23" {% if listaGrupo.dstbeginport == "23" %}selected{% endif %}>Telnet (23)</option>
+                                                                        <option value="69" {% if listaGrupo.dstbeginport == "69" %}selected{% endif %}>TFTP (69)</option>
+                                                                        <option value="5900" {% if listaGrupo.dstbeginport == "5900" %}selected{% endif %}>VNC (5900)</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <label>Custom</label>
-                                                                    <input type="text" class="form-control" name="dstbeginport_cust" id="dstbeginport_cust">
+                                                                    <input type="text" class="form-control" name="dstbeginport_cust" id="dstbeginport_cust" value="{{ listaGrupo.dstbeginport_cust }}">
                                                                 </div>
                                                                 <div class="col-md-2">
                                                                     <label>To port</label>
                                                                     <select class="form-control" name="dstendport" id="dstendport">
-                                                                        <option value="" selected>(other)</option>
-                                                                        <option value="any">any</option>
-                                                                        <option value="5999">CVSup (5999)</option>
-                                                                        <option value="53">DNS (53)</option>
-                                                                        <option value="21">FTP (21)</option>
-                                                                        <option value="3000">HBCI (3000)</option>
-                                                                        <option value="80">HTTP (80)</option>
-                                                                        <option value="443">HTTPS (443)</option>
-                                                                        <option value="5190">ICQ (5190)</option>
-                                                                        <option value="113">IDENT/AUTH (113)</option>
-                                                                        <option value="143">IMAP (143)</option>
-                                                                        <option value="993">IMAP/S (993)</option>
-                                                                        <option value="4500">IPsec NAT-T (4500)</option>
-                                                                        <option value="500">ISAKMP (500)</option>
-                                                                        <option value="1701">L2TP (1701)</option>
-                                                                        <option value="389">LDAP (389)</option>
-                                                                        <option value="1755">MMS/TCP (1755)</option>
-                                                                        <option value="7000">MMS/UDP (7000)</option>
-                                                                        <option value="445">MS DS (445)</option>
-                                                                        <option value="3389">MS RDP (3389)</option>
-                                                                        <option value="1512">MS WINS (1512)</option>
-                                                                        <option value="1863">MSN (1863)</option>
-                                                                        <option value="119">NNTP (119)</option>
-                                                                        <option value="123">NTP (123)</option>
-                                                                        <option value="138">NetBIOS-DGM (138)</option>
-                                                                        <option value="137">NetBIOS-NS (137)</option>
-                                                                        <option value="139">NetBIOS-SSN (139)</option>
-                                                                        <option value="1194">OpenVPN (1194)</option>
-                                                                        <option value="110">POP3 (110)</option>
-                                                                        <option value="995">POP3/S (995)</option>
-                                                                        <option value="1723">PPTP (1723)</option>
-                                                                        <option value="1812">RADIUS (1812)</option>
-                                                                        <option value="1813">RADIUS accounting (1813)</option>
-                                                                        <option value="5004">RTP (5004)</option>
-                                                                        <option value="5060">SIP (5060)</option>
-                                                                        <option value="25">SMTP (25)</option>
-                                                                        <option value="465">SMTP/S (465)</option>
-                                                                        <option value="161">SNMP (161)</option>
-                                                                        <option value="162">SNMP-Trap (162)</option>
-                                                                        <option value="22">SSH (22)</option>
-                                                                        <option value="3478">STUN (3478)</option>
-                                                                        <option value="587">SUBMISSION (587)</option>
-                                                                        <option value="3544">Teredo (3544)</option>
-                                                                        <option value="23">Telnet (23)</option>
-                                                                        <option value="69">TFTP (69)</option>
-                                                                        <option value="5900">VNC (5900)</option>
+                                                                        <option value="" {% if listaGrupo.dstendport == "" %}selected{% endif %}>(other)</option>
+                                                                        <option value="any" {% if listaGrupo.dstendport == "any" %}selected{% endif %}>any</option>
+                                                                        <option value="5999" {% if listaGrupo.dstendport == "5999" %}selected{% endif %}>CVSup (5999)</option>
+                                                                        <option value="53" {% if listaGrupo.dstendport == "53" %}selected{% endif %}>DNS (53)</option>
+                                                                        <option value="21" {% if listaGrupo.dstendport == "21" %}selected{% endif %}>FTP (21)</option>
+                                                                        <option value="3000" {% if listaGrupo.dstendport == "3000" %}selected{% endif %}>HBCI (3000)</option>
+                                                                        <option value="80" {% if listaGrupo.dstendport == "80" %}selected{% endif %}>HTTP (80)</option>
+                                                                        <option value="443" {% if listaGrupo.dstendport == "443" %}selected{% endif %}>HTTPS (443)</option>
+                                                                        <option value="5190" {% if listaGrupo.dstendport == "5190" %}selected{% endif %}>ICQ (5190)</option>
+                                                                        <option value="113" {% if listaGrupo.dstendport == "113" %}selected{% endif %}>IDENT/AUTH (113)</option>
+                                                                        <option value="143" {% if listaGrupo.dstendport == "143" %}selected{% endif %}>IMAP (143)</option>
+                                                                        <option value="993" {% if listaGrupo.dstendport == "993" %}selected{% endif %}>IMAP/S (993)</option>
+                                                                        <option value="4500" {% if listaGrupo.dstendport == "4500" %}selected{% endif %}>IPsec NAT-T (4500)</option>
+                                                                        <option value="500" {% if listaGrupo.dstendport == "500" %}selected{% endif %}>ISAKMP (500)</option>
+                                                                        <option value="1701" {% if listaGrupo.dstendport == "1701" %}selected{% endif %}>L2TP (1701)</option>
+                                                                        <option value="389" {% if listaGrupo.dstendport == "389" %}selected{% endif %}>LDAP (389)</option>
+                                                                        <option value="1755" {% if listaGrupo.dstendport == "1755" %}selected{% endif %}>MMS/TCP (1755)</option>
+                                                                        <option value="7000" {% if listaGrupo.dstendport == "7000" %}selected{% endif %}>MMS/UDP (7000)</option>
+                                                                        <option value="445" {% if listaGrupo.dstendport == "445" %}selected{% endif %}>MS DS (445)</option>
+                                                                        <option value="3389" {% if listaGrupo.dstendport == "3389" %}selected{% endif %}>MS RDP (3389)</option>
+                                                                        <option value="1512" {% if listaGrupo.dstendport == "1512" %}selected{% endif %}>MS WINS (1512)</option>
+                                                                        <option value="1863" {% if listaGrupo.dstendport == "1863" %}selected{% endif %}>MSN (1863)</option>
+                                                                        <option value="119" {% if listaGrupo.dstendport == "119" %}selected{% endif %}>NNTP (119)</option>
+                                                                        <option value="123" {% if listaGrupo.dstendport == "123" %}selected{% endif %}>NTP (123)</option>
+                                                                        <option value="138" {% if listaGrupo.dstendport == "138" %}selected{% endif %}>NetBIOS-DGM (138)</option>
+                                                                        <option value="137" {% if listaGrupo.dstendport == "137" %}selected{% endif %}>NetBIOS-NS (137)</option>
+                                                                        <option value="139" {% if listaGrupo.dstendport == "139" %}selected{% endif %}>NetBIOS-SSN (139)</option>
+                                                                        <option value="1194" {% if listaGrupo.dstendport == "1194" %}selected{% endif %}>OpenVPN (1194)</option>
+                                                                        <option value="110" {% if listaGrupo.dstendport == "110" %}selected{% endif %}>POP3 (110)</option>
+                                                                        <option value="995" {% if listaGrupo.dstendport == "995" %}selected{% endif %}>POP3/S (995)</option>
+                                                                        <option value="1723" {% if listaGrupo.dstendport == "1723" %}selected{% endif %}>PPTP (1723)</option>
+                                                                        <option value="1812" {% if listaGrupo.dstendport == "1812" %}selected{% endif %}>RADIUS (1812)</option>
+                                                                        <option value="1813" {% if listaGrupo.dstendport == "1813" %}selected{% endif %}>RADIUS accounting (1813)</option>
+                                                                        <option value="5004" {% if listaGrupo.dstendport == "5004" %}selected{% endif %}>RTP (5004)</option>
+                                                                        <option value="5060" {% if listaGrupo.dstendport == "5060" %}selected{% endif %}>SIP (5060)</option>
+                                                                        <option value="25" {% if listaGrupo.dstendport == "25" %}selected{% endif %}>SMTP (25)</option>
+                                                                        <option value="465" {% if listaGrupo.dstendport == "465" %}selected{% endif %}>SMTP/S (465)</option>
+                                                                        <option value="161" {% if listaGrupo.dstendport == "161" %}selected{% endif %}>SNMP (161)</option>
+                                                                        <option value="162" {% if listaGrupo.dstendport == "162" %}selected{% endif %}>SNMP-Trap (162)</option>
+                                                                        <option value="22" {% if listaGrupo.dstendport == "22" %}selected{% endif %}>SSH (22)</option>
+                                                                        <option value="3478" {% if listaGrupo.dstendport == "3478" %}selected{% endif %}>STUN (3478)</option>
+                                                                        <option value="587" {% if listaGrupo.dstendport == "587" %}selected{% endif %}>SUBMISSION (587)</option>
+                                                                        <option value="3544" {% if listaGrupo.dstendport == "3544" %}selected{% endif %}>Teredo (3544)</option>
+                                                                        <option value="23" {% if listaGrupo.dstendport == "23" %}selected{% endif %}>Telnet (23)</option>
+                                                                        <option value="69" {% if listaGrupo.dstendport == "69" %}selected{% endif %}>TFTP (69)</option>
+                                                                        <option value="5900" {% if listaGrupo.dstendport == "5900" %}selected{% endif %}>VNC (5900)</option>
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-4">
                                                                     <label>Custom</label>
-                                                                    <input type="text" class="form-control" name="dstendport_cust" id="dstendport_cust">
+                                                                    <input type="text" class="form-control" name="dstendport_cust" id="dstendport_cust" value="{{ listaGrupo.dstendport_cust }}">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -453,7 +453,7 @@
                                                 <div  class="card-body">
                                                     <label>Log</label>
                                                     <input type="hidden" name="log" id="log" value="no">
-                                                    <input type="checkbox" name="log" id="log" value="yes">
+                                                    <input type="checkbox" name="log" id="log" value="yes" {% if listaGrupo.log == "yes" %}checked{% endif %}>
                                                     <footer class="blockquote-footer">
                                                         Hint: the firewall has limited local log space. Don't turn on logging for everything. If doing a lot of logging, consider using a remote syslog server (see the Status: System Logs: Settings page).
                                                     </footer>
@@ -462,7 +462,7 @@
                                                     <footer class="blockquote-footer">
                                                         A description may be entered here for administrative reference. A maximum of 52 characters will be used in the ruleset and displayed in the firewall log.
                                                     </footer>
-                                                    <input class="form-control" name="descr" id="descr" type="text"> 
+                                                    <input class="form-control" name="descr" id="descr" type="text" value="{{ listaGrupo.descr }}"> 
                                                     <hr> 
                                                     <label>Gateway</label>
                                                     <footer class="blockquote-footer">
@@ -539,6 +539,24 @@
                 // Destination
                 divD = document.getElementById("destinationPortRange");
                 divD.style.display="none";
+                // ICMP Subtypes
+                divD = document.getElementById("icmpSubtypes");
+                divD.style.display="none";
+            }
+            if($("#proto option:selected").val() == "tcp") 
+            {
+                // ICMP Subtypes
+                divD = document.getElementById("icmpSubtypes");
+                divD.style.display="none";
+            }
+            if($("#proto option:selected").val() == "udp") 
+            {
+                // ICMP Subtypes
+                divD = document.getElementById("icmpSubtypes");
+                divD.style.display="none";
+            }
+            if($("#proto option:selected").val() == "tcp/udp") 
+            {
                 // ICMP Subtypes
                 divD = document.getElementById("icmpSubtypes");
                 divD.style.display="none";
