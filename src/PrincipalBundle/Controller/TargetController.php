@@ -346,7 +346,7 @@ class TargetController extends Controller
 		// Se crea un nuevo documento XML con la version 
 	    $contenido = "<?xml version='1.0'?>\n";
 	    // Se crear el nombre de la etiqueta
-		$contenido .= "<squidguarddest>\n";
+		$contenido .= "\t<squidguarddest>\n";
 		// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 		foreach ($formato as $formatos) 
 		{
@@ -358,11 +358,11 @@ class TargetController extends Controller
 		    $contenido .= "\t\t\t\t<redirect_mode>" . $formatos['redirectmode'] . "</redirect_mode>\n";
 		    $contenido .= "\t\t\t\t<redirect>" . $formatos['redirect'] . "</redirect>\n";
 		    $contenido .= "\t\t\t\t<description>" . $formatos['description'] . "</description>\n";
-		    $contenido .= "\t\t\t\t<enablelog>" . $formatos['log'] . "</enablelog>\n";
+		    $contenido .= "\t\t\t\t<enablelog></enablelog>\n";
 		    $contenido .= "\t\t\t</config>\n";
 		}
 		// Se termina el nombre de la etiqueta 
-		$contenido .= "</squidguarddest>";
+		$contenido .= "\t</squidguarddest>";
 		// Se crea o actualiza el archivo 
 		$archivo = fopen('conf.xml', 'w');
 		// Se abre el archivo y se ingresa la informacion almacenada en la variable 
@@ -371,7 +371,7 @@ class TargetController extends Controller
 		fclose($archivo); 
 		# Mover el archivo a la carpeta #
 		$archivoConfig = 'conf.xml';
-		$destinoConfig = "Groups/$id/config.xml";
+		$destinoConfig = "Groups/$id/conf.xml";
 	   	if (!copy($archivoConfig, $destinoConfig)) 
 	   	{
 		    echo "Error al copiar $archivoConfig...\n";
@@ -397,7 +397,8 @@ class TargetController extends Controller
 	        {
 	        	$archivo = fopen("change_to_do.txt", 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
-				fwrite($archivo, "targetcategories.py\r\n");
+				fwrite($archivo, "targetcategories.py");
+				fwrite ($archivo, "\n". PHP_EOL);
 				// Se cierra el archivo 
 				fclose($archivo); 
 				# Mover el archivo a la carpeta #
