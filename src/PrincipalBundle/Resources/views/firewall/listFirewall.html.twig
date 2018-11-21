@@ -13,7 +13,7 @@
                         <a href="{{path('listGroupFirewall')}}">List firewall</a>
                     </li>
                     <li class="breadcrumb-item active">
-                        Nat
+                        Firewall
                     </li>
                 </ol>
                 <div class="card mb-3">
@@ -40,21 +40,19 @@
                                     <a class="nav-link active" data-toggle="tab" href="#home">WAN</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu1">1:1</a>
+                                    <a class="nav-link" data-toggle="tab" href="#menu1">LAN</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div id="home" class="container tab-pane active"><br>
-                                    {#
-                                        {% if app.user.role == 'ROLE_ADMIN' %}
-                                            <a href="{{path ('registerNat') }}">
-                                                <button type="button" class="btn btn-success">
-                                                    Add Port forward <i class="fas fa-search-plus"></i>
-                                                </button>
-                                            </a>
-                                        <br><br>
-                                        {% endif %}
-                                    #} 
+                                    {% if app.user.role == 'ROLE_ADMIN' %}
+                                        <a href="{{path ('registerFirewallWan') }}">
+                                            <button type="button" class="btn btn-success">
+                                                Add WAN <i class="fas fa-search-plus"></i>
+                                            </button>
+                                        </a>
+                                    <br><br>
+                                    {% endif %}
                                     <div class="table-responsive">
                                         <table class="table table-hover table-bordered table-sm text-center small" width="100%">
                                             <thead class="bg-dark text-white">
@@ -368,9 +366,9 @@
                                 {# One to one  #}
                                 <div id="menu1" class="container tab-pane fade"><br>
                                     {% if app.user.role == 'ROLE_ADMIN' %}
-                                        <a href="{{path ('registerNatOne') }}">
+                                        <a href="{{path ('registerFirewallLan') }}">
                                             <button type="button" class="btn btn-success">
-                                                Add 1:1 <i class="fas fa-search-plus"></i>
+                                                Add LAN <i class="fas fa-search-plus"></i>
                                             </button>
                                         </a>
                                     <br><br>
@@ -380,10 +378,12 @@
                                             <thead class="bg-dark text-white">
                                                 <tr class="small">
                                                     <th>Disabled</th>                         
-                                                    <th>Interface</th>
-                                                    <th>External IP</th>
-                                                    <th>Internal IP</th>
-                                                    <th>Destination IP</th>
+                                                    <th>Protocol</th>
+                                                    <th>Source</th>
+                                                    <th>Port</th>
+                                                    <th>Destination</th>
+                                                    <th>Port</th>
+                                                    <th>Gateway</th>
                                                     <th>Description</th>
                                                     {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
                                                         <th>Edit</th>
@@ -391,8 +391,294 @@
                                                     {% endif %}                 
                                                 </tr>
                                             </thead>
-                                            <tbody class="row_position_one">
-                                                
+                                            <tbody class="row_position_lan">
+                                                {% for aclOne in aclsOne %}
+                                                    <tr id="{{ aclOne.id }}" style="cursor: all-scroll;">
+                                                        <td>{{ aclOne.disabled }}</td>
+                                                        {# Protocol #}
+                                                        <td>
+                                                            {% if aclOne.ipprotocol == 'inet' %}
+                                                                IPV4
+                                                            {% elseif aclOne.ipprotocol == 'inet6' %}
+                                                                IPV6
+                                                            {% elseif aclOne.ipprotocol == 'inet46' %}
+                                                                IPV4+6
+                                                            {% endif %}
+                                                            {% if aclOne.proto == 'any' %}
+                                                                *
+                                                            {% else %}
+                                                                {{ aclOne.proto|upper }} 
+                                                            {% endif %}
+                                                        </td>
+                                                        {# Source #}
+                                                        <td>
+                                                            {% if aclOne.srctype == 'any' %}
+                                                                *
+                                                            {% elseif aclOne.srctype == 'single' %}
+                                                                {{ aclOne.src }}
+                                                            {% elseif aclOne.srctype == 'network' %}
+                                                                {{ aclOne.src }}/{{ aclOne.srcmask }}
+                                                            {% elseif aclOne.srctype == 'pppoe' %}
+                                                                PPPoE clients
+                                                            {% elseif aclOne.srctype == 'l2tp' %}
+                                                                L2TP clients
+                                                            {% elseif aclOne.srctype == 'wan' %}
+                                                                WAN net
+                                                            {% elseif aclOne.srctype == 'wanip' %}
+                                                                WAN address
+                                                            {% elseif aclOne.srctype == 'lan' %}
+                                                                LAN net
+                                                            {% elseif aclOne.srctype == 'lanip' %}
+                                                                LAN address 
+                                                            {% endif %}
+                                                        </td>
+                                                        {# Port #}
+                                                        <td>
+                                                            {% if aclOne.srcbeginport == '' %}
+                                                                {% if aclOne.srcbeginport_cust == aclOne.srcendport_cust %}
+                                                                    {{ aclOne.srcbeginport_cust }}
+                                                                {% else %}
+                                                                    {{ aclOne.srcbeginport_cust }} - {{ aclOne.srcendport_cust }}
+                                                                {% endif %}
+                                                            {% elseif aclOne.srcbeginport == 'any' %}
+                                                                *
+                                                            {% elseif aclOne.srcbeginport == '5999' %}
+                                                                CVSup (5999)
+                                                            {% elseif aclOne.srcbeginport == '53' %}
+                                                                DNS (53)                
+                                                            {% elseif aclOne.srcbeginport == '21' %}
+                                                                FTP (21)
+                                                            {% elseif aclOne.srcbeginport == '3000' %}
+                                                                HBCI (3000)
+                                                            {% elseif aclOne.srcbeginport == '80' %}
+                                                                HTTP (80)
+                                                            {% elseif aclOne.srcbeginport == '443' %}
+                                                                HTTPS (443)
+                                                            {% elseif aclOne.srcbeginport == '5190' %}
+                                                                ICQ (5190)
+                                                            {% elseif aclOne.srcbeginport == '113' %}
+                                                                IDENT/AUTH (113)
+                                                            {% elseif aclOne.srcbeginport == '143' %}
+                                                                IMAP (143)
+                                                            {% elseif aclOne.srcbeginport == '993' %}
+                                                                IMAP/S (993)
+                                                            {% elseif aclOne.srcbeginport == '4500' %}
+                                                                IPsec NAT-T (4500)
+                                                            {% elseif aclOne.srcbeginport == '500' %}
+                                                                ISAKMP (500)     
+                                                            {% elseif aclOne.srcbeginport == '1701' %}
+                                                                L2TP (1701)
+                                                            {% elseif aclOne.srcbeginport == '389' %}
+                                                                LDAP (389)
+                                                            {% elseif aclOne.srcbeginport == '1755' %}
+                                                                MMS/TCP (1755)
+                                                            {% elseif aclOne.srcbeginport == '7000' %}
+                                                                MMS/UDP
+                                                            {% elseif aclOne.srcbeginport == '445' %}
+                                                                MS DS
+                                                            {% elseif aclOne.srcbeginport == '3389' %}
+                                                                MS RDP
+                                                            {% elseif aclOne.srcbeginport == '1512' %}
+                                                                MS WINS
+                                                            {% elseif aclOne.srcbeginport == '1863' %}
+                                                                MSN (1863)
+                                                            {% elseif aclOne.srcbeginport == '119' %}
+                                                                NNTP (119)
+                                                            {% elseif aclOne.srcbeginport == '123' %}
+                                                                NTP (123)
+                                                            {% elseif aclOne.srcbeginport == '138' %}
+                                                                NetBIOS-DGM (138)
+                                                            {% elseif aclOne.srcbeginport == '137' %}
+                                                                NetBIOS-NS (137)
+                                                            {% elseif aclOne.srcbeginport == '139' %}
+                                                                NetBIOS-SSN (139)
+                                                            {% elseif aclOne.srcbeginport == '1194' %}
+                                                                OpenVPN
+                                                            {% elseif aclOne.srcbeginport == '110' %}
+                                                                POP3 (110)
+                                                            {% elseif aclOne.srcbeginport == '995' %}
+                                                                POP3/S (995)
+                                                            {% elseif aclOne.srcbeginport == '1723' %}
+                                                                PPTP (1723)
+                                                            {% elseif aclOne.srcbeginport == '1812' %}
+                                                                RADIUS (1812)
+                                                            {% elseif aclOne.srcbeginport == '1813' %}
+                                                                RADIUS accounting (1813)
+                                                            {% elseif aclOne.srcbeginport == '5004' %}
+                                                                RTP (5004)
+                                                            {% elseif aclOne.srcbeginport == '5060' %}
+                                                                SIP (5060)
+                                                            {% elseif aclOne.srcbeginport == '25' %}
+                                                                SMTP (25)
+                                                            {% elseif aclOne.srcbeginport == '465' %}
+                                                                SMTP/S (465)
+                                                            {% elseif aclOne.srcbeginport == '161' %}
+                                                                SNMP (161)
+                                                            {% elseif aclOne.srcbeginport == '162' %}
+                                                                SNMP-Trap (162)
+                                                            {% elseif aclOne.srcbeginport == '22' %}
+                                                                SSH (22)
+                                                            {% elseif aclOne.srcbeginport == '3478' %}
+                                                                STUN (3478)
+                                                            {% elseif aclOne.srcbeginport == '587' %}
+                                                                SUBMISSION (587)
+                                                            {% elseif aclOne.srcbeginport == '3544' %}
+                                                                Teredo (3544)
+                                                            {% elseif aclOne.srcbeginport == '23' %}
+                                                                Telnet (23)
+                                                            {% elseif aclOne.srcbeginport == '69' %}
+                                                                TFTP (69)
+                                                            {% elseif aclOne.srcbeginport == '5900' %}
+                                                                VNC (5900)              
+                                                            {% endif %}
+                                                        </td>
+                                                        {# Destination #}
+                                                        <td>
+                                                            {% if aclOne.dsttype == 'any' %}
+                                                                *
+                                                            {% elseif aclOne.dsttype == 'single' %}
+                                                                {{ aclOne.dst }}
+                                                            {% elseif aclOne.dsttype == 'network' %}
+                                                                {{ aclOne.dst }}/{{ aclOne.dstmask }}
+                                                            {% elseif aclOne.dsttype == '(self)' %}
+                                                                This Firewall
+                                                            {% elseif aclOne.dsttype == 'pppoe' %}
+                                                                PPPoE clients
+                                                            {% elseif aclOne.dsttype == 'l2tp' %}
+                                                                L2TP clients
+                                                            {% elseif aclOne.dsttype == 'wan' %}
+                                                                WAN net
+                                                            {% elseif aclOne.dsttype == 'wanip' %}
+                                                                WAN address
+                                                            {% elseif aclOne.dsttype == 'lan' %}
+                                                                LAN net
+                                                            {% elseif aclOne.dsttype == 'lanip' %}
+                                                                LAN address 
+                                                            {% endif %}
+                                                        </td>
+                                                        {# Port #}
+                                                        <td>
+                                                            {% if aclOne.dstbeginport == '' %}
+                                                                {% if aclOne.dstbeginport_cust == aclOne.dstendport_cust %}
+                                                                    {{ aclOne.dstbeginport_cust }}
+                                                                {% else %}
+                                                                    {{ aclOne.dstbeginport_cust }} - {{ aclOne.dstendport_cust }}
+                                                                {% endif %}
+                                                            {% elseif aclOne.dstbeginport == 'any' %}
+                                                                *
+                                                            {% elseif aclOne.dstbeginport == '5999' %}
+                                                                CVSup (5999)
+                                                            {% elseif aclOne.dstbeginport == '53' %}
+                                                                DNS (53)                
+                                                            {% elseif aclOne.dstbeginport == '21' %}
+                                                                FTP (21)
+                                                            {% elseif aclOne.dstbeginport == '3000' %}
+                                                                HBCI (3000)
+                                                            {% elseif aclOne.dstbeginport == '80' %}
+                                                                HTTP (80)
+                                                            {% elseif aclOne.dstbeginport == '443' %}
+                                                                HTTPS (443)
+                                                            {% elseif aclOne.dstbeginport == '5190' %}
+                                                                ICQ (5190)
+                                                            {% elseif aclOne.dstbeginport == '113' %}
+                                                                IDENT/AUTH (113)
+                                                            {% elseif aclOne.dstbeginport == '143' %}
+                                                                IMAP (143)
+                                                            {% elseif aclOne.dstbeginport == '993' %}
+                                                                IMAP/S (993)
+                                                            {% elseif aclOne.dstbeginport == '4500' %}
+                                                                IPsec NAT-T (4500)
+                                                            {% elseif aclOne.dstbeginport == '500' %}
+                                                                ISAKMP (500)     
+                                                            {% elseif aclOne.dstbeginport == '1701' %}
+                                                                L2TP (1701)
+                                                            {% elseif aclOne.dstbeginport == '389' %}
+                                                                LDAP (389)
+                                                            {% elseif aclOne.dstbeginport == '1755' %}
+                                                                MMS/TCP (1755)
+                                                            {% elseif aclOne.dstbeginport == '7000' %}
+                                                                MMS/UDP
+                                                            {% elseif aclOne.dstbeginport == '445' %}
+                                                                MS DS
+                                                            {% elseif aclOne.dstbeginport == '3389' %}
+                                                                MS RDP
+                                                            {% elseif aclOne.dstbeginport == '1512' %}
+                                                                MS WINS
+                                                            {% elseif aclOne.dstbeginport == '1863' %}
+                                                                MSN (1863)
+                                                            {% elseif aclOne.dstbeginport == '119' %}
+                                                                NNTP (119)
+                                                            {% elseif aclOne.dstbeginport == '123' %}
+                                                                NTP (123)
+                                                            {% elseif aclOne.dstbeginport == '138' %}
+                                                                NetBIOS-DGM (138)
+                                                            {% elseif aclOne.dstbeginport == '137' %}
+                                                                NetBIOS-NS (137)
+                                                            {% elseif aclOne.dstbeginport == '139' %}
+                                                                NetBIOS-SSN (139)
+                                                            {% elseif aclOne.dstbeginport == '1194' %}
+                                                                OpenVPN
+                                                            {% elseif aclOne.dstbeginport == '110' %}
+                                                                POP3 (110)
+                                                            {% elseif aclOne.dstbeginport == '995' %}
+                                                                POP3/S (995)
+                                                            {% elseif aclOne.dstbeginport == '1723' %}
+                                                                PPTP (1723)
+                                                            {% elseif aclOne.dstbeginport == '1812' %}
+                                                                RADIUS (1812)
+                                                            {% elseif aclOne.dstbeginport == '1813' %}
+                                                                RADIUS accounting (1813)
+                                                            {% elseif aclOne.dstbeginport == '5004' %}
+                                                                RTP (5004)
+                                                            {% elseif aclOne.dstbeginport == '5060' %}
+                                                                SIP (5060)
+                                                            {% elseif aclOne.dstbeginport == '25' %}
+                                                                SMTP (25)
+                                                            {% elseif aclOne.dstbeginport == '465' %}
+                                                                SMTP/S (465)
+                                                            {% elseif aclOne.dstbeginport == '161' %}
+                                                                SNMP (161)
+                                                            {% elseif aclOne.dstbeginport == '162' %}
+                                                                SNMP-Trap (162)
+                                                            {% elseif aclOne.dstbeginport == '22' %}
+                                                                SSH (22)
+                                                            {% elseif aclOne.dstbeginport == '3478' %}
+                                                                STUN (3478)
+                                                            {% elseif aclOne.dstbeginport == '587' %}
+                                                                SUBMISSION (587)
+                                                            {% elseif aclOne.dstbeginport == '3544' %}
+                                                                Teredo (3544)
+                                                            {% elseif aclOne.dstbeginport == '23' %}
+                                                                Telnet (23)
+                                                            {% elseif aclOne.dstbeginport == '69' %}
+                                                                TFTP (69)
+                                                            {% elseif aclOne.dstbeginport == '5900' %}
+                                                                VNC (5900)              
+                                                            {% endif %}
+                                                        </td>
+                                                        {# Gateway #}
+                                                        <td>*</td>
+                                                        {# Description #}
+                                                        <td>{{ aclOne.descr }}</td>
+                                                        {# Se hace una evaluacion para saber si se muestra los botones de editar y eliminar si el actor que ingreso al sistema tiene el rol #}
+                                                        {% if app.user.role == "ROLE_ADMIN" or app.user.role == "ROLE_SUPERUSER" %}
+                                                            <td>
+                                                                <a href="{{path('editFirewallLan',{id:aclOne.id})}}">
+                                                                    <button class="btn btn-warning btn-sm" type="submit">
+                                                                        Edit <i class="far fa-edit"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{path('deleteFirewallLan',{id:aclOne.id})}}">
+                                                                    <button class="btn btn-danger btn-sm" type="submit">
+                                                                        Delete <i class="fas fa-times-circle"></i>
+                                                                    </button>
+                                                                </a>
+                                                            </td>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -407,8 +693,8 @@
                                     When you do click on save button you are saving the acl list and if you do click on apply button, the process about new configuration changes will be starting. <br>
                                     <b><span style="color: #800000;">Both the save and apply button must be clicked</span></b>. <br><br>
                                     <div class="form-group">
-                                        {% if acls == true %} 
-                                            <a href="{{path('createXMLNat',{id:acls[0]['namegroup']})}}">
+                                        {% if aclsOne == true %} 
+                                            <a href="{{path('createXMLFirewall',{id:aclsOne[0]['namegroup']})}}">
                                                 <button type="button" class="btn btn-primary">
                                                     <b>  
                                                         Save nat list <i class="fas fa-save"></i>
@@ -416,7 +702,7 @@
                                                 </button>
                                             </a>
                                             <br><br>
-                                            <a href="{{path('aplicateXMLAcl',{id:acls[0]['namegroup']})}}">
+                                            <a href="{{path('aplicateXMLAcl',{id:aclsOne[0]['namegroup']})}}">
                                                 <button type="" class="btn btn-success">
                                                     <b>
                                                         Apply to nat list <i class="fas fa-caret-square-down"></i>
@@ -473,21 +759,21 @@
         }
     </script>
     <script type="text/javascript">
-        $( ".row_position_one" ).sortable({
+        $( ".row_position_lan" ).sortable({
             delay: 150,
             stop: function() {
                 var selectedDataOne = new Array();
-                $('.row_position_one>tr').each(function() {
+                $('.row_position_lan>tr').each(function() {
                     selectedDataOne.push($(this).attr("id"));
                 });
-                updateOrderOne(selectedDataOne);
+                updateOrderLan(selectedDataOne);
             }
         });
 
 
-        function updateOrderOne(data) {
+        function updateOrderLan(data) {
             $.ajax({
-                url:"{{path('refreshOne')}}",
+                url:"{{path('refreshFirewallLan')}}",
                 type:'post',
                 data:{position:data}
             })

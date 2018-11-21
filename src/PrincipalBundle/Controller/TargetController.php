@@ -398,7 +398,7 @@ class TargetController extends Controller
 	        	$archivo = fopen("change_to_do.txt", 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
 				fwrite($archivo, "targetcategories.py");
-				fwrite ($archivo, "\n". PHP_EOL);
+				fwrite ($archivo, "\n");
 				// Se cierra el archivo 
 				fclose($archivo); 
 				# Mover el archivo a la carpeta #
@@ -421,7 +421,8 @@ class TargetController extends Controller
 	        {	 
 	        	$archivo = fopen("change_to_do.txt", 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
-				fwrite($archivo, "targetcategories.py\r\n");
+				fwrite($archivo, "targetcategories.py");
+				fwrite ($archivo, "\n");
 				// Se cierra el archivo 
 				fclose($archivo); 
 				# Mover el archivo a la carpeta #
@@ -437,7 +438,7 @@ class TargetController extends Controller
 			   	if (!copy($archivoConfig, $destinoConfig)) 
 			   	{
 				    echo "Error al copiar $archivoConfig...\n";
-				}       	
+				}      	
 				return $this->redirectToRoute('listGroupIp');
 			}
 		}

@@ -189,6 +189,8 @@ class NatController extends Controller
 	{
         if(isset($_POST['enviar']))
 		{
+			$u = $this->getUser();
+			$grupo=$u->getNameGroup();
 			$em = $this->getDoctrine()->getEntityManager();
 			$db = $em->getConnection();
 			$disabled = $_POST['disabled'];
@@ -221,7 +223,7 @@ class NatController extends Controller
 			$natreflection = $_POST['natreflection'];
 			$associated_rule_id = $_POST['associated_rule_id'];
 			//$position_order = $_POST['position_order'];
-			$query = "INSERT INTO nat(disabled, nordr, interface, proto, srcnot, srctype, src, srcmask, srcbeginport, dstbeginport_cust, srcendport, dstendport_cust, dstnot, dsttype, dst, dstmask, dstendport, dstbeginport_cust2, dstendport2, dstendport_cust2, localip, localbeginport, localbeginport_cust, descr, nosync, natreflection, associated_rule_id, namegroup) VALUES ('$disabled','$nordr','$interface', '$proto', '$srcnot', '$srctype', '$src', '$srcmask', '$srcbeginport', '$dstbeginport_cust', '$srcendport', '$dstendport_cust','$dstnot','$dsttype', '$dst', '$dstmask', '$dstendport', '$dstbeginport_cust2', '$dstendport2', '$dstendport_cust2', '$localip', '$localbeginport', '$localbeginport_cust', '$descr', '$nosync', '$natreflection', '$associated_rule_id','$id')";
+			$query = "INSERT INTO nat(disabled, nordr, interface, proto, srcnot, srctype, src, srcmask, srcbeginport, dstbeginport_cust, srcendport, dstendport_cust, dstnot, dsttype, dst, dstmask, dstendport, dstbeginport_cust2, dstendport2, dstendport_cust2, localip, localbeginport, localbeginport_cust, descr, nosync, natreflection, associated_rule_id, namegroup) VALUES ('$disabled','$nordr','$interface', '$proto', '$srcnot', '$srctype', '$src', '$srcmask', '$srcbeginport', '$dstbeginport_cust', '$srcendport', '$dstendport_cust','$dstnot','$dsttype', '$dst', '$dstmask', '$dstendport', '$dstbeginport_cust2', '$dstendport2', '$dstendport_cust2', '$localip', '$localbeginport', '$localbeginport_cust', '$descr', '$nosync', '$natreflection', '$associated_rule_id','$grupo')";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
 			return $this->redirectToRoute("listGroupNat");
@@ -339,6 +341,8 @@ class NatController extends Controller
 	{
         if(isset($_POST['enviar']))
 		{
+			$u = $this->getUser();
+			$grupo=$u->getNameGroup();
 			$em = $this->getDoctrine()->getEntityManager();
 			$db = $em->getConnection();
 			$disabled = $_POST['disabled'];
@@ -355,7 +359,7 @@ class NatController extends Controller
 			$dstmask = $_POST['dstmask'];
 			$descr = $_POST['descr'];
 			$natreflection = $_POST['natreflection'];
-			$query = "INSERT INTO natone(disabled, nobinat, interface, external, srcnot, srctype, src, srcmask, dstnot, dsttype, dst, dstmask, descr, natreflection, namegroup) VALUES ('$disabled','$nobinat','$interface', '$external', '$srcnot', '$srctype', '$src', '$srcmask', '$dstnot', '$dsttype', '$dst', '$dstmask', '$descr', '$natreflection', '$id')";
+			$query = "INSERT INTO natone(disabled, nobinat, interface, external, srcnot, srctype, src, srcmask, dstnot, dsttype, dst, dstmask, descr, natreflection, namegroup) VALUES ('$disabled','$nobinat','$interface', '$external', '$srcnot', '$srctype', '$src', '$srcmask', '$dstnot', '$dsttype', '$dst', '$dstmask', '$descr', '$natreflection', '$grupo')";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
 			return $this->redirectToRoute("listGroupNat");

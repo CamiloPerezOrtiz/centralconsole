@@ -450,7 +450,7 @@ class AclController extends Controller
 	        	$archivo = fopen("change_to_do.txt", 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
 				fwrite($archivo, "aclgroups.py");
-				fwrite ($archivo, "\n". PHP_EOL);
+				fwrite ($archivo, "\n");
 				// Se cierra el archivo 
 				fclose($archivo); 
 				# Mover el archivo a la carpeta #
@@ -475,7 +475,7 @@ class AclController extends Controller
 	        	$archivo = fopen("change_to_do.txt", 'w');
 				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
 				fwrite($archivo, "aclgroups.py");
-				fwrite ($archivo, "\n". PHP_EOL);
+				fwrite ($archivo, "\n");
 				// Se cierra el archivo 
 				fclose($archivo); 
 				# Mover el archivo a la carpeta #

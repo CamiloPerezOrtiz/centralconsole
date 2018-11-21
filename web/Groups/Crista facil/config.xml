@@ -1,33 +1,56 @@
 <?xml version='1.0'?>
-<squidguardacl>
-			<config>
-				<disabled>on</disabled>
-				<name>Area_VIP</name>
-				<source>192.168.0.125</source>
-				<time></time>
-				<dest>all [ all]</dest>
-				<notallowingip></notallowingip>
-				<redirect_mode>rmod_int</redirect_mode>
-				<redirect>google.com</redirect>
-				<safesearch>on</safesearch>
-				<rewrite>none</rewrite>
-				<overrewrite>none</overrewrite>
-				<description>Area VIP</description>
-				<enablelog>on</enablelog>
-			</config>
-			<config>
-				<disabled>on</disabled>
-				<name>Area</name>
-				<source>192.168.0.1</source>
-				<time></time>
-				<dest>all [ all]</dest>
-				<notallowingip></notallowingip>
-				<redirect_mode>rmod_none</redirect_mode>
-				<redirect>google.com</redirect>
-				<safesearch>on</safesearch>
-				<rewrite>none</rewrite>
-				<overrewrite>none</overrewrite>
-				<description>Area VIP</description>
-				<enablelog>on</enablelog>
-			</config>
-</squidguardacl>
+	<filter>
+		<separator>
+			<wan></wan>
+			<lan></lan>
+		</separator>
+		<rule>
+			<type>block</type>
+			<interface>lan</interface>
+			<ipprotocol>inet6</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype>keep state</statetype>
+			<os></os>
+			<protocol>tcp/udp</protocol>
+			<source>
+				<any></any>
+				<not></not>
+			</source>
+			<destination>
+				<not></not>
+				<port>80</port>
+			</destination>
+			<log></log>
+			<descr>ejemplo 2</descr>
+		</rule>
+		<rule>
+			<type>pass</type>
+			<interface>wan</interface>
+			<ipprotocol>inet</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype>keep state</statetype>
+			<os></os>
+			<source>
+				<any></any>
+				<not></not>
+			</source>
+			<destination>
+				<not></not>
+				<port></port>
+				<not></not>
+			</destination>
+			<log></log>
+			<descr>ejemplo 1 con check box marcado </descr>
+		</rule>

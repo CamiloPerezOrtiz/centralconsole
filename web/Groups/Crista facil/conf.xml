@@ -1,31 +1,43 @@
 <?xml version='1.0'?>
-	<aliases>
-		<alias>
-			<name>Recursos</name>
-			<type>host</type>
-			<address>192.168.1.1 192.168.1.2</address>
-			<descr>Area de recursos</descr>
-			<detail>Maquina1 ||Maquina2</detail>
-		</alias>
-		<alias>
-			<name>Soporte</name>
-			<type>host</type>
-			<address>192.168.0.1</address>
-			<descr>Area de recursos </descr>
-			<detail>Maquina 1</detail>
-		</alias>
-		<alias>
-			<name>Desarrollo</name>
-			<type>host</type>
-			<address>192.168.0.1</address>
-			<descr>Area desarrollo</descr>
-			<detail>Maquina 1</detail>
-		</alias>
-		<alias>
-			<name>nat1</name>
-			<type>port</type>
-			<address>40 41</address>
-			<descr>Para usar en nat</descr>
-			<detail> ||</detail>
-		</alias>
-	</aliases>
+	<squidguarddest>
+			<config>
+				<name>Facebook</name>
+				<domains>192.168.0.1</domains>
+				<urls>192.168.0.1/vhgfh</urls>
+				<expressions>|sfdf|</expressions>
+				<redirect_mode>rmod_none</redirect_mode>
+				<redirect>yahoo.com</redirect>
+				<description>Bloquear facebook</description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<name>Instagram</name>
+				<domains>192.168.0.1</domains>
+				<urls>192.168.0.1/6546</urls>
+				<expressions>|face|</expressions>
+				<redirect_mode>rmod_int</redirect_mode>
+				<redirect>github.com</redirect>
+				<description>Bloquer Twitter</description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<name>Github</name>
+				<domains>192.168.0.1</domains>
+				<urls>192.168.0.1/5414</urls>
+				<expressions>|mail|</expressions>
+				<redirect_mode>rmod_none</redirect_mode>
+				<redirect>google.com</redirect>
+				<description>dfsdf</description>
+				<enablelog></enablelog>
+			</config>
+			<config>
+				<name>Hi5_redes</name>
+				<domains>192.168.0.1</domains>
+				<urls>192.168.0.1/445</urls>
+				<expressions>|facebook|</expressions>
+				<redirect_mode>rmod_none</redirect_mode>
+				<redirect>google.com</redirect>
+				<description>Bloquer Twitter</description>
+				<enablelog></enablelog>
+			</config>
+	</squidguarddest>

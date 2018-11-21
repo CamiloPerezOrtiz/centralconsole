@@ -152,7 +152,7 @@ class GroupController extends Controller
 		   	{
 			    echo "Error al copiar $archivoipGrupos...\n";
 			}*/
-			$archivoipGrupos = "Groups/$id/ipGrupos.txt";
+			$archivoipGrupos = "Groups/$grupo/ipGrupos.txt";
 			$destinoipGrupos = "centralizedConsole/changes.txt";
 		   	if (!copy($archivoipGrupos, $destinoipGrupos)) 
 		   	{
