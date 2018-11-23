@@ -1454,7 +1454,7 @@ class NatController extends Controller
 		fclose($archivo); 
 		# Mover el archivo a la carpeta #
 		$archivoConfig = 'conf.xml';
-		$destinoConfig = "Groups/$id/config.xml";
+		$destinoConfig = "Groups/$id/conf.xml";
 	   	if (!copy($archivoConfig, $destinoConfig)) 
 	   	{
 		    echo "Error al copiar $archivoConfig...\n";
@@ -1463,5 +1463,73 @@ class NatController extends Controller
 		$estatus="The configuration has been saved";
 		$this->session->getFlashBag()->add("estatus",$estatus);
 		return $this->redirectToRoute("listGroupNat");
+	}
+
+	// funcion para correr el script aplicar cambios en target categories
+	public function aplicateXMLNatAction($id)
+	{
+	    $authenticationUtils = $this->get("security.authentication_utils");
+		$error = $authenticationUtils->getLastAuthenticationError();
+		$lastUsername = $authenticationUtils->getLastUsername();
+		$u = $this->getUser();
+		if($u != null)
+		{
+			//Variables declaradas para mandar a llamar al asistente de base de datos doctrine
+			$em = $this->getDoctrine()->getEntityManager();
+	        $db = $em->getConnection();
+
+	        $role=$u->getRole();
+	        if($role == "ROLE_SUPERUSER")
+	        {
+	        	$archivo = fopen("change_to_do.txt", 'w');
+				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+				fwrite($archivo, "nats.py");
+				fwrite ($archivo, "\n");
+				// Se cierra el archivo 
+				fclose($archivo); 
+				# Mover el archivo a la carpeta #
+				$archivoConfig = 'change_to_do.txt';
+				$destinoConfig = "centralizedConsole/change_to_do.txt";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+				   echo "Error al copiar $archivoConfig...\n";
+				}
+
+				$archivoConfig = "Groups/$id/conf.xml";
+				$destinoConfig = "centralizedConsole/conf.xml";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+			   		echo "Error al copiar $archivoConfig...\n";
+				}
+				  
+	        	return $this->redirectToRoute('listGroup');
+	        }
+	        if($role == "ROLE_ADMIN")
+	        {	   
+	        	$archivo = fopen("change_to_do.txt", 'w');
+				// Se abre el archivo y se ingresa la informacion almacenada en la variable 
+				fwrite($archivo, "nats.py");
+				fwrite ($archivo, "\n");
+				// Se cierra el archivo 
+				fclose($archivo); 
+				# Mover el archivo a la carpeta #
+				$archivoConfig = 'change_to_do.txt';
+				$destinoConfig = "centralizedConsole/change_to_do.txt";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+				   echo "Error al copiar $archivoConfig...\n";
+				}
+
+				$archivoConfig = "Groups/$id/conf.xml";
+				$destinoConfig = "centralizedConsole/conf.xml";
+			   	if (!copy($archivoConfig, $destinoConfig)) 
+			   	{
+			   		echo "Error al copiar $archivoConfig...\n";
+				}     	
+				
+				return $this->redirectToRoute('listGroupIp');
+			}
+		}
+		return $this->redirectToRoute('dashboard');
 	}
 }
