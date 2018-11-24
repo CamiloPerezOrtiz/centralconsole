@@ -12,3 +12,4 @@ Perez10|192.168.0.11|UI plantel via morelos|
 Perez11|192.168.0.12|UI plantel via morelos|
 Perez12|192.168.0.13|Crista facil|
 perez2|192.168.0.248|Crista facil|
+perez2|192.168.0.240|Crista facil|

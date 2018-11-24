@@ -476,68 +476,68 @@ class NatController extends Controller
 		// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 		foreach ($formato as $formatos) 
 		{
-			$contenido .= "\t\t\t<rule>\n";
+			$contenido .= "\t\t<rule>\n";
 			if($formatos['disabled'] === "yes")
 			{
-				$contenido .= "\t\t\t\t<disabled></disabled>\n";
+				$contenido .= "\t\t\t<disabled></disabled>\n";
 			}
 
 			if($formatos['nordr'] === "yes")
 			{
-				$contenido .= "\t\t\t\t<nordr></nordr>\n";
+				$contenido .= "\t\t\t<nordr></nordr>\n";
 			}
 
-			$contenido .= "\t\t\t\t<source>\n";
+			$contenido .= "\t\t\t<source>\n";
 				# Campo Source type #
 				if($formatos['srctype'] === "any")
 				{
-					$contenido .= "\t\t\t\t\t<any></any>\n";
+					$contenido .= "\t\t\t\t<any></any>\n";
 				}
 
 				if($formatos['srctype'] === "single")
 				{
-					$contenido .= "\t\t\t\t\t<address>" . $formatos['src'] . "</address>\n";
+					$contenido .= "\t\t\t\t<address>" . $formatos['src'] . "</address>\n";
 				}
 
 				if($formatos['srctype'] === "network")
 				{
-					$contenido .= "\t\t\t\t\t<network>" . $formatos['src'] . "/". $formatos['srcmask'] . "</network>\n";
+					$contenido .= "\t\t\t\t<network>" . $formatos['src'] . "/". $formatos['srcmask'] . "</network>\n";
 				}
 
 				if($formatos['srctype'] === "pppoe")
 				{
-					$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
+					$contenido .= "\t\t\t\t<network>pppoe</network>\n";
 				}
 
 				if($formatos['srctype'] === "l2tp")
 				{
-					$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
+					$contenido .= "\t\t\t\t<network>pppoe</network>\n";
 				}
 
 				if($formatos['srctype'] === "wan")
 				{
-					$contenido .= "\t\t\t\t\t<network>wan</network>\n";
+					$contenido .= "\t\t\t\t<network>wan</network>\n";
 				}
 
 				if($formatos['srctype'] === "wanip")
 				{
-					$contenido .= "\t\t\t\t\t<network>wanip</network>\n";
+					$contenido .= "\t\t\t\t<network>wanip</network>\n";
 				}
 
 				if($formatos['srctype'] === "lan")
 				{
-					$contenido .= "\t\t\t\t\t<network>lan</network>\n";
+					$contenido .= "\t\t\t\t<network>lan</network>\n";
 				}
 
 				if($formatos['srctype'] === "lanip")
 				{
-					$contenido .= "\t\t\t\t\t<network>lanip</network>\n";
+					$contenido .= "\t\t\t\t<network>lanip</network>\n";
 				}
 
 				# Campo Source Invert match. #
 				if($formatos['srcnot'] === "yes")
 				{
-					$contenido .= "\t\t\t\t\t<not></not>\n";
+					$contenido .= "\t\t\t\t<not></not>\n";
 				}
 				# Campo Source port range cuando los dos campos Custom son iguales. #
 				if($formatos['proto'] === "tcp" or $formatos['proto'] === "udp" or $formatos['proto'] === "tcp/udp" )
@@ -546,282 +546,282 @@ class NatController extends Controller
 					{
 						if($formatos['dstbeginport_cust'] === $formatos['dstendport_cust'])
 						{
-							$contenido .= "\t\t\t\t\t<port>" . $formatos['dstbeginport_cust'] . "</port>\n";
+							$contenido .= "\t\t\t\t<port>" . $formatos['dstbeginport_cust'] . "</port>\n";
 						}
 						else
 						{
-							$contenido .= "\t\t\t\t\t<port>" . $formatos['dstbeginport_cust'] . "-" . $formatos['dstendport_cust'] . "</port>\n";
+							$contenido .= "\t\t\t\t<port>" . $formatos['dstbeginport_cust'] . "-" . $formatos['dstendport_cust'] . "</port>\n";
 						}
 					}
 
 					if($formatos['srcbeginport'] === "5999")
 					{
-						$contenido .= "\t\t\t\t\t<port>5999</port>\n";
+						$contenido .= "\t\t\t\t<port>5999</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "53")
 					{
-						$contenido .= "\t\t\t\t\t<port>53</port>\n";
+						$contenido .= "\t\t\t\t<port>53</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "21")
 					{
-						$contenido .= "\t\t\t\t\t<port>21</port>\n";
+						$contenido .= "\t\t\t\t<port>21</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "3000")
 					{
-						$contenido .= "\t\t\t\t\t<port>3000</port>\n";
+						$contenido .= "\t\t\t\t<port>3000</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "80")
 					{
-						$contenido .= "\t\t\t\t\t<port>80</port>\n";
+						$contenido .= "\t\t\t\t<port>80</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "443")
 					{
-						$contenido .= "\t\t\t\t\t<port>443</port>\n";
+						$contenido .= "\t\t\t\t<port>443</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "5190")
 					{
-						$contenido .= "\t\t\t\t\t<port>5190</port>\n";
+						$contenido .= "\t\t\t\t<port>5190</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "113")
 					{
-						$contenido .= "\t\t\t\t\t<port>113</port>\n";
+						$contenido .= "\t\t\t\t<port>113</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "993")
 					{
-						$contenido .= "\t\t\t\t\t<port>993</port>\n";
+						$contenido .= "\t\t\t\t<port>993</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "4500")
 					{
-						$contenido .= "\t\t\t\t\t<port>4500</port>\n";
+						$contenido .= "\t\t\t\t<port>4500</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "500")
 					{
-						$contenido .= "\t\t\t\t\t<port>500</port>\n";
+						$contenido .= "\t\t\t\t<port>500</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "1701")
 					{
-						$contenido .= "\t\t\t\t\t<port>1701</port>\n";
+						$contenido .= "\t\t\t\t<port>1701</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "389")
 					{
-						$contenido .= "\t\t\t\t\t<port>389</port>\n";
+						$contenido .= "\t\t\t\t<port>389</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "1755")
 					{
-						$contenido .= "\t\t\t\t\t<port>1755</port>\n";
+						$contenido .= "\t\t\t\t<port>1755</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "7000")
 					{
-						$contenido .= "\t\t\t\t\t<port>7000</port>\n";
+						$contenido .= "\t\t\t\t<port>7000</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "445")
 					{
-						$contenido .= "\t\t\t\t\t<port>445</port>\n";
+						$contenido .= "\t\t\t\t<port>445</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "3389")
 					{
-						$contenido .= "\t\t\t\t\t<port>3389</port>\n";
+						$contenido .= "\t\t\t\t<port>3389</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "1512")
 					{
-						$contenido .= "\t\t\t\t\t<port>1512</port>\n";
+						$contenido .= "\t\t\t\t<port>1512</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "1863")
 					{
-						$contenido .= "\t\t\t\t\t<port>1863</port>\n";
+						$contenido .= "\t\t\t\t<port>1863</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "119")
 					{
-						$contenido .= "\t\t\t\t\t<port>119</port>\n";
+						$contenido .= "\t\t\t\t<port>119</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "123")
 					{
-						$contenido .= "\t\t\t\t\t<port>123</port>\n";
+						$contenido .= "\t\t\t\t<port>123</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "138")
 					{
-						$contenido .= "\t\t\t\t\t<port>138</port>\n";
+						$contenido .= "\t\t\t\t<port>138</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "137")
 					{
-						$contenido .= "\t\t\t\t\t<port>137</port>\n";
+						$contenido .= "\t\t\t\t<port>137</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "139")
 					{
-						$contenido .= "\t\t\t\t\t<port>139</port>\n";
+						$contenido .= "\t\t\t\t<port>139</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "1194")
 					{
-						$contenido .= "\t\t\t\t\t<port>1194</port>\n";
+						$contenido .= "\t\t\t\t<port>1194</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "110")
 					{
-						$contenido .= "\t\t\t\t\t<port>110</port>\n";
+						$contenido .= "\t\t\t\t<port>110</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "995")
 					{
-						$contenido .= "\t\t\t\t\t<port>995</port>\n";
+						$contenido .= "\t\t\t\t<port>995</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "1723")
 					{
-						$contenido .= "\t\t\t\t\t<port>1723</port>\n";
+						$contenido .= "\t\t\t\t<port>1723</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "1812")
 					{
-						$contenido .= "\t\t\t\t\t<port>1812</port>\n";
+						$contenido .= "\t\t\t\t<port>1812</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "1813")
 					{
-						$contenido .= "\t\t\t\t\t<port>1813</port>\n";
+						$contenido .= "\t\t\t\t<port>1813</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "5004")
 					{
-						$contenido .= "\t\t\t\t\t<port>5004</port>\n";
+						$contenido .= "\t\t\t\t<port>5004</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "5060")
 					{
-						$contenido .= "\t\t\t\t\t<port>5060</port>\n";
+						$contenido .= "\t\t\t\t<port>5060</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "25")
 					{
-						$contenido .= "\t\t\t\t\t<port>25</port>\n";
+						$contenido .= "\t\t\t\t<port>25</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "465")
 					{
-						$contenido .= "\t\t\t\t\t<port>465</port>\n";
+						$contenido .= "\t\t\t\t<port>465</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "161")
 					{
-						$contenido .= "\t\t\t\t\t<port>161</port>\n";
+						$contenido .= "\t\t\t\t<port>161</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "162")
 					{
-						$contenido .= "\t\t\t\t\t<port>162</port>\n";
+						$contenido .= "\t\t\t\t<port>162</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "22")
 					{
-						$contenido .= "\t\t\t\t\t<port>22</port>\n";
+						$contenido .= "\t\t\t\t<port>22</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "3478")
 					{
-						$contenido .= "\t\t\t\t\t<port>3278</port>\n";
+						$contenido .= "\t\t\t\t<port>3278</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "587")
 					{
-						$contenido .= "\t\t\t\t\t<port>587</port>\n";
+						$contenido .= "\t\t\t\t<port>587</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "3544")
 					{
-						$contenido .= "\t\t\t\t\t<port>3544</port>\n";
+						$contenido .= "\t\t\t\t<port>3544</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "23")
 					{
-						$contenido .= "\t\t\t\t\t<port>23</port>\n";
+						$contenido .= "\t\t\t\t<port>23</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "69")
 					{
-						$contenido .= "\t\t\t\t\t<port>69</port>\n";
+						$contenido .= "\t\t\t\t<port>69</port>\n";
 					}
 
 					if($formatos['srcbeginport'] === "5900")
 					{
-						$contenido .= "\t\t\t\t\t<port>5900</port>\n";
+						$contenido .= "\t\t\t\t<port>5900</port>\n";
 					}
 				}
 
-			$contenido .= "\t\t\t\t</source>\n";
+			$contenido .= "\t\t\t</source>\n";
 
-			$contenido .= "\t\t\t\t<destination>\n";
+			$contenido .= "\t\t\t<destination>\n";
 				# Campo destination type #
 				if($formatos['dsttype'] === "any")
 				{
-					$contenido .= "\t\t\t\t\t<any></any>\n";
+					$contenido .= "\t\t\t\t<any></any>\n";
 				}
 
 				if($formatos['dsttype'] === "single")
 				{
-					$contenido .= "\t\t\t\t\t<address>" . $formatos['dst'] . "</address>\n";
+					$contenido .= "\t\t\t\t<address>" . $formatos['dst'] . "</address>\n";
 				}
 
 				if($formatos['dsttype'] === "network")
 				{
-					$contenido .= "\t\t\t\t\t<network>" . $formatos['dst'] . "/". $formatos['dstmask'] . "</network>\n";
+					$contenido .= "\t\t\t\t<network>" . $formatos['dst'] . "/". $formatos['dstmask'] . "</network>\n";
 				}
 
 				if($formatos['dsttype'] === "pppoe")
 				{
-					$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
+					$contenido .= "\t\t\t\t<network>pppoe</network>\n";
 				}
 
 				if($formatos['dsttype'] === "l2tp")
 				{
-					$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
+					$contenido .= "\t\t\t\t<network>pppoe</network>\n";
 				}
 
 				if($formatos['dsttype'] === "wan")
 				{
-					$contenido .= "\t\t\t\t\t<network>wan</network>\n";
+					$contenido .= "\t\t\t\t<network>wan</network>\n";
 				}
 
 				if($formatos['dsttype'] === "wanip")
 				{
-					$contenido .= "\t\t\t\t\t<network>wanip</network>\n";
+					$contenido .= "\t\t\t\t<network>wanip</network>\n";
 				}
 
 				if($formatos['dsttype'] === "lan")
 				{
-					$contenido .= "\t\t\t\t\t<network>lan</network>\n";
+					$contenido .= "\t\t\t\t<network>lan</network>\n";
 				}
 
 				if($formatos['dsttype'] === "lanip")
 				{
-					$contenido .= "\t\t\t\t\t<network>lanip</network>\n";
+					$contenido .= "\t\t\t\t<network>lanip</network>\n";
 				}
 				# Campo destination Invert match. #
 				if($formatos['dstnot'] === "yes")
 				{
-					$contenido .= "\t\t\t\t\t<not></not>\n";
+					$contenido .= "\t\t\t\t<not></not>\n";
 				}
 				# Campo destination port range cuando los dos campos Custom son iguales. #
 				if($formatos['proto'] === "tcp" or $formatos['proto'] === "udp" or $formatos['proto'] === "tcp/udp" )
@@ -830,500 +830,500 @@ class NatController extends Controller
 					{
 						if($formatos['dstbeginport_cust2'] === $formatos['dstendport_cust2'])
 						{
-							$contenido .= "\t\t\t\t\t<port>" . $formatos['dstbeginport_cust2'] . "</port>\n";
+							$contenido .= "\t\t\t\t<port>" . $formatos['dstbeginport_cust2'] . "</port>\n";
 						}
 						else
 						{
-							$contenido .= "\t\t\t\t\t<port>" . $formatos['dstbeginport_cust2'] . "-" . $formatos['dstendport_cust2'] . "</port>\n";
+							$contenido .= "\t\t\t\t<port>" . $formatos['dstbeginport_cust2'] . "-" . $formatos['dstendport_cust2'] . "</port>\n";
 						}
 					}
 
 					if($formatos['dstendport'] === "5999")
 					{
-						$contenido .= "\t\t\t\t\t<port>5999</port>\n";
+						$contenido .= "\t\t\t\t<port>5999</port>\n";
 					}
 
 					if($formatos['dstendport'] === "53")
 					{
-						$contenido .= "\t\t\t\t\t<port>53</port>\n";
+						$contenido .= "\t\t\t\t<port>53</port>\n";
 					}
 
 					if($formatos['dstendport'] === "21")
 					{
-						$contenido .= "\t\t\t\t\t<port>21</port>\n";
+						$contenido .= "\t\t\t\t<port>21</port>\n";
 					}
 
 					if($formatos['dstendport'] === "3000")
 					{
-						$contenido .= "\t\t\t\t\t<port>3000</port>\n";
+						$contenido .= "\t\t\t\t<port>3000</port>\n";
 					}
 
 					if($formatos['dstendport'] === "80")
 					{
-						$contenido .= "\t\t\t\t\t<port>80</port>\n";
+						$contenido .= "\t\t\t\t<port>80</port>\n";
 					}
 
 					if($formatos['dstendport'] === "443")
 					{
-						$contenido .= "\t\t\t\t\t<port>443</port>\n";
+						$contenido .= "\t\t\t\t<port>443</port>\n";
 					}
 
 					if($formatos['dstendport'] === "5190")
 					{
-						$contenido .= "\t\t\t\t\t<port>5190</port>\n";
+						$contenido .= "\t\t\t\t<port>5190</port>\n";
 					}
 
 					if($formatos['dstendport'] === "113")
 					{
-						$contenido .= "\t\t\t\t\t<port>113</port>\n";
+						$contenido .= "\t\t\t\t<port>113</port>\n";
 					}
 
 					if($formatos['dstendport'] === "993")
 					{
-						$contenido .= "\t\t\t\t\t<port>993</port>\n";
+						$contenido .= "\t\t\t\t<port>993</port>\n";
 					}
 
 					if($formatos['dstendport'] === "4500")
 					{
-						$contenido .= "\t\t\t\t\t<port>4500</port>\n";
+						$contenido .= "\t\t\t\t<port>4500</port>\n";
 					}
 
 					if($formatos['dstendport'] === "500")
 					{
-						$contenido .= "\t\t\t\t\t<port>500</port>\n";
+						$contenido .= "\t\t\t\t<port>500</port>\n";
 					}
 
 					if($formatos['dstendport'] === "1701")
 					{
-						$contenido .= "\t\t\t\t\t<port>1701</port>\n";
+						$contenido .= "\t\t\t\t<port>1701</port>\n";
 					}
 
 					if($formatos['dstendport'] === "389")
 					{
-						$contenido .= "\t\t\t\t\t<port>389</port>\n";
+						$contenido .= "\t\t\t\t<port>389</port>\n";
 					}
 
 					if($formatos['dstendport'] === "1755")
 					{
-						$contenido .= "\t\t\t\t\t<port>1755</port>\n";
+						$contenido .= "\t\t\t\t<port>1755</port>\n";
 					}
 
 					if($formatos['dstendport'] === "7000")
 					{
-						$contenido .= "\t\t\t\t\t<port>7000</port>\n";
+						$contenido .= "\t\t\t\t<port>7000</port>\n";
 					}
 
 					if($formatos['dstendport'] === "445")
 					{
-						$contenido .= "\t\t\t\t\t<port>445</port>\n";
+						$contenido .= "\t\t\t\t<port>445</port>\n";
 					}
 
 					if($formatos['dstendport'] === "3389")
 					{
-						$contenido .= "\t\t\t\t\t<port>3389</port>\n";
+						$contenido .= "\t\t\t\t<port>3389</port>\n";
 					}
 
 					if($formatos['dstendport'] === "1512")
 					{
-						$contenido .= "\t\t\t\t\t<port>1512</port>\n";
+						$contenido .= "\t\t\t\t<port>1512</port>\n";
 					}
 
 					if($formatos['dstendport'] === "1863")
 					{
-						$contenido .= "\t\t\t\t\t<port>1863</port>\n";
+						$contenido .= "\t\t\t\t<port>1863</port>\n";
 					}
 
 					if($formatos['dstendport'] === "119")
 					{
-						$contenido .= "\t\t\t\t\t<port>119</port>\n";
+						$contenido .= "\t\t\t\t<port>119</port>\n";
 					}
 
 					if($formatos['dstendport'] === "123")
 					{
-						$contenido .= "\t\t\t\t\t<port>123</port>\n";
+						$contenido .= "\t\t\t\t<port>123</port>\n";
 					}
 
 					if($formatos['dstendport'] === "138")
 					{
-						$contenido .= "\t\t\t\t\t<port>138</port>\n";
+						$contenido .= "\t\t\t\t<port>138</port>\n";
 					}
 
 					if($formatos['dstendport'] === "137")
 					{
-						$contenido .= "\t\t\t\t\t<port>137</port>\n";
+						$contenido .= "\t\t\t\t<port>137</port>\n";
 					}
 
 					if($formatos['dstendport'] === "139")
 					{
-						$contenido .= "\t\t\t\t\t<port>139</port>\n";
+						$contenido .= "\t\t\t\t<port>139</port>\n";
 					}
 
 					if($formatos['dstendport'] === "1194")
 					{
-						$contenido .= "\t\t\t\t\t<port>1194</port>\n";
+						$contenido .= "\t\t\t\t<port>1194</port>\n";
 					}
 
 					if($formatos['dstendport'] === "110")
 					{
-						$contenido .= "\t\t\t\t\t<port>110</port>\n";
+						$contenido .= "\t\t\t\t<port>110</port>\n";
 					}
 
 					if($formatos['dstendport'] === "995")
 					{
-						$contenido .= "\t\t\t\t\t<port>995</port>\n";
+						$contenido .= "\t\t\t\t<port>995</port>\n";
 					}
 
 					if($formatos['dstendport'] === "1723")
 					{
-						$contenido .= "\t\t\t\t\t<port>1723</port>\n";
+						$contenido .= "\t\t\t\t<port>1723</port>\n";
 					}
 
 					if($formatos['dstendport'] === "1812")
 					{
-						$contenido .= "\t\t\t\t\t<port>1812</port>\n";
+						$contenido .= "\t\t\t\t<port>1812</port>\n";
 					}
 
 					if($formatos['dstendport'] === "1813")
 					{
-						$contenido .= "\t\t\t\t\t<port>1813</port>\n";
+						$contenido .= "\t\t\t\t<port>1813</port>\n";
 					}
 
 					if($formatos['dstendport'] === "5004")
 					{
-						$contenido .= "\t\t\t\t\t<port>5004</port>\n";
+						$contenido .= "\t\t\t\t<port>5004</port>\n";
 					}
 
 					if($formatos['dstendport'] === "5060")
 					{
-						$contenido .= "\t\t\t\t\t<port>5060</port>\n";
+						$contenido .= "\t\t\t\t<port>5060</port>\n";
 					}
 
 					if($formatos['dstendport'] === "25")
 					{
-						$contenido .= "\t\t\t\t\t<port>25</port>\n";
+						$contenido .= "\t\t\t\t<port>25</port>\n";
 					}
 
 					if($formatos['dstendport'] === "465")
 					{
-						$contenido .= "\t\t\t\t\t<port>465</port>\n";
+						$contenido .= "\t\t\t\t<port>465</port>\n";
 					}
 
 					if($formatos['dstendport'] === "161")
 					{
-						$contenido .= "\t\t\t\t\t<port>161</port>\n";
+						$contenido .= "\t\t\t\t<port>161</port>\n";
 					}
 
 					if($formatos['dstendport'] === "162")
 					{
-						$contenido .= "\t\t\t\t\t<port>162</port>\n";
+						$contenido .= "\t\t\t\t<port>162</port>\n";
 					}
 
 					if($formatos['dstendport'] === "22")
 					{
-						$contenido .= "\t\t\t\t\t<port>22</port>\n";
+						$contenido .= "\t\t\t\t<port>22</port>\n";
 					}
 
 					if($formatos['dstendport'] === "3478")
 					{
-						$contenido .= "\t\t\t\t\t<port>3278</port>\n";
+						$contenido .= "\t\t\t\t<port>3278</port>\n";
 					}
 
 					if($formatos['dstendport'] === "587")
 					{
-						$contenido .= "\t\t\t\t\t<port>587</port>\n";
+						$contenido .= "\t\t\t\t<port>587</port>\n";
 					}
 
 					if($formatos['dstendport'] === "3544")
 					{
-						$contenido .= "\t\t\t\t\t<port>3544</port>\n";
+						$contenido .= "\t\t\t\t<port>3544</port>\n";
 					}
 
 					if($formatos['dstendport'] === "23")
 					{
-						$contenido .= "\t\t\t\t\t<port>23</port>\n";
+						$contenido .= "\t\t\t\t<port>23</port>\n";
 					}
 
 					if($formatos['dstendport'] === "69")
 					{
-						$contenido .= "\t\t\t\t\t<port>69</port>\n";
+						$contenido .= "\t\t\t\t<port>69</port>\n";
 					}
 
 					if($formatos['dstendport'] === "5900")
 					{
-						$contenido .= "\t\t\t\t\t<port>5900</port>\n";
+						$contenido .= "\t\t\t\t<port>5900</port>\n";
 					}
 				}
-			$contenido .= "\t\t\t\t</destination>\n";
+			$contenido .= "\t\t\t</destination>\n";
 
-		    $contenido .= "\t\t\t\t<protocol>" . $formatos['proto'] . "</protocol>\n";
+		    $contenido .= "\t\t\t<protocol>" . $formatos['proto'] . "</protocol>\n";
 		    # No RDR (NOT) esta activo #
 		    if($formatos['nordr'] === "no")
 			{
 				# Redirect target IP #
-			    $contenido .= "\t\t\t\t<target>" . $formatos['localip'] . "</target>\n";
+			    $contenido .= "\t\t\t<target>" . $formatos['localip'] . "</target>\n";
 			    # Redirect target port #
 			    if($formatos['localbeginport'] === "")
 				{
-					$contenido .= "\t\t\t\t<local-port>" . $formatos['localbeginport_cust'] . "</local-port>\n";
+					$contenido .= "\t\t\t<local-port>" . $formatos['localbeginport_cust'] . "</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "5999")
 				{
-					$contenido .= "\t\t\t\t<local-port>5999</local-port>\n";
+					$contenido .= "\t\t\t<local-port>5999</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "53")
 				{
-					$contenido .= "\t\t\t\t<local-port>53</local-port>\n";
+					$contenido .= "\t\t\t<local-port>53</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "21")
 				{
-					$contenido .= "\t\t\t\t<local-port>21</local-port>\n";
+					$contenido .= "\t\t\t<local-port>21</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "3000")
 				{
-					$contenido .= "\t\t\t\t<local-port>3000</local-port>\n";
+					$contenido .= "\t\t\t<local-port>3000</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "80")
 				{
-					$contenido .= "\t\t\t\t<local-port>80</local-port>\n";
+					$contenido .= "\t\t\t<local-port>80</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "443")
 				{
-					$contenido .= "\t\t\t\t<local-port>443</local-port>\n";
+					$contenido .= "\t\t\t<local-port>443</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "5190")
 				{
-					$contenido .= "\t\t\t\t<local-port>5190</local-port>\n";
+					$contenido .= "\t\t\t<local-port>5190</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "113")
 				{
-					$contenido .= "\t\t\t\t<local-port>113</local-port>\n";
+					$contenido .= "\t\t\t<local-port>113</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "143")
 				{
-					$contenido .= "\t\t\t\t<local-port>143</local-port>\n";
+					$contenido .= "\t\t\t<local-port>143</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "993")
 				{
-					$contenido .= "\t\t\t\t<local-port>993</local-port>\n";
+					$contenido .= "\t\t\t<local-port>993</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "4500")
 				{
-					$contenido .= "\t\t\t\t<local-port>4500</local-port>\n";
+					$contenido .= "\t\t\t<local-port>4500</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "500")
 				{
-					$contenido .= "\t\t\t\t<local-port>500</local-port>\n";
+					$contenido .= "\t\t\t<local-port>500</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "1701")
 				{
-					$contenido .= "\t\t\t\t<local-port>1701</local-port>\n";
+					$contenido .= "\t\t\t<local-port>1701</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "389")
 				{
-					$contenido .= "\t\t\t\t<local-port>389</local-port>\n";
+					$contenido .= "\t\t\t<local-port>389</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "1755")
 				{
-					$contenido .= "\t\t\t\t<local-port>1755</local-port>\n";
+					$contenido .= "\t\t\t<local-port>1755</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "7000")
 				{
-					$contenido .= "\t\t\t\t<local-port>7000</local-port>\n";
+					$contenido .= "\t\t\t<local-port>7000</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "445")
 				{
-					$contenido .= "\t\t\t\t<local-port>445</local-port>\n";
+					$contenido .= "\t\t\t<local-port>445</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "3389")
 				{
-					$contenido .= "\t\t\t\t<local-port>3389</local-port>\n";
+					$contenido .= "\t\t\t<local-port>3389</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "1512")
 				{
-					$contenido .= "\t\t\t\t<local-port>1512</local-port>\n";
+					$contenido .= "\t\t\t<local-port>1512</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "1863")
 				{
-					$contenido .= "\t\t\t\t<local-port>1863</local-port>\n";
+					$contenido .= "\t\t\t<local-port>1863</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "119")
 				{
-					$contenido .= "\t\t\t\t<local-port>119</local-port>\n";
+					$contenido .= "\t\t\t<local-port>119</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "123")
 				{
-					$contenido .= "\t\t\t\t<local-port>123</local-port>\n";
+					$contenido .= "\t\t\t<local-port>123</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "138")
 				{
-					$contenido .= "\t\t\t\t<local-port>138</local-port>\n";
+					$contenido .= "\t\t\t<local-port>138</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "137")
 				{
-					$contenido .= "\t\t\t\t<local-port>137</local-port>\n";
+					$contenido .= "\t\t\t<local-port>137</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "139")
 				{
-					$contenido .= "\t\t\t\t<local-port>139</local-port>\n";
+					$contenido .= "\t\t\t<local-port>139</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "1194")
 				{
-					$contenido .= "\t\t\t\t<local-port>1194</local-port>\n";
+					$contenido .= "\t\t\t<local-port>1194</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "110")
 				{
-					$contenido .= "\t\t\t\t<local-port>110</local-port>\n";
+					$contenido .= "\t\t\t<local-port>110</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "995")
 				{
-					$contenido .= "\t\t\t\t<local-port>995</local-port>\n";
+					$contenido .= "\t\t\t<local-port>995</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "1723")
 				{
-					$contenido .= "\t\t\t\t<local-port>1723</local-port>\n";
+					$contenido .= "\t\t\t<local-port>1723</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "1812")
 				{
-					$contenido .= "\t\t\t\t<local-port>1812</local-port>\n";
+					$contenido .= "\t\t\t<local-port>1812</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "1813")
 				{
-					$contenido .= "\t\t\t\t<local-port>1813</local-port>\n";
+					$contenido .= "\t\t\t<local-port>1813</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "5004")
 				{
-					$contenido .= "\t\t\t\t<local-port>5004</local-port>\n";
+					$contenido .= "\t\t\t<local-port>5004</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "5060")
 				{
-					$contenido .= "\t\t\t\t<local-port>5060</local-port>\n";
+					$contenido .= "\t\t\t<local-port>5060</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "25")
 				{
-					$contenido .= "\t\t\t\t<local-port>25</local-port>\n";
+					$contenido .= "\t\t\t<local-port>25</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "465")
 				{
-					$contenido .= "\t\t\t\t<local-port>465</local-port>\n";
+					$contenido .= "\t\t\t<local-port>465</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "161")
 				{
-					$contenido .= "\t\t\t\t<local-port>161</local-port>\n";
+					$contenido .= "\t\t\t<local-port>161</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "162")
 				{
-					$contenido .= "\t\t\t\t<local-port>162</local-port>\n";
+					$contenido .= "\t\t\t<local-port>162</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "22")
 				{
-					$contenido .= "\t\t\t\t<local-port>22</local-port>\n";
+					$contenido .= "\t\t\t<local-port>22</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "3478")
 				{
-					$contenido .= "\t\t\t\t<local-port>3478</local-port>\n";
+					$contenido .= "\t\t\t<local-port>3478</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "587")
 				{
-					$contenido .= "\t\t\t\t<local-port>587</local-port>\n";
+					$contenido .= "\t\t\t<local-port>587</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "3544")
 				{
-					$contenido .= "\t\t\t\t<local-port>3544</local-port>\n";
+					$contenido .= "\t\t\t<local-port>3544</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "23")
 				{
-					$contenido .= "\t\t\t\t<local-port>23</local-port>\n";
+					$contenido .= "\t\t\t<local-port>23</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "69")
 				{
-					$contenido .= "\t\t\t\t<local-port>69</local-port>\n";
+					$contenido .= "\t\t\t<local-port>69</local-port>\n";
 				}
 
 				if($formatos['localbeginport'] === "5900")
 				{
-					$contenido .= "\t\t\t\t<local-port>5900</local-port>\n";
+					$contenido .= "\t\t\t<local-port>5900</local-port>\n";
 				}
 			}
 			# Interface #
-		    $contenido .= "\t\t\t\t<interface>" . $formatos['interface'] . "</interface>\n";
+		    $contenido .= "\t\t\t<interface>" . $formatos['interface'] . "</interface>\n";
 		    # Description #
-		    $contenido .= "\t\t\t\t<descr>" . $formatos['descr'] . "</descr>\n";
+		    $contenido .= "\t\t\t<descr>" . $formatos['descr'] . "</descr>\n";
 		    # Filter rule association #
 		    if($formatos['associated_rule_id'] === "")
 			{
-		    	$contenido .= "\t\t\t\t<associated-rule-id></associated-rule-id>\n";
+		    	$contenido .= "\t\t\t<associated-rule-id></associated-rule-id>\n";
 		    }
 
 		    if($formatos['associated_rule_id'] === "")
 			{
-		    	$contenido .= "\t\t\t\t<associated-rule-id>pass</associated-rule-id>\n";
+		    	$contenido .= "\t\t\t<associated-rule-id>pass</associated-rule-id>\n";
 		    }
 
 		    # No XMLRPC Sync #
 		    if($formatos['nosync'] === "yes")
 			{
-				$contenido .= "\t\t\t\t<nosync></nosync>\n";
+				$contenido .= "\t\t\t<nosync></nosync>\n";
 			}
 			# NAT reflection #
 			if($formatos['natreflection'] === "enable")
 			{
-				$contenido .= "\t\t\t\t\t<natreflection>enable</natreflection>\n";
+				$contenido .= "\t\t\t<natreflection>enable</natreflection>\n";
 			}
 
 			if($formatos['natreflection'] === "purenat")
 			{
-				$contenido .= "\t\t\t\t\t<natreflection>purenat</natreflection>\n";
+				$contenido .= "\t\t\t<natreflection>purenat</natreflection>\n";
 			}
 
 			if($formatos['natreflection'] === "disable")
 			{
-				$contenido .= "\t\t\t\t\t<natreflection>disable</natreflection>\n";
+				$contenido .= "\t\t\t<natreflection>disable</natreflection>\n";
 			}
 
-		    $contenido .= "\t\t\t</rule>\n";
+		    $contenido .= "\t\t</rule>\n";
 		}
 		
 		$queryOne = "SELECT * FROM natone WHERE namegroup = '$id' ORDER BY position_order";
@@ -1335,57 +1335,57 @@ class NatController extends Controller
 		// Se realiza un ciclo para llenar las demas etiquetas del archivo xml 
 		foreach ($formatoOne as $formatos) 
 		{
-			$contenido .= "\t\t\t<onetoone>\n";
+			$contenido .= "\t\t<onetoone>\n";
 			# No BINAT (NOT) #
 			if($formatos['nobinat'] === "yes")
 			{
-				$contenido .= "\t\t\t\t<nobinat></nobinat>\n";
+				$contenido .= "\t\t\t<nobinat></nobinat>\n";
 			}
 			# Disabled #
 			if($formatos['disabled'] === "yes")
 			{
-				$contenido .= "\t\t\t\t<disabled></disabled>\n";
+				$contenido .= "\t\t\t<disabled></disabled>\n";
 			}
 			# External subnet IP #
-			$contenido .= "\t\t\t\t<external>" . $formatos['external'] . "</external>\n";
+			$contenido .= "\t\t\t<external>" . $formatos['external'] . "</external>\n";
 			# Description #
-			$contenido .= "\t\t\t\t<descr>" . $formatos['descr'] . "</descr>\n";
+			$contenido .= "\t\t\t<descr>" . $formatos['descr'] . "</descr>\n";
 			# Interface #
-			$contenido .= "\t\t\t\t<interface>" . $formatos['interface'] . "</interface>\n";
+			$contenido .= "\t\t\t<interface>" . $formatos['interface'] . "</interface>\n";
 			# Internal IP #
-			$contenido .= "\t\t\t\t<source>\n";
+			$contenido .= "\t\t\t<source>\n";
 				# Type Address/mask #
 				if($formatos['srctype'] === "any")
 				{
-					$contenido .= "\t\t\t\t\t<any></any>\n";
+					$contenido .= "\t\t\t\t<any></any>\n";
 				}
 				if($formatos['srctype'] === "single")
 				{
-					$contenido .= "\t\t\t\t\t<address>" . $formatos['src'] . "</address>\n";
+					$contenido .= "\t\t\t\t<address>" . $formatos['src'] . "</address>\n";
 				}
 				if($formatos['srctype'] === "network")
 				{
-					$contenido .= "\t\t\t\t\t<address>" . $formatos['src'] . "/" . $formatos['srcmask'] . "</address>\n";
+					$contenido .= "\t\t\t\t<address>" . $formatos['src'] . "/" . $formatos['srcmask'] . "</address>\n";
 				}
 				if($formatos['srctype'] === "pppoe")
 				{
-					$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
+					$contenido .= "\t\t\t\t<network>pppoe</network>\n";
 				}
 				if($formatos['srctype'] === "l2tp")
 				{
-					$contenido .= "\t\t\t\t\t<network>l2tp</network>\n";
+					$contenido .= "\t\t\t\t<network>l2tp</network>\n";
 				}
 				if($formatos['srctype'] === "wan")
 				{
-					$contenido .= "\t\t\t\t\t<network>wan</network>\n";
+					$contenido .= "\t\t\t\t<network>wan</network>\n";
 				}
 				if($formatos['srctype'] === "wanip")
 				{
-					$contenido .= "\t\t\t\t\t<network>wanip</network>\n";
+					$contenido .= "\t\t\t\t<network>wanip</network>\n";
 				}
 				if($formatos['srctype'] === "lan")
 				{
-					$contenido .= "\t\t\t\t\t<network>lan</network>\n";
+					$contenido .= "\t\t\t\t<network>lan</network>\n";
 				}
 				if($formatos['srctype'] === "lanip")
 				{
@@ -1394,43 +1394,43 @@ class NatController extends Controller
 				# Not Invert the sense of the match #
 				if($formatos['srcnot'] === "yes")
 				{
-					$contenido .= "\t\t\t\t\t<not></not>\n";
+					$contenido .= "\t\t\t\t<not></not>\n";
 				}
-			$contenido .= "\t\t\t\t</source>\n";
+			$contenido .= "\t\t\t</source>\n";
 			# Destination #
-			$contenido .= "\t\t\t\t<source>\n";
+			$contenido .= "\t\t\t<destination>\n";
 				# Type Address/mask #
 				if($formatos['dsttype'] === "any")
 				{
-					$contenido .= "\t\t\t\t\t<any></any>\n";
+					$contenido .= "\t\t\t\t<any></any>\n";
 				}
 				if($formatos['dsttype'] === "single")
 				{
-					$contenido .= "\t\t\t\t\t<address>" . $formatos['dst'] . "</address>\n";
+					$contenido .= "\t\t\t\t<address>" . $formatos['dst'] . "</address>\n";
 				}
 				if($formatos['dsttype'] === "network")
 				{
-					$contenido .= "\t\t\t\t\t<address>" . $formatos['dst'] . "/" . $formatos['dstmask'] . "</address>\n";
+					$contenido .= "\t\t\t\t<address>" . $formatos['dst'] . "/" . $formatos['dstmask'] . "</address>\n";
 				}
 				if($formatos['dsttype'] === "pppoe")
 				{
-					$contenido .= "\t\t\t\t\t<network>pppoe</network>\n";
+					$contenido .= "\t\t\t\t<network>pppoe</network>\n";
 				}
 				if($formatos['dsttype'] === "l2tp")
 				{
-					$contenido .= "\t\t\t\t\t<network>l2tp</network>\n";
+					$contenido .= "\t\t\t\t<network>l2tp</network>\n";
 				}
 				if($formatos['dsttype'] === "wan")
 				{
-					$contenido .= "\t\t\t\t\t<network>wan</network>\n";
+					$contenido .= "\t\t\t\t<network>wan</network>\n";
 				}
 				if($formatos['dsttype'] === "wanip")
 				{
-					$contenido .= "\t\t\t\t\t<network>wanip</network>\n";
+					$contenido .= "\t\t\t\t<network>wanip</network>\n";
 				}
 				if($formatos['dsttype'] === "lan")
 				{
-					$contenido .= "\t\t\t\t\t<network>lan</network>\n";
+					$contenido .= "\t\t\t\t<network>lan</network>\n";
 				}
 				if($formatos['dsttype'] === "lanip")
 				{
@@ -1439,10 +1439,10 @@ class NatController extends Controller
 				# Not Invert the sense of the match #
 				if($formatos['dstnot'] === "yes")
 				{
-					$contenido .= "\t\t\t\t\t<not></not>\n";
+					$contenido .= "\t\t\t\t<not></not>\n";
 				}
-			$contenido .= "\t\t\t\t</source>\n";
-			$contenido .= "\t\t\t</onetoone>\n";
+			$contenido .= "\t\t\t</destination>\n";
+			$contenido .= "\t\t</onetoone>\n";
 		}
 
 		$contenido .= "</nat>";
