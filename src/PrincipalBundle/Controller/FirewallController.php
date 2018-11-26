@@ -309,7 +309,7 @@ class FirewallController extends Controller
 			$log = $_POST['log'];
 			$descr = $_POST['descr'];
 			$gateway = $_POST['gateway'];
-			$query = "UPDATE firewallwan SET type= '$type', disabled = '$disabled', interface = '$interface', ipprotocol = '$ipprotocol', proto = '$proto', icmptype = '$icmptype', srcnot = '$srcnot', srctype = '$srctype', src = '$src', srcmask = '$srcmask', srcbeginport = '$srcbeginport', srcbeginport_cust = '$srcbeginport_cust', srcendport = '$srcendport', srcendport_cust = '$srcendport_cust', dstnot = '$dstnot', dsttype = '$dstnot', dst = '$dst', dstmask = '$dstmask', dstbeginport = '$dstbeginport', dstbeginport_cust = '$dstbeginport_cust', dstendport = '$dstendport', dstendport_cust = '$dstendport_cust', log = '$log', descr = '$descr', gateway = '$gateway' WHERE id = '$id'";
+			$query = "UPDATE firewallwan SET type= '$type', disabled = '$disabled', interface = '$interface', ipprotocol = '$ipprotocol', proto = '$proto', icmptype = '$icmptype', srcnot = '$srcnot', srctype = '$srctype', src = '$src', srcmask = '$srcmask', srcbeginport = '$srcbeginport', srcbeginport_cust = '$srcbeginport_cust', srcendport = '$srcendport', srcendport_cust = '$srcendport_cust', dstnot = '$dstnot', dsttype = '$dsttype', dst = '$dst', dstmask = '$dstmask', dstbeginport = '$dstbeginport', dstbeginport_cust = '$dstbeginport_cust', dstendport = '$dstendport', dstendport_cust = '$dstendport_cust', log = '$log', descr = '$descr', gateway = '$gateway' WHERE id = '$id'";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
 			return $this->redirectToRoute("listGroupFirewall");
@@ -484,7 +484,7 @@ class FirewallController extends Controller
 			$log = $_POST['log'];
 			$descr = $_POST['descr'];
 			$gateway = $_POST['gateway'];
-			$query = "UPDATE firewalllan SET type= '$type', disabled = '$disabled', interface = '$interface', ipprotocol = '$ipprotocol', proto = '$proto', icmptype = '$icmptype', srcnot = '$srcnot', srctype = '$srctype', src = '$src', srcmask = '$srcmask', srcbeginport = '$srcbeginport', srcbeginport_cust = '$srcbeginport_cust', srcendport = '$srcendport', srcendport_cust = '$srcendport_cust', dstnot = '$dstnot', dsttype = '$dstnot', dst = '$dst', dstmask = '$dstmask', dstbeginport = '$dstbeginport', dstbeginport_cust = '$dstbeginport_cust', dstendport = '$dstendport', dstendport_cust = '$dstendport_cust', log = '$log', descr = '$descr', gateway = '$gateway' WHERE id = '$id'";
+			$query = "UPDATE firewalllan SET type= '$type', disabled = '$disabled', interface = '$interface', ipprotocol = '$ipprotocol', proto = '$proto', icmptype = '$icmptype', srcnot = '$srcnot', srctype = '$srctype', src = '$src', srcmask = '$srcmask', srcbeginport = '$srcbeginport', srcbeginport_cust = '$srcbeginport_cust', srcendport = '$srcendport', srcendport_cust = '$srcendport_cust', dstnot = '$dstnot', dsttype = '$dsttype', dst = '$dst', dstmask = '$dstmask', dstbeginport = '$dstbeginport', dstbeginport_cust = '$dstbeginport_cust', dstendport = '$dstendport', dstendport_cust = '$dstendport_cust', log = '$log', descr = '$descr', gateway = '$gateway' WHERE id = '$id'";
 			$stmt = $db->prepare($query);
 			$stmt->execute(array());
 			return $this->redirectToRoute("listGroupFirewall");
@@ -1125,7 +1125,7 @@ class FirewallController extends Controller
 			$contenido .= "\t\t</rule>\n";
 		}
 
-		/*$queryOne = "SELECT * FROM firewalllan WHERE namegroup = '$id' ORDER BY position_order";
+		$queryOne = "SELECT * FROM firewalllan WHERE namegroup = '$id' ORDER BY position_order";
 		$stmtOne = $db->prepare($queryOne);
 		$paramsOne =array();
 		$stmtOne->execute($paramsOne);
@@ -1747,7 +1747,7 @@ class FirewallController extends Controller
 			}	
 			$contenido .= "\t\t\t<descr>" . $formatos['descr'] . "</descr>\n";
 			$contenido .= "\t\t</rule>\n";
-		}*/
+		}
 
 		$contenido .= "\t\t<separator>\n";
 			$contenido .= "\t\t\t<wan></wan>\n";

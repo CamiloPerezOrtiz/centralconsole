@@ -311,7 +311,7 @@
                                                                     <option value="pppoe" {% if listaGrupo.dsttype == "pppoe" %}selected{% endif %}>PPPoE clients</option>
                                                                     <option value="l2tp" {% if listaGrupo.dsttype == "l2tp" %}selected{% endif %}>L2TP clients</option>
                                                                     <option value="wan" {% if listaGrupo.dsttype == "wan" %}selected{% endif %}>WAN net</option>
-                                                                    <option value="wanip"{% if listaGrupo.dsttype == "wanip" %}selected{% endif %}>AN address</option>
+                                                                    <option value="wanip" {% if listaGrupo.dsttype == "wanip" %}selected{% endif %}>AN address</option>
                                                                     <option value="lan" {% if listaGrupo.dsttype == "lan" %}selected{% endif %}>LAN net</option>
                                                                     <option value="lanip" {% if listaGrupo.dsttype == "lanip" %}selected{% endif %}>LAN address</option>
                                                                 </select>
@@ -323,7 +323,7 @@
                                                                     <div class="input-group-prepend">
                                                                         <span class="input-group-text" id="mask2">/</span>
                                                                     </div>
-                                                                    <select class="form-control col-sm-3 pfIpMask" name="dstmask" id="dstmask"> 
+                                                                    <select class="form-control col-sm-3" name="dstmask" id="dstmask"> 
                                                                         {% for i in 32..1 %}
                                                                             <option value="{{ i }}" {% if listaGrupo.dstmask == "i" %}selected{% endif %}>{{ i }}</option>
                                                                         {% endfor %}
